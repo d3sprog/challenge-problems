@@ -927,6 +927,77 @@ As above, the key requirement from the live programming perspective is to “do 
 \subsection{Remarks}
 It is worth noting that the particularly difficult aspect of this challenge, i.e., the case where the structure of state is refactored to an equivalent one, is related to the Extract Entity challenge.
 
+\section{Multiplicity change}
+
+\subsection{Context}
+
+A common kind of schema change is \textit{multiplicity change}: when a field changes from storing a single value to storing multiple values. For example, we might start by storing a single address for each contact in an address book, before realizing that we need to store multiple addresses for a single contact; or we might assign each todo in a list to one person before realizing we want the ability to assign a todo to multiple people.
+
+In a relational schema, solving this problem might require extracting a normalized table for the linked entity; some of the challenges of this approach are covered in the Extract Entity challenge. In this section we will instead consider a document schema with support for arrays; in this context, we can have a multiplicity change by turning a scalar value into an array value.
+
+Multiplicity change clearly requires changing both the data and the code. It becomes particularly challenging to handle when there is a need to support ongoing writes to both the scalar and array schemas. This need can arise in any situation where the code and data can't all be updated atomically together—e.g., in a zero-downtime upgrade in a web architecture with stateless servers and a database, or in a decentralized setting like a public API where some consumers of the API may be expecting an outdated schema.
+
+\subsection{Example}
+
+Consider the following schema for a todo list item, in which each item has a single assignee, represented by a user ID:
+
+\begin{quote}
+\begin{lstlisting}[language=ml]
+type Item = { id : id; title : string; assignee : string }
+\end{lstlisting}
+\end{quote}
+
+Now, we change the schema so that each item has a list of assignees:
+
+\begin{quote}
+\begin{lstlisting}[language=ml]
+type Item = { id : id; title : string; assignees : Array<string> }
+\end{lstlisting}
+\end{quote}
+
+Our goal is to preserve the ability for actors in the system to read and write to a shared todo list in either the old or new schema—for example, they should be able to write to either the scalar assignee field or to the list of assignees.
+
+A natural invariant to preserve across these schemas is that the value of the scalar field should equal the first element of the list field (and if the list is empty, the scalar field should be null). If we were to write code for a one-time data migration from the scalar to list schema, we could easily satisfy this invariant:
+
+\begin{quote}
+\begin{lstlisting}[language=ml]
+item.assignees = if (item.assignee == null) then [] else [item.assignee]
+\end{lstlisting}
+\end{quote}
+
+Ongoing edits to the array schema can also be handled in a straightforward way. After edits are made, the value of the scalar field should be set to the first element of the new array (or null if the new array is empty.)
+
+However, handling edits to the scalar schema presents more of a challenge. Consider the following todo with two assignees, presented in terms of the scalar and array schemas. A write is made in the scalar schema to set the new assignee to C.
+
+\begin{quote}
+\begin{lstlisting}[language=ml]
+todoScalar = { id: 1, title: "Foo", assignee: A }
+todoArray = { id: 1, title: "Foo", assignees: [A, B] }
+
+todoScalar.assignee = C
+\end{lstlisting}
+\end{quote}
+
+What should the array value become after this edit to the scalar schema? To satisfy our invariant, we know that C must become the first element of the array, but this leaves open several options with different tradeoffs:
+
+\begin{enumerate}
+  \item \texttt{[C]}: "Only C should be assigned." This option produces an array that corresponds directly to the resulting scalar. But it has the downside of deleting data that wasn't even visible in the scalar schema.
+  \item \texttt{[C, B]}: "Replace A with C." If the writer wanted to remove A from the assignment and add C, this option performs that intent. However, there is data remaining in the list which was not visible to the scalar writer.
+  \item \texttt{[C, A, B]}: "Add C to the list." Perhaps the scalar writer wanted to add C to the assignment without removing anyone; this option satisfies that intent. But it preserves data not visible to the scalar schema.
+\end{enumerate}
+
+Because the intent of the writer to the scalar schema cannot be unambiguously interpreted from the write alone, it is impossible to make a perfect choice among these options.
+
+\subsection{Challenge}
+
+Multiplicity change illustrates a general problem for handling ongoing writes between diverging schemas. Different schemas may expose partial information, and writers in those schemas have to operate without total knowledge of the information available in other schemas. As a result, synchronizing writes across the schemas requires making difficult tradeoffs, such as choosing to either preserve or destroy hidden data not visible to the writer.
+
+Although we see no silver bullet to navigate these tradeoffs, a good solution to this problem would give developers or users tools to manage these tradeoffs. For example, a system might allow developers to specify the desired behavior for a particular pair of schemas based on the requirements of the domain. Or a system might even allow users to manually disambiguate their intent for a given write.
+
+\subsection{Goals}
+
+TODO
+
 \begin{comment}
 \section{Rename field; Add new required field}
 Starter problems suggested by Geoffrey. These are already directly supported in SQL, so there is good support in SQL schema change tools, but they don't address how to synchronize the change with live code refactoring or local-first code deployment.
