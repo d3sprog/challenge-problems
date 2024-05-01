@@ -1,11 +1,14 @@
 \documentclass[english,submission]{programming}
-%\usepackage[backend=biber]{biblatex}
-%\addbibresource{paper.bib}
+
+\usepackage{csquotes}
+\usepackage{inputenx}
+\usepackage[backend=biber]{biblatex}
+%\usepackage{natbib}
+\addbibresource{paper.bib}
 
 \usepackage{changepage}
 \usepackage{multicol}
 \usepackage{ccicons}
-\usepackage{natbib}
 \usepackage[many]{tcolorbox}
 
 \newcounter{challengen}
@@ -24,6 +27,10 @@
 
 \begin{document}
 
+% define natbib citet
+\newcommand{\citet}[1]{\citeauthor*{#1} \cite{#1}}
+
+
 \title{Schema Change: Challenge Problems}
 
 \author[a]{Jonathan Edwards}%[0000-0003-1958-7967]
@@ -41,11 +48,11 @@
 
 \author[e]{Geoffrey Litt}%[0000-0003-0858-5165]
 \authorinfo{is TBD. Contact him at \email{gklitt@gmail.com}.}
-\affiliation[b]{Ink \& Switch, Planet Earth}
+\affiliation[e]{Ink \& Switch, Planet Earth}
 
 \authorrunning{J. Edwards, T. Petricek, T. van der Storm, G. Litt}
 
-\keywords{schema change, live programming, local-first programming}
+\keywords{schema change, database migration, live programming, local-first programming}
 
 % TODO: Please go to https://dl.acm.org/ccs/ccs.cfm and generate your Classification System
 
@@ -74,8 +81,7 @@ solutions.
 
 
 \noindent\textbf{Context}: \emph{What is the broad context of the work? What is the importance of the general research area?}
-Schema change is unsolved problem in live and local-first programming. It is also poorly understood
-problem that calls for a more fundamental analysis. It is particularly important as more programming
+Schema change is an unsolved problem in live and local-first programming that is poorly understood and calls for a more fundamental analysis. It is particularly important as more programming
 is done in programming systems where programs may be changed by their users and as more programming
 is local-first, meaning that such changes need to be synchronized.
 
@@ -107,7 +113,7 @@ solutions.
 
 \section{Introduction}
 
-Schema change won't go away. Changing requirements and changing code lead to changing the schema of a database. Schema change, also called schema migration, is the problem of migrating existing data from the old schema to the new. This often involves custom migration programs or specialized Domain Specific Langiuages. The migration must be carefully coordinated with upgrading the application code and associated artifacts that assume the new schema. Schema change on database servers is often delegated to Database Administrators and DevOps. Live programming~\cite{tanimoto90,hancock03} and local-first software~\cite{localfirst} both move data away from the server, eliminating those jobs, but not eliminating the need to do schema change, and indeed increasing the need to do it automatically. Recently \citet{Cambria} spotlighted these problems and proposed an approach using lenses~\cite{Foster2007}, but otherwise there has been surprisingly little research. To promote further progress we offer a set of challenge problems to the live programming and local-first communities, inviting them to propose and compare solutions.
+Schema change won't go away. Changing requirements and changing code lead to changing the schema of a database. Schema change, also called schema migration, is the problem of migrating existing data from the old schema to the new. This often involves custom migration programs or specialized Domain Specific Langiuages. The migration must be carefully coordinated with upgrading the application code and associated artifacts that assume the new schema. Schema change on database servers is often delegated to Database Administrators and DevOps. Live programming~\cite{tanimoto90,Hancock03} and local-first software~\cite{localfirst} both move data away from the server, eliminating those jobs, but not eliminating the need to do schema change, and indeed increasing the need to do it automatically. Recently \citet{Cambria} spotlighted these problems and proposed an approach using lenses~\cite{Foster2007}, but otherwise there has been surprisingly little research. To promote further progress we offer a set of challenge problems to the live programming and local-first communities, inviting them to propose and compare solutions.
 
 Live programming seeks to erase the boundary between editing and running programs. In order to do so program data must be kept around while the program is being edited. Classic Lisp and Smalltalk systems integrated code and data into a persistent \textit{image}~\cite{Sandewall78, Goldberg80}. An interactive shell or \textit{Read Eval Print Loop (REPL)}~\cite{Deutsch64} is more transient than an image, but still builds up a context of data over long-lived programming sessions the loss of which disrupts the programmer's workflow. In all of these environments programs eventually get changed to create and expect data in a form incompatible with extant data. This happens whether or not the form of the data is specified explicitly in a type system or database schema, or whether it is left implicit in the behavior of the code. Some languages can tolerate a larger set of such changes, most notably Smalltalk which will automatically insert and delete members in existing instances when a class definition is changed~\cite[pp.252-272]{Goldberg80}.\footnote{Gemstone turns the Smalltalk image into a production-quality database and accordingly provides a sophisticated schema change API~\cite{Gemstone}. Schema change won't go away.} But there is still a large class of changes that create incompatibilities with existing data, whether it is inside an image, programming environment, REPL, or an external database. Some live programming environments generate data with unit tests, but that only shifts the problem of schema change to adapting those tests. One way or another, stopping everything to manually deal with schema change contradicts the goals of live programming. Schema change won't go away.
 
@@ -120,6 +126,7 @@ In the following sections we present a series of challenge problems dealing with
 ~
 
 ~
+\textcolor{red}{[JE] We could expand our context to include conventional DB systems not just live/local. It is a widespread problem, attested by the many tools to assiste with it. We could include in our problems a description of a typical solution with a standard DB as a sort of baseline. }
 
 \textcolor{red}{TODO: Need to explain that we take the programming system view - program is not something
 built centrally, but something that exists and can be modified}
@@ -128,7 +135,7 @@ built centrally, but something that exists and can be modified}
 
 \textcolor{red}{TODO: Maybe the right way to frame this is to say that the challenges are intended
 less for evaluating particular solutions but more for framing and making sense of different
-kinds of schema-chaange-related problems.  You can read this paper and when you face a schema-change-related
+kinds of schema-change-related problems.  You can read this paper and when you face a schema-change-related
 problem, think about it in terms of our dimensions. Maybe compare it to our challenges.
 We do not necessarilly expect that people will directly solve our challenges though. (Although
 some might and that would be nice..)}
@@ -150,9 +157,13 @@ pace layer.}
   The outer layers rarely change, while the inner layers change frequently. The geographic
   site of a building is eternal, its structure remains stable for decades, space plan
   needs to change every couple of years. ``Because of the different rates of change of its
-  components, a building is always tearing itself apart.''}
+  components, a building is always tearing itself apart.''
+  \textcolor{red}{[JE] Except the outer skin changes faster than the structure.}
+  }
 \label{fig:layers}
 \end{figure}
+
+\textcolor{red}{[JE] `change in a program' might be misunderstood as changes to the source code. Perhaps `system' or `software system' might be better than `program'? }
 
 In the broadest sense, this paper is concerned with the difficulties posed by a change
 in a program. The first dimension of difficulties that we consider in this paper is
@@ -1017,8 +1028,9 @@ Matt points out Extract Entity is a normalization so we ought to complement it w
 There are good cases for denormalizing from 1NF, i.e. nesting structures. Local-first software seems focused on JSON data rather than relational. An extension of Extract Entity is \textit{Nest Entity} where a table of orders are nested inside each customer.
 \end{comment}
 
-\bibliographystyle{abbrv}
-\bibliography{paper}
+%\bibliographystyle{abbrv}
+%\bibliography{paper}
+\printbibliography
 
 \end{document}
 

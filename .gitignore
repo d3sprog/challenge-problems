@@ -4,6 +4,11 @@
 *.blg
 *.log
 *.run.xml
-
+*.dvi
+*.fdb_latexmk
+*.fls
+*.out.ps
+*.synctex.gz
+.vscode/settings.json
 # Tomas' build scripts
 build.*
