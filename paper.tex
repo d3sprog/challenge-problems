@@ -242,6 +242,62 @@ and often encountered challenge problems. We use the above framework to more pre
 the nature of the challenge problem. We also often use the above framework to discuss variations
 on the particular challenge.
 
+\section{Related Work}
+
+Schema change and data migration are a widespread problem in practice for SQL databases, attested by the many tools that have been created to help. Some tools, like Rails Migrations~\cite{RailsMigrations} provide a Domain Specific Language (DSL) for specifying and executing schema changes. Other tools, such as those in Liquibase~\cite{liquibase} or PlanetScale\cite{planetscale} are based on textually comparing SQL Data Definition Language (DDL) statements that define the database schema. The differences between these DDL schema can be used to infer a delta of DDL statements to change one into the other. Unfortunately these inferences must sometimes guess at the user's intent: for example has a column been renamed or has it been deleted and a new one created? The difference matters a lot for the data in that column! EdgeDB~\cite{edgedb} asks the developer to resolve such ambiguities with a series of questions.
+
+All of these tools end up emitting SQL DDL statements to change the schema. Unfortunately that does not migrate the data. Some databases add limited features for migration. For example SQLite~\cite{sqliteDatatypes} uses dynamically typed values allowing them to be implicitly converted if the datatype of the column changes. MYSql~\cite{mysqlAlterTable} can reorder columns without destroying their data. But apart from such special cases, SQL databases have no general purpose support for schema migration. A developer must write custom SQL code to transform data from the old to the new schema. This custom migration code is greatly complicated if it needs to be done without taking the database offline or must be coordinated across multiple shards. In \textit{Refactoring Databases} \citet{ambler06} offer a comprehensive taxonomy of schema change patterns, including typical strategies for online migration and example SQL code.
+
+There is surprisingly little discussion of schema migration in the database literature nor support from the major database vendors. There is indeed a rich theory of database normalization~\cite{Molina08} but that is presumed to happen before the database is populated with data. To a large extent this entire problem area has been relegated to application developers and `dev ops'. Yet prima facia, schema migration can only be done throughly with direct support inside the database. EdgeDB~cite{edgedb} stands out for its improved support of schema migration through a proprietary language of data transformations but is still limited by the capabilties of its underlying PostgresSQL database.
+
+\begin{comment}
+
+Newly discovered thread of DB research on schema change:
+https://en.wikipedia.org/wiki/Schema_evolution
+https://www.researchgate.net/publication/220710372_Schema_Evolution_in_Wikipedia_-_Toward_a_Web_Information_System_Benchmark
+https://dl.acm.org/doi/10.14778/1453856.1453939
+https://dl.acm.org/doi/10.1145/3448016.3452842
+https://dl.acm.org/doi/10.14778/3565816.3565818
+https://link.springer.com/chapter/10.1007/978-3-030-58135-0_10
+
+Schema change IDEs
+https://www.red-gate.com/solutions/overview
+https://www.jetbrains.com/datagrip/features/
+
+
+Smalltalk images
+	depends on dynamic types and adding new fields to objects
+	Gemstone added complex API
+
+“unstructured data”: JSON and RDF used with untyped PL like Javascript or Python
+Like Smalltallk, small set of changes can be handled gradecfully, but in general need to write custom code
+
+dataframe diff
+https://homepages.inf.ed.ac.uk/csutton/publications/datadiff.pdf
+
+
+Tijs on Live programming and model-driven engineering
+https://ir.cwi.nl/pub/23770
+https://dl.acm.org/doi/10.1007/s10270-017-0608-7
+https://dl.acm.org/doi/10.1145/3276604.3276611
+https://ir.cwi.nl/pub/21858
+
+Geoffreu on Local-first
+https://www.inkandswitch.com/cambria/
+https://riffle.systems/papoc22.pdf
+
+
+Durable computing: pins runtime data frames to code versions. Doesn’t handle problem of global data schema change
+
+Version control for dbs
+https://people.eecs.berkeley.edu/~brewer/cs262b/update-conflicts.pdf
+https://github.com/dolthub/dolt
+https://github.com/dolthub/doltgresql
+https://irmin.org
+https://doc.replicache.dev/concepts/how-it-works
+
+\end{comment}
+
 \newpage
 
 \section{Extract Entity}
@@ -303,7 +359,10 @@ The shipping department filters this table on blank ship dates to see what they 
 
 We often encounter this sort of design change when we realize that attributes of one type of entity should actually belong to a new type of entity that will be associated with the first one. Often the motivation is to centralize changes to those attributes in one place. We call this operation \textit{Extract Entity}.
 
-In a SQL database, \texttt{Customers.Name} would be a primary key and \texttt{Orders.Customer} would be a foreign key. But before \texttt{Customers.Name} can be made a primary key the two occurrences of \texttt{Wile E Coyote} must be deduplicated one way or another~\cite{dedupe}. Given the dominance of SQL databases it is not surprising that there are many tools for performing schema change on them~\cite{RailsMigrations, liquibase}. We do find it surprising how low-level these tools are. There is support for the basic SQL DDL commands like adding and dropping tables, columns, or constraints, but no higher level operations that would help solve our problem. One is left to write custom SQL, which can become difficult if the migration needs to be performed online without bring down the database. There is a rich theory of relational database \textit{normalization} based on \textit{functional dependencies}~\cite{Molina08} but that theory has not been implemented into schema change operations in databases -- all you get is SQL. \citet{ambler06} define higher-level patterns of schema change like \textit{Split Table} that sketch SQL implementations but don't provide everything required for Extract Entity. These difficulties fairly beg for new linguistic abstractions, though programming patterns and APIs are reasonable pragmatic solutions to our challenge.
+In a SQL database, \texttt{Customers.Name} would be a primary key and \texttt{Orders.Customer} would be a foreign key. But before \texttt{Customers.Name} can be made a primary key the two occurrences of \texttt{Wile E Coyote} must be deduplicated one way or another~\cite{dedupe}.
+
+\textcolor{red}{this paragraph is now redundant with Related Owrk}
+Given the dominance of SQL databases it is not surprising that there are many tools for performing schema change on them~\cite{RailsMigrations, liquibase}. We do find it surprising how low-level these tools are. There is support for the basic SQL DDL commands like adding and dropping tables, columns, or constraints, but no higher level operations that would help solve our problem. One is left to write custom SQL, which can become difficult if the migration needs to be performed online without bring down the database. There is a rich theory of relational database \textit{normalization} based on \textit{functional dependencies}~\cite{Molina08} but that theory has not been implemented into schema change operations in databases -- all you get is SQL. \citet{ambler06} define higher-level patterns of schema change like \textit{Split Table} that sketch SQL implementations but don't provide everything required for Extract Entity. These difficulties fairly beg for new linguistic abstractions, though programming patterns and APIs are reasonable pragmatic solutions to our challenge.
 
 The Extract Entity schema change is straightforward in a spreadsheet. The \texttt{Customer Name} and \texttt{Customer Address} columns are copied and pasted into a new Customers table. The \textit{Remove Duplicates} command is used to deduplicate the customers. To preserve the original view for the shipping department the \texttt{Customer Address} column is redefined with a \texttt{VLOOKUP} formula to pull the address out of the customer table based on the customer's name. A spreadsheet won't maintain referential integrity between the two tables, but end-user database tools can do that~\cite{airtable, notion}.
 
@@ -481,7 +540,7 @@ challenging \emph{divergence} model.}
 One of the earliest systems to combine documents with computational elements
 is Boxer \cite{diSessa86}. The challenges in this section apply to a wide range of
 systems that can be seen as its successors. The specific scenario discussed here is
-inspired by the use of Notion~\cite{Notion24}, which is a collaborative structured document
+inspired by the use of Notion~\cite{notion}, which is a collaborative structured document
 editing system. Treating documents as end-user programs has recently
 been explored in Potluck~\cite{Litt2023}, which is local-only but includes formulas similar
 to those in our challenge.
