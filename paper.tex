@@ -28,7 +28,7 @@
 \begin{document}
 
 % define natbib citet
-\newcommand{\citet}[1]{\citeauthor*{#1} \cite{#1}}
+\newcommand{\citet}[1]{\citeauthor*{#1}~\cite{#1}}
 
 
 \title{Schema Change: Challenge Problems}
@@ -113,6 +113,8 @@ solutions.
 
 \section{Introduction}
 
+\textcolor{red}{[JE] We should adopt the term Schema Evolution, which is favored in the research literature, defined to include schema change, data migration, and query rewriting. }
+
 Schema change won't go away. Changing requirements and changing code lead to changing the schema of a database. Schema change, also called schema migration, is the problem of migrating existing data from the old schema to the new. This often involves custom migration programs or specialized Domain Specific Langiuages. The migration must be carefully coordinated with upgrading the application code and associated artifacts that assume the new schema. Schema change on database servers is often delegated to Database Administrators and DevOps. Live programming~\cite{tanimoto90,Hancock03} and local-first software~\cite{localfirst} both move data away from the server, eliminating those jobs, but not eliminating the need to do schema change, and indeed increasing the need to do it automatically. Recently \citet{Cambria} spotlighted these problems and proposed an approach using lenses~\cite{Foster2007}, but otherwise there has been surprisingly little research. To promote further progress we offer a set of challenge problems to the live programming and local-first communities, inviting them to propose and compare solutions.
 
 Live programming seeks to erase the boundary between editing and running programs. In order to do so program data must be kept around while the program is being edited. Classic Lisp and Smalltalk systems integrated code and data into a persistent \textit{image}~\cite{Sandewall78, Goldberg80}. An interactive shell or \textit{Read Eval Print Loop (REPL)}~\cite{Deutsch64} is more transient than an image, but still builds up a context of data over long-lived programming sessions the loss of which disrupts the programmer's workflow. In all of these environments programs eventually get changed to create and expect data in a form incompatible with extant data. This happens whether or not the form of the data is specified explicitly in a type system or database schema, or whether it is left implicit in the behavior of the code. Some languages can tolerate a larger set of such changes, most notably Smalltalk which will automatically insert and delete members in existing instances when a class definition is changed~\cite[pp.252-272]{Goldberg80}.\footnote{Gemstone turns the Smalltalk image into a production-quality database and accordingly provides a sophisticated schema change API~\cite{Gemstone}. Schema change won't go away.} But there is still a large class of changes that create incompatibilities with existing data, whether it is inside an image, programming environment, REPL, or an external database. Some live programming environments generate data with unit tests, but that only shifts the problem of schema change to adapting those tests. One way or another, stopping everything to manually deal with schema change contradicts the goals of live programming. Schema change won't go away.
@@ -124,9 +126,6 @@ In the following sections we present a series of challenge problems dealing with
 ~
 
 ~
-
-~
-\textcolor{red}{[JE] We could expand our context to include schema change for conventional DB systems, not just live/local. It is a widespread problem, attested by the many tools that assist with it, but all of them come down to manually coding SQL. We could call for a higher-level declarative solution. }
 
 \textcolor{red}{TODO: Need to explain that we take the programming system view - program is not something
 built centrally, but something that exists and can be modified}
@@ -244,37 +243,24 @@ on the particular challenge.
 
 \section{Related Work}
 
-Schema change and data migration are a widespread problem in practice for SQL databases, attested by the many tools that have been created to help. Some tools, like Rails Migrations~\cite{RailsMigrations} provide a Domain Specific Language (DSL) for specifying and executing schema changes. Other tools, such as those in Liquibase~\cite{liquibase} or PlanetScale\cite{planetscale} are based on textually comparing SQL Data Definition Language (DDL) statements that define the database schema. The differences between these DDL schema can be used to infer a delta of DDL statements to change one into the other. Unfortunately these inferences must sometimes guess at the user's intent: for example has a column been renamed or has it been deleted and a new one created? The difference matters a lot for the data in that column! EdgeDB~\cite{edgedb} asks the developer to resolve such ambiguities with a series of questions.
+Schema evolution has long been a major problem for SQL databases, which provide suprisingly little help. SQLite~\cite{sqliteDatatypes} uses dynamically typed values allowing them to be implicitly converted if the datatype of the column changes. MYSql~\cite{mysqlAlterTable} can reorder columns without destroying their data. But apart from such special cases, SQL databases have no general purpose support for data migration. As a result in practice schema evolution is still mostly done by writing custom SQL code to alter the schema and migrate the data. Such custom code is greatly complicated if it needs to be done without taking the database offline or must be coordinated across multiple shards. In \textit{Refactoring Databases} \citet{ambler06} offer a comprehensive taxonomy of schema evolution patterns, including typical strategies for online migration and sample SQL implementations.
 
-All of these tools end up emitting SQL DDL statements to change the schema. Unfortunately that does not migrate the data. Some databases add limited features for migration. For example SQLite~\cite{sqliteDatatypes} uses dynamically typed values allowing them to be implicitly converted if the datatype of the column changes. MYSql~\cite{mysqlAlterTable} can reorder columns without destroying their data. But apart from such special cases, SQL databases have no general purpose support for schema migration. A developer must write custom SQL code to transform data from the old to the new schema. This custom migration code is greatly complicated if it needs to be done without taking the database offline or must be coordinated across multiple shards. In \textit{Refactoring Databases} \citet{ambler06} offer a comprehensive taxonomy of schema change patterns, including typical strategies for online migration and example SQL code.
+\citet{bernstein07} observed in 2007 ``There are hardly any schema evolution tools today. This is rather surprising since there is a huge literature on schema evolution spanning more than two decades.'' There are now more tools available. Some tools such as Liquibase~\cite{liquibase} and PlanetScale\cite{planetscale} could be characterized as version control and continuous integration/deployment for schema. They track schema changes and can calculate diffs in the form of SQL DDL statements to convert one schema version to another, but do not help migrate data. Unfortunately comparing schemas can be ambiguous about the intention of changes. For example has a column been renamed or has it been deleted and a new one created? That distinction makes a big difference to the data in that column. EvolveDB\cite{evolvedb} addresses this ambiguity by reverse-engineering the schema into a richer data model and tracking the edits to that model within an IDE. This more precise edit history can be used to infer higher level intentions of a schema change, which then generate SQL scripts to evolve the database. EdgeDB~\cite{edgedb} resolves ambiguities by asking questions of the developer, with some answers supplying custom migration code in a proprietary query language.
 
-There is surprisingly little discussion of schema migration in the database literature nor support from the major database vendors. There is indeed a rich theory of database normalization~\cite{Molina08} but that is presumed to happen before the database is populated with data. To a large extent this entire problem area has been relegated to application developers and `dev ops'. Yet prima facia, schema migration can only be done throughly with direct support inside the database. EdgeDB~cite{edgedb} stands out for its improved support of schema migration through a proprietary language of data transformations but is still limited by the capabilties of its underlying PostgresSQL database.
+Some tools provide a Domain Specific Language (DSL) to describe schema evolution. Rails Migrations~\cite{RailsMigrations} embeds a DSL in Ruby to describe a range of common schema evolutions. However that falls short of the range of evolutions described by \citet{ambler06} which require the addition of custom Ruby or SQL code. \citet{curino08} initiated a large thread of research on Database Evolution Languages (DEL) by defining a Schema Modification Operator (SMO) as ``a function that receives as input a relational schema and the underlying database, and produces as output a (modified) version of the input schema and a migrated version of the database''. SMOs can also rewrite queries to accomodate schema changes. \citet{herrmann15} defined a relationally complete DEL and then extended it into a Bidirectional Database Evolution Language (BiDEL)~\cite{herrmann17} that appears capable of handling our Extract Entity and Multiplicity Change challenges, including divergence.
+
+Schema evolution is also a problem for NoSQL~\cite{sadalage12} databases. While such databases are sometimes called ``schemaless'' in effect that means the schema is left implicit and tools must try to infer it~\cite{storl20, storl22}. \citet{scherzinger13} define a set of operators like the relational SMOs discussed above. \citeauthor*{chillon21}~\cite{chillon21, chillon22} offer a more comprehensive set of SMOs that appear capable of handling the data migration aspects of our Extract Entity and Multiplicity Change challenges. \citet{Cambria} uses lenses~\cite{Foster2007} for bidirectional transformation of JSON. None of the approaches to NoSQL evolution have yet extended like their SQL cousins into updating code or rewriting queries.
+
+Schema evolution has also been studied for Object Oriented Databases(OODB)~\cite{li99,banerjee87}. Smalltalk~\cite{Goldberg80} is itself an OODB, persisting all object instances in an ``image file'' with limited evolution capabilities incorporated in the programming environment~\cite[pp.252-272]{Goldberg80}. Gemstone turns the Smalltalk image into a production-quality database and accordingly provides a sophisticated schema evolution API~\cite{Gemstone}.
 
 \begin{comment}
-
-Newly discovered thread of DB research on schema change:
-https://en.wikipedia.org/wiki/Schema_evolution
-https://www.researchgate.net/publication/220710372_Schema_Evolution_in_Wikipedia_-_Toward_a_Web_Information_System_Benchmark
-https://dl.acm.org/doi/10.14778/1453856.1453939
-https://dl.acm.org/doi/10.1145/3448016.3452842
-https://dl.acm.org/doi/10.14778/3565816.3565818
-https://link.springer.com/chapter/10.1007/978-3-030-58135-0_10
-
-Schema change IDEs
-https://www.red-gate.com/solutions/overview
-https://www.jetbrains.com/datagrip/features/
-
-
-Smalltalk images
-	depends on dynamic types and adding new fields to objects
-	Gemstone added complex API
-
-“unstructured data”: JSON and RDF used with untyped PL like Javascript or Python
-Like Smalltallk, small set of changes can be handled gradecfully, but in general need to write custom code
 
 dataframe diff
 https://homepages.inf.ed.ac.uk/csutton/publications/datadiff.pdf
 
+Durable computing: pins runtime data frames to code versions. Doesn’t handle problem of global data schema change.
+https://restate.dev/blog/solving-durable-executions-immutability-problem/
+https://restate.dev/blog/code-that-sleeps-for-a-month/
 
 Tijs on Live programming and model-driven engineering
 https://ir.cwi.nl/pub/23770
@@ -282,20 +268,14 @@ https://dl.acm.org/doi/10.1007/s10270-017-0608-7
 https://dl.acm.org/doi/10.1145/3276604.3276611
 https://ir.cwi.nl/pub/21858
 
-Geoffreu on Local-first
-https://www.inkandswitch.com/cambria/
-https://riffle.systems/papoc22.pdf
 
-
-Durable computing: pins runtime data frames to code versions. Doesn’t handle problem of global data schema change
-
-Version control for dbs
-https://people.eecs.berkeley.edu/~brewer/cs262b/update-conflicts.pdf
-https://github.com/dolthub/dolt
-https://github.com/dolthub/doltgresql
-https://irmin.org
-https://doc.replicache.dev/concepts/how-it-works
-
+From Geoffrey:
+1) Finding Data Compatibility Bugs with JSON Subschema Checking
+https://dl.acm.org/doi/pdf/10.1145/3460319.3464796
+I just found this paper this morning so I haven't read it yet, but the abstract seems very relevant. It's about automatically determining whether two JSON schemas are "compatible", with a subtyping metaphor.
+2) Confluent Schema Registry:
+https://docs.confluent.io/platform/current/schema-registry/index.html
+An interesting example of how schema change is handled in the wild. In the Cambria essay we wrote some reflections on it which basically capture my opinions.
 \end{comment}
 
 \newpage

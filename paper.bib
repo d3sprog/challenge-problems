@@ -1088,3 +1088,269 @@ urldate = {May 2024},
 year = 2024
 }
 
+@inproceedings{bernstein07,
+  author    = {Bernstein, Philip A. and Melnik, Sergey},
+  title     = {Model management 2.0: manipulating richer mappings},
+  year      = {2007},
+  isbn      = {9781595936868},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/1247480.1247482},
+  doi       = {10.1145/1247480.1247482},
+  abstract  = {Model management is a generic approach to solving problems of data programmability where precisely engineered mappings are required. Applications include data warehousing, e-commerce, object-to-relational wrappers, enterprise information integration, database portals, and report generators. The goal is to develop a model management engine that can support tools for all of these applications. The engine supports operations to match schemas, compose mappings, diff schemas, merge schemas, translate schemas into different data models, and generate data transformations from mappings.Much has been learned about model management since it was proposed seven years ago. This leads us to a revised vision that differs from the original in two main respects: the operations must handle more expressive mappings, and the runtime that executes mappings should be added as an important model management component. We review what has been learned from recent experience, explain the revised model management vision based on that experience, and identify the research problems that the revised vision opens up.},
+  booktitle = {Proceedings of the 2007 ACM SIGMOD International Conference on Management of Data},
+  pages     = {1–12},
+  numpages  = {12},
+  keywords  = {schema matching, schema mapping, schema evolution, model management, engineered mapping, data translation, data integration, data exchange},
+  location  = {Beijing, China},
+  series    = {SIGMOD '07}
+}
+
+
+@inproceedings{moller20,
+  author    = {M{\"o}ller, Mark Lukas
+               and Scherzinger, Stefanie
+               and Klettke, Meike
+               and St{\"o}rl, Uta},
+  editor    = {Herbaut, Nicolas
+               and La Rosa, Marcello},
+  title     = {Why It Is Time for Yet Another Schema Evolution Benchmark},
+  booktitle = {Advanced Information Systems Engineering},
+  year      = {2020},
+  publisher = {Springer International Publishing},
+  address   = {Cham},
+  pages     = {113--125},
+  abstract  = {Database schema evolution is one of the grand challenges in data management research and practice. In this paper, we survey available schema evolution benchmarks. We argue that existing benchmarks do not reflect the more recent demands on database applications, such as online data migration for high availability applications, agile release strategies, and schema changes that affect more than one data model. We conclude that a new generation of schema evolution benchmarks is called for, which reflect these new demands, especially in the context of schema evolution in NoSQL data stores.},
+  isbn      = {978-3-030-58135-0}
+}
+
+@article{curino08,
+  author     = {Curino, Carlo A. and Moon, Hyun J. and Zaniolo, Carlo},
+  title      = {Graceful database schema evolution: the PRISM workbench},
+  year       = {2008},
+  issue_date = {August 2008},
+  publisher  = {VLDB Endowment},
+  volume     = {1},
+  number     = {1},
+  issn       = {2150-8097},
+  url        = {https://doi.org/10.14778/1453856.1453939},
+  doi        = {10.14778/1453856.1453939},
+  abstract   = {Supporting graceful schema evolution represents an unsolved problem for traditional information systems that is further exacerbated in web information systems, such as Wikipedia and public scientific databases: in these projects based on multiparty cooperation the frequency of database schema changes has increased while tolerance for downtimes has nearly disappeared. As of today, schema evolution remains an error-prone and time-consuming undertaking, because the DB Administrator (DBA) lacks the methods and tools needed to manage and automate this endeavor by (i) predicting and evaluating the effects of the proposed schema changes, (ii) rewriting queries and applications to operate on the new schema, and (iii) migrating the database.Our PRISM system takes a big first step toward addressing this pressing need by providing: (i) a language of Schema Modification Operators to express concisely complex schema changes, (ii) tools that allow the DBA to evaluate the effects of such changes, (iii) optimized translation of old queries to work on the new schema version, (iv) automatic data migration, and (v) full documentation of intervened changes as needed to support data provenance, database flash back, and historical queries. PRISM solves these problems by integrating recent theoretical advances on mapping composition and invertibility, into a design that also achieves usability and scalability. Wikipedia and its 170+ schema versions provided an invaluable testbed for validating PRISM tools and their ability to support legacy queries.},
+  journal    = {Proc. VLDB Endow.},
+  month      = aug,
+  pages      = {761–772},
+  numpages   = {12}
+}
+
+@inproceedings{herrmann15,
+  author    = {Herrmann, Kai
+               and Voigt, Hannes
+               and Behrend, Andreas
+               and Lehner, Wolfgang},
+  editor    = {Tadeusz, Morzy
+               and Valduriez, Patrick
+               and Bellatreche, Ladjel},
+  title     = {CoDEL -- A Relationally Complete Language for Database Evolution},
+  booktitle = {Advances in Databases and Information Systems},
+  year      = {2015},
+  publisher = {Springer International Publishing},
+  address   = {Cham},
+  pages     = {63--76},
+  abstract  = {Software developers adapt to the fast-moving nature of software systems with agile development techniques. However, database developers lack the tools and concepts to keep pace. Data, already existing in a running product, needs to be evolved accordingly, usually by manually written SQL scripts. A promising approach in database research is to use a declarative database evolution language, which couples both schema and data evolution into intuitive operations. Existing database evolution languages focus on usability but did not aim for completeness. However, this is an inevitable prerequisite for reasonable database evolution to avoid complex and error-prone workarounds. We argue that relational completeness is the feasible expressiveness for a database evolution language. Building upon an existing language, we introduce CoDEL. We define its semantic using relational algebra, propose a syntax, and show its relational completeness.},
+  isbn      = {978-3-319-23135-8}
+}
+
+@inproceedings{herrmann17,
+  author    = {Kai Herrmann and Hannes Voigt and Jonas Rausch and Andreas Behrend and Wolfgang Lehner},
+  title     = {Living in Parallel Realities – Co-Existing Schema Versions with a Bidirectional Database Evolution Language},
+  booktitle = {SIGMOD'17, Proceedings of the 2017 International Conference on Management of Data, Chicago, IL, USA, May 14-19, 2017},
+  year      = {2017},
+  month     = {5},
+  location  = {Chicago, IL, USA},
+  numpages  = {12},
+  publisher = {ACM}
+}
+
+@article{erhard06,
+  author     = {Rahm, Erhard and Bernstein, Philip A.},
+  title      = {An online bibliography on schema evolution},
+  year       = {2006},
+  issue_date = {December 2006},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {35},
+  number     = {4},
+  issn       = {0163-5808},
+  url        = {https://doi.org/10.1145/1228268.1228273},
+  doi        = {10.1145/1228268.1228273},
+  abstract   = {We briefly motivate and present a new online bibliography on schema evolution, an area which has recently gained much interest in both research and practice.},
+  journal    = {SIGMOD Rec.},
+  month      = dec,
+  pages      = {30–31},
+  numpages   = {2}
+}
+
+@inproceedings{evolvedb,
+  author    = {Eckwert, Torben and Guckert, Michael and Taentzer, Gabriele},
+  title     = {EvolveDB: a tool for model driven schema evolution},
+  year      = {2022},
+  isbn      = {9781450394673},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/3550356.3559095},
+  doi       = {10.1145/3550356.3559095},
+  abstract  = {Requirements for software applications change almost continuously in all phases of the product life cycle, which leads to a constant adaption of software systems. These changes affect the domain model of the application and usually lead to necessary changes of the underlying database. As a result, the data stored in this database must also be adapted accordingly. This well-known problem is called schema evolution. Manual schema evolution with low-level SQL scripts contains both time-consuming and error-prone routine tasks and complicated operations that require expert knowledge. Automation promises significant leverage for cost savings and quality improvements. To date, the most advanced solutions for this problem have focused on operator-based approaches. However, these approaches do not allow free editing of the database schema, but require the database administrator to know in advance the exact sequence of all required operations. In this paper, we present EvolveDB, an approach to model-driven schema evolution in relational databases, where the user specifies the evolution steps by freely editing a database model extracted by reverse engineering. EvolveDB analyzes the differences between the status quo and the evolved model structures and generates a data migration script. An initial evaluation with experts shows promising results. A screencast of the demo is available at https://youtu.be/ieXmrDd2nw4.},
+  booktitle = {Proceedings of the 25th International Conference on Model Driven Engineering Languages and Systems: Companion Proceedings},
+  pages     = {61–65},
+  numpages  = {5},
+  keywords  = {model matching, model-driven reengeneering, relational databases, schema evolution},
+  location  = {Montreal, Quebec, Canada},
+  series    = {MODELS '22}
+}
+
+@inbook{Hartung2011,
+  author    = {Hartung, Michael
+               and Terwilliger, James
+               and Rahm, Erhard},
+  editor    = {Bellahsene, Zohra
+               and Bonifati, Angela
+               and Rahm, Erhard},
+  title     = {Recent Advances in Schema and Ontology Evolution},
+  booktitle = {Schema Matching and Mapping},
+  year      = {2011},
+  publisher = {Springer Berlin Heidelberg},
+  address   = {Berlin, Heidelberg},
+  pages     = {149--190},
+  abstract  = {Schema evolution is the increasingly important ability to adapt deployed schemas to changing requirements. Effective support for schema evolution is challenging since schema changes may have to be propagated, correctly and efficiently, to instance data and dependent schemas, mappings, or applications. We introduce the major requirements for effective schema and ontology evolution, including support for a rich set of change operations, simplicity of change specification, evolution transparency (e.g., by providing and maintaining views or schema versions), automated generation of evolution mappings, and predictable instance migration that minimizes data loss and manual intervention. We then give an overview about the current state of the art and recent research results for the evolution of relational schemas, XML schemas, and ontologies. For numerous approaches, we outline how and to what degree they meet the introduced requirements.},
+  isbn      = {978-3-642-16518-4},
+  doi       = {10.1007/978-3-642-16518-4_6},
+  url       = {https://doi.org/10.1007/978-3-642-16518-4_6}
+}
+
+@inproceedings{kehrer12,
+  author    = {Kehrer, Timo and Kelter, Udo and Ohrndorf, Manuel and Sollbach, Tim},
+  booktitle = {2012 28th IEEE International Conference on Software Maintenance (ICSM)},
+  title     = {Understanding model evolution through semantically lifting model differences with SiLift},
+  year      = {2012},
+  volume    = {},
+  number    = {},
+  pages     = {638-641},
+  keywords  = {Unified modeling language;Adaptation models;Semantics;Engines;Conferences;Software;Software engineering;model comparison;model difference;semantic lifting;difference presentation},
+  doi       = {10.1109/ICSM.2012.6405342}
+}
+
+@inproceedings{storl22,
+  author = {Störl, Uta and Klettke, Meike},
+  year   = {2022},
+  month  = {03},
+  pages  = {},
+  title  = {Darwin: A Data Platform for NoSQL Schema Evolution Management and Data Migration}
+}
+
+@inproceedings{storl20,
+  author = {Störl, Uta and Klettke, Meike and Scherzinger, Stefanie},
+  year   = {2020},
+  month  = {04},
+  pages  = {},
+  title  = {NoSQL Schema Evolution and Data Migration: State-of-the-Art and Opportunities (Tutorial)},
+  doi    = {10.5441/002/edbt.2020.87}
+}
+
+@misc{scherzinger13,
+  title         = {Managing Schema Evolution in NoSQL Data Stores},
+  author        = {Stefanie Scherzinger and Meike Klettke and Uta Störl},
+  year          = {2013},
+  eprint        = {1308.0514},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.DB}
+}
+
+@inproceedings{chillon21,
+  author    = {Chill\'{o}n, Alberto Hern\'{a}ndez and Ruiz, Diego Sevilla and Molina, Jes\'{u}s Garc\'{\i}a},
+  title     = {Towards a Taxonomy of Schema Changes for NoSQL Databases: The Orion Language},
+  year      = {2021},
+  isbn      = {978-3-030-89021-6},
+  publisher = {Springer-Verlag},
+  address   = {Berlin, Heidelberg},
+  url       = {https://doi.org/10.1007/978-3-030-89022-3_15},
+  doi       = {10.1007/978-3-030-89022-3_15},
+  booktitle = {Conceptual Modeling: 40th International Conference, ER 2021, Virtual Event, October 18–21, 2021, Proceedings},
+  pages     = {176–185},
+  numpages  = {10},
+  keywords  = {Domain specific language, Schema change operations, Taxonomy of changes, Schema evolution, NoSQL databases}
+}
+
+@misc{chillon22,
+  title         = {A Taxonomy of Schema Changes for NoSQL Databases},
+  author        = {Alberto Hernández Chillón and Meike Klettke and Diego Sevilla Ruiz and Jesús García Molina},
+  year          = {2022},
+  eprint        = {2205.11660},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.DB}
+}
+@inproceedings{meurice17,
+  author    = {Meurice, Loup and Cleve, Anthony},
+  booktitle = {2017 IEEE 24th International Conference on Software Analysis, Evolution and Reengineering (SANER)},
+  title     = {Supporting schema evolution in schema-less NoSQL data stores},
+  year      = {2017},
+  volume    = {},
+  number    = {},
+  pages     = {457-461},
+  keywords  = {Java;Data structures;Entropy;Data mining;Urban areas},
+  doi       = {10.1109/SANER.2017.7884653}
+}
+
+@book{sadalage12,
+  title     = {{NoSQL} distilled},
+  author    = {Sadalage, Pramodkumar J and Fowler, Martin},
+  publisher = {Addison-Wesley Educational},
+  month     = aug,
+  year      = 2012,
+  address   = {Boston, MA},
+  language  = {en}
+}
+
+@inproceedings{10.1145/38713.38748,
+  author    = {Banerjee, Jay and Kim, Won and Kim, Hyoung-Joo and Korth, Henry F.},
+  title     = {Semantics and implementation of schema evolution in object-oriented databases},
+  year      = {1987},
+  isbn      = {0897912365},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/38713.38748},
+  doi       = {10.1145/38713.38748},
+  booktitle = {Proceedings of the 1987 ACM SIGMOD International Conference on Management of Data},
+  pages     = {311–322},
+  numpages  = {12},
+  location  = {San Francisco, California, USA},
+  series    = {SIGMOD '87}
+}
+
+@article{banerjee87,
+  author     = {Banerjee, Jay and Kim, Won and Kim, Hyoung-Joo and Korth, Henry F.},
+  title      = {Semantics and implementation of schema evolution in object-oriented databases},
+  year       = {1987},
+  issue_date = {Dec. 1987},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {16},
+  number     = {3},
+  issn       = {0163-5808},
+  url        = {https://doi.org/10.1145/38714.38748},
+  doi        = {10.1145/38714.38748},
+  journal    = {SIGMOD Rec.},
+  month      = {dec},
+  pages      = {311–322},
+  numpages   = {12}
+}
+
+@inproceedings{li99,
+  author    = {Xue Li},
+  booktitle = {Proceedings Technology of Object-Oriented Languages and Systems (Cat. No.PR00393)},
+  title     = {A survey of schema evolution in object-oriented databases},
+  year      = {1999},
+  volume    = {},
+  number    = {},
+  pages     = {362-371},
+  doi       = {10.1109/TOOLS.1999.796507}
+}
