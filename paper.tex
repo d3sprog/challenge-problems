@@ -1,15 +1,33 @@
 \documentclass[english,submission]{programming}
 
-\usepackage{csquotes}
-\usepackage{inputenx}
 \usepackage[backend=biber]{biblatex}
 %\usepackage{natbib}
 \addbibresource{paper.bib}
 
+\usepackage{csquotes}
 \usepackage{changepage}
 \usepackage{multicol}
 \usepackage{ccicons}
 \usepackage[many]{tcolorbox}
+\lstdefinelanguage[programming]{TeX}[AlLaTeX]{TeX}{%
+  deletetexcs={title,author,bibliography},%
+  deletekeywords={tabular},
+  morekeywords={abstract},%
+  moretexcs={chapter},%
+  moretexcs=[2]{title,author,subtitle,keywords,maketitle,titlerunning,authorinfo,affiliation,authorrunning,paperdetails,acks,email},
+  moretexcs=[3]{addbibresource,printbibliography,bibliography},%
+}%
+\lstset{%
+  language={[programming]TeX},%
+  keywordstyle=\firamedium,
+  stringstyle=\color{RosyBrown},%
+  texcsstyle=*{\color{Purple}\mdseries},%
+  texcsstyle=*[2]{\color{Blue1}},%
+  texcsstyle=*[3]{\color{ForestGreen}},%
+  commentstyle={\color{FireBrick}},%
+  escapechar=`,}
+\newcommand*{\CTAN}[1]{\href{http://ctan.org/tex-archive/#1}{\nolinkurl{CTAN:#1}}}
+%%
 
 \newcounter{challengen}
 \newcommand{\challenge}[1]{\subsection*{\addtocounter{challengen}{1} Challenge \#\thechallengen: #1}}
