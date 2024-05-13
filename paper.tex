@@ -1052,7 +1052,7 @@ A common kind of schema change is \textit{multiplicity change}: when a field cha
 
 In a relational schema, solving this problem might require extracting a normalized table for the linked entity; some of the challenges of this approach are covered in the Extract Entity challenge. In this section we will instead consider a document schema with support for arrays; in this context, we can have a multiplicity change by turning a scalar value into an array value.
 
-Multiplicity change clearly requires changing both the data and the code. It becomes particularly challenging to handle when there is a need to support ongoing writes to both the scalar and array schemas. This need can arise in any situation where the code and data can't all be updated atomically together—e.g., in a zero-downtime upgrade in a web architecture with stateless servers and a database, or in a decentralized setting like a public API where some consumers of the API may be expecting an outdated schema.
+Multiplicity change clearly requires changing both the data and the code. It becomes particularly challenging to handle when there is ongoing divergence between multiple versions of the data.
 
 \subsection{Example}
 
@@ -1105,15 +1105,13 @@ What should the array value become after this edit to the scalar schema? To sati
 
 Because the intent of the writer to the scalar schema cannot be unambiguously interpreted from the write alone, it is impossible to make a perfect choice among these options.
 
-\subsection{Challenge}
+\subsection{Remarks}
 
-Multiplicity change illustrates a general problem for handling ongoing writes between diverging schemas. Different schemas may expose partial information, and writers in those schemas have to operate without total knowledge of the information available in other schemas. As a result, synchronizing writes across the schemas requires making difficult tradeoffs, such as choosing to either preserve or destroy hidden data not visible to the writer.
+If schemas, code and data can all be updated atomically together, then multiplicity change is relatively straightforward  to handle. Existing scalar data can be trivially migrated to a list, and the code using the data will need to change to accommodate the list data.
 
-Although we see no silver bullet to navigate these tradeoffs, a good solution to this problem would give developers or users tools to manage these tradeoffs. For example, a system might allow developers to specify the desired behavior for a particular pair of schemas based on the requirements of the domain. Or a system might even allow users to manually disambiguate their intent for a given write.
+However, ongoing divergence makes multiplicity change much more difficult, and exposes some general challenges. Different schemas may expose partial information, and writers in those schemas have to operate without total knowledge of the information available in other schemas. As a result, synchronizing writes across the schemas requires making difficult tradeoffs, such as choosing to either preserve or destroy hidden data not visible to the writer.
 
-\subsection{Goals}
-
-TODO
+Although there is likely no silver bullet to navigate these tradeoffs, a good solution to this problem would give developers or users tools to manage these tradeoffs. For example, a system might allow developers to specify the desired behavior for a particular pair of schemas based on the requirements of the domain. Or a system might even allow users to manually disambiguate their intent for a given write.
 
 \begin{comment}
 \section{Rename field; Add new required field}
