@@ -1,5 +1,6 @@
 \documentclass[english,submission]{programming}
 
+\usepackage{inputenx}
 \usepackage[backend=biber]{biblatex}
 %\usepackage{natbib}
 \addbibresource{paper.bib}
@@ -259,15 +260,69 @@ and often encountered challenge problems. We use the above framework to more pre
 the nature of the challenge problem. We also often use the above framework to discuss variations
 on the particular challenge.
 
+
+\section{Divergence Control}
+
+\textcolor{red}{This section was an extension of the Extract Entity challenge but should be lifted up to the top-level discussion of divergence}
+
+\subsection{Context}
+Schema change is usually concerned with migrating old data into a new schema. But sometimes we also want to migrate in the reverse direction: new data into an old schema. \citet{Cambria} discuss various ways that code changes can require bidirectional migration. Instead in this problem we focus on changes made by end-users. Users frequently make copies of structured documents like spreadsheets and then diverge them by altering both data content and schema. In the case of spreadsheets schema changes include rearrangements to the structure of rows and columns as well as changes to formulas. The problem is that the users want to transfer such data and schema changes between these divergent copies, and they want to pick and choose which of these changes to transfer. In practice such transfer is done manually through copy \& paste. \citet{Basman19} has documented an ecology of emailed spreadsheets. \citet{Burnett14} distilled field observations of these practices in the story of Frieda, which we quote here:
+
+\begin{quotation}
+
+For example, consider ``Frieda'', an office manager in charge of her department's budget tracking. (Frieda was a participant in a set of interviews with spreadsheet users that the first author conducted. Frieda is not her real name.) Every year, the company she works for produces an updated budget tracking spreadsheet with the newest reporting requirements embedded in its structure and formulas. But this spreadsheet is not a perfect fit to the kinds of projects and sub-budgets she manages, so every year Frieda needs to change it. She does this by working with four variants of the spreadsheet at once: the one the company sent out last year (we will call it Official-lastYear), the one she derived from that one to fit her department's needs (Dept-lastYear), the one the company sent out this year (Official-thisYear), and the one she is trying to put together for this year (Dept-thisYear).
+
+Using these four variants, Frieda exploratively mixes reverse engineering, reuse, programming, testing, and debugging, mostly by trial-and-error. She begins this process by reminding herself of ways she changed last year's by reverse engineering a few of the differences between Official-lastYear and Dept-lastYear. She then looks at the same portions of Official-thisYear to see if those same changes can easily be made, given her department's current needs.
+
+She can reuse some of these same changes this year, but copying them into Dept-thisYear is troublesome, with some of the formulas automatically adjusting themselves to refer to Dept-lastYear. She patches these up (if she notices them), then tries out some new columns or sections of Dept-thisYear to reflect her new projects. She mixes in ``testing'' along the way by entering some of the budget values for this year and eyeballing the values that come out, then debugs if she notices something amiss. At some point, she moves on to another set of related columns, repeating the cycle for these. Frieda has learned over the years to save some of her spreadsheet variants along the way (using a different filename for each), because she might decide that the way she did some of her changes was a bad idea, and she wants to revert to try a different way she had started before.
+\end{quotation}
+
+\subsection{Example}
+The Divergence Control challenge instantiates the problem of divergent state with the example from the Extract Entity challenge. Every month the orders department sends its spreadsheet to the accounting department, which adds the data to a version of the spreadsheet that it has customized for financial tracking. But when the orders department migrates its spreadsheet to extract out customers the accounting department does not want to conform. They could manually convert incoming data in the new schema into their variant of the old schema. But they shouldn't have to. It should be possible to run new data through the schema change in reverse, converting it back into the format the accounting department is used to ingesting. Note that this is not a matter of synchronizing the divergent spreadsheets -- they maintain differently evolved schema.
+
+\subsection{Challenge}
+What is needed is a user-friendly mechanism for transferring data changes from one schema to another bidirectionally. In one direction we want to transfer changes made in the new schema into a variant of the old schema. The opposite direction might be needed, for example, if the accounting department makes corrections to customer addresses, which ought to be pushed through into the orders department's new schema.
+
+Bidirectional transfer of changes between divergent copies is similar in some ways to source code version control as in Git~\cite{ProGit}. There is \textit{forking} of long-lived divergent copies. We want to \textit{diff} these forks to see exactly how they have diverged. We want to partially \textit{merge} them by \textit{cherry picking} certain differences. Yet there are also many dissimilarities with Git: our data is more richly structured than lines of text; our schema changes are higher-level transformations on these structures than inserting and deleting characters; and we expect that end-users be able to understand it~\cite{gitless}. The Divergence Control challenge is in a sense to provide ``version control for schema change'' meeting these criteria, with the key technical challenge being the ability to transfer selected differences bidirectionally through schema changes as independently as possible.
+
+\subsection{Goals}
+This challenge invites a change of perspective in both live programming and local-first software. Live programming must move from being a solitary activity to a collaborative workflow, and one where the collaboration is not just on editing source code but on live integrated code and data, as in the Smalltalk/Lisp images of old.\footnote{If only we had this in the 90's when Smalltalk had a shot at the mainstream!} For its part, local-first software must move from automatically converging data replicas to also interactively managing long-term divergence. That implies either application state is being directly exposed to the user, or the application code is using an API to present version control affordances. We encourage both communities to think outside the box of Git, which has proven to baffle not only end-users but also a substantial fraction of developers.
+
+
+\section{Challenge goals}
+\textcolor{red}{Text from the Extract Entity challenge that maybe should be lifted up to the top-level discussion of goals}
+
+The Extract Entity challenge for live programming is to provide interactive operations in the programming environment that will perform the schema change on live code and data. The data can be in any form desired, including relations, objects, or JSON. The code can be a simple CRUD UI that also provides the shipping department its view of unshipped orders. The central problem is to coordinate the schema change with code edits/refactorings to keep the system executing live and correctly. Solutions should try to minimize:
+
+\begin{enumerate}
+  \item The number and complexity of commands or UI affordances that must be introduced.
+  \item Interruption to live execution of the code.
+\end{enumerate}
+
+The Extract Entity challenge for local-first software is similar to the live programming challenge except that the context is an application that offers similar functionality with peer-to-peer collaboration. In this context the schema change does not need to be performed interactively — a developer can take some time to build, test, and package a solution, perhaps using an API or DSL. The hard part comes when the schema change is to be deployed across all the replicas. This deployment must synchronize code and data upgrades (or decouple them as in Cambria~\cite{Cambria}). The deployment must also deal with migrating ``in flight'' operations so that all replicas converge on the same state without data loss, and ideally without centralized coordination. A radical approach could try to incorporate schema change operations into the underlying datastore/CRDT itself and integrate code as well, but layered solutions are welcome too.
+
+\subsection{Goals}
+Solutions should try to minimize:
+
+\begin{enumerate}
+  \item The need for users to manually intervene.
+  \item Possibilities that developer-written code is subtly incorrect in edge cases, preferably by reducing the need for developer-written code.
+  \item The need for a centralized coordinator.
+  \item How long replicas might be partitioned until resynchronization is acquired.
+\end{enumerate}
+
+
+
+
 \section{Related Work}
 
 Schema evolution has long been a major problem for SQL databases, which provide suprisingly little help. SQLite~\cite{sqliteDatatypes} uses dynamically typed values allowing them to be implicitly converted if the datatype of the column changes. MYSql~\cite{mysqlAlterTable} can reorder columns without destroying their data. But apart from such special cases, SQL databases have no general purpose support for data migration. As a result in practice schema evolution is still mostly done by writing custom SQL code to alter the schema and migrate the data. Such custom code is greatly complicated if it needs to be done without taking the database offline or must be coordinated across multiple shards. In \textit{Refactoring Databases} \citet{ambler06} offer a comprehensive taxonomy of schema evolution patterns, including typical strategies for online migration and sample SQL implementations.
 
 \citet{bernstein07} observed in 2007 ``There are hardly any schema evolution tools today. This is rather surprising since there is a huge literature on schema evolution spanning more than two decades.'' There are now more tools available. Some tools such as Liquibase~\cite{liquibase} and PlanetScale\cite{planetscale} could be characterized as version control and continuous integration/deployment for schema. They track schema changes and can calculate diffs in the form of SQL DDL statements to convert one schema version to another, but do not help migrate data. Unfortunately comparing schemas can be ambiguous about the intention of changes. For example has a column been renamed or has it been deleted and a new one created? That distinction makes a big difference to the data in that column. EvolveDB\cite{evolvedb} addresses this ambiguity by reverse-engineering the schema into a richer data model and tracking the edits to that model within an IDE. This more precise edit history can be used to infer higher level intentions of a schema change, which then generate SQL scripts to evolve the database. EdgeDB~\cite{edgedb} resolves ambiguities by asking questions of the developer, with some answers supplying custom migration code in a proprietary query language.
 
-Some tools provide a Domain Specific Language (DSL) to describe schema evolution. Rails Migrations~\cite{RailsMigrations} embeds a DSL in Ruby to describe a range of common schema evolutions. However that falls short of the range of evolutions described by \citet{ambler06}, requiring the addition of custom Ruby or SQL code. \citet{curino08} spawned a stream of research on Database Evolution Languages (DEL) by defining a Schema Modification Operator (SMO) as ``a function that receives as input a relational schema and the underlying database, and produces as output a (modified) version of the input schema and a migrated version of the database''. SMOs can also rewrite queries to accomodate schema changes. \citet{herrmann15} defined a relationally complete DEL and then extended it into a Bidirectional Database Evolution Language (BiDEL)~\cite{herrmann17}. BiDEL appears capable of handling the basic requirements of our Extract Entity and Multiplicity Change challenges, though Split/Merge Entity is less clear. It provides schema divergence by supporting multiple schema within one database, but would need some extension to handle data divergence.
+Some tools provide a Domain Specific Language (DSL) to describe schema evolution. Rails Migrations~\cite{RailsMigrations} embeds a DSL in Ruby to describe a range of common schema evolutions. However that falls short of the range of evolutions described by \citet{ambler06}, requiring the addition of custom Ruby or SQL code. \citet{curino08} spawned a stream of research on Database Evolution Languages (DEL) by defining a Schema Modification Operator (SMO) as ``a function that receives as input a relational schema and the underlying database, and produces as output a (modified) version of the input schema and a migrated version of the database''. SMOs can also rewrite queries to accomodate schema changes. \citet{herrmann15} defined a relationally complete DEL and then extended it into a Bidirectional Database Evolution Language (BiDEL)~\cite{herrmann17}. BiDEL appears capable of handling the basic requirements of our \textit{Extract/Absorb Entity} and \textit{Multiplicity Change} challenges, though \textit{Split/Merge Entity} is less clear. It provides schema divergence by supporting multiple schema within one database, but would need some extension to handle data divergence.
 
-Schema evolution is also a problem for NoSQL~\cite{sadalage12} databases. While such databases are sometimes called ``schemaless'' in effect that means the schema is left implicit and tools must try to infer it~\cite{storl20, storl22}. \citet{Cambria} uses lenses~\cite{Foster2007} for bidirectional transformation of JSON. \citet{scherzinger13} define a set of operators like the relational SMOs discussed above. \citeauthor*{chillon21}~\cite{chillon21, chillon22} offer a more comprehensive set of SMOs that may be capable of handling Extract Entity and Multiplicity Change but not Split/Merge Entity nor divergence. None of the above approaches to NoSQL evolution have yet extended into updating code or rewriting queries like their SQL cousins.
+Schema evolution is also a problem for NoSQL~\cite{sadalage12} databases. While such databases are sometimes called ``schemaless'' in effect that means the schema is left implicit and tools must try to infer it~\cite{storl20, storl22}. \citet{Cambria} uses lenses~\cite{Foster2007} for bidirectional transformation of JSON. \citet{scherzinger13} define a set of operators like the relational SMOs discussed above. \citeauthor*{chillon21}~\cite{chillon21, chillon22} offer a more comprehensive set of SMOs that may be capable of handling \textit{Extract/Absorb Entity} and \textit{Multiplicity Change} but not \textit{Split/Merge Entity} nor divergence. None of the above approaches to NoSQL evolution have yet extended into updating code or rewriting queries like their SQL cousins.
 
 Schema evolution has also been studied for Object Oriented Databases(OODB)~\cite{li99,banerjee87}. Smalltalk~\cite{Goldberg80} is itself an OODB, persisting all object instances in an ``image file'' with some evolution capabilities incorporated in the programming environment~\cite[pp.252-272]{Goldberg80}. Gemstone turns the Smalltalk image into a production-quality database and accordingly provides a complex schema evolution API~\cite{Gemstone}.
 
@@ -299,118 +354,111 @@ An interesting example of how schema change is handled in the wild. In the Cambr
 
 \newpage
 
-\section{Extract Entity}
+\section{Extract/Absorb/Split/Merge Entity}
+\textcolor{red}{Maybe called \textit{Individuation}? Maybe called \textit{Entity Evolution}?}
 
-\subsection{Context}
-In this challenge we consider a typical example of how the design of a database evolves as new needs are discovered. Much has been written on the subject of data modeling methodologies and the theory of relational database normalization~\cite{Molina08}. But that work often focuses on determining the correct data model up front before the system goes live, which would indeed be the optimal solution if only we were omniscient. The Extract Entity challenge confronts the practical reality of evolving a relational data model in flight.
-
-\subsection{Example}
 The Acme Corporation needs to record orders from various customers for various products. The simplest implementation is a spreadsheet with a row for each order and columns for information about the customer and product. It might look like this:
 
-
 \begin{table}[h!]
-\centering
-  \begin{tabular}{ |l|c|c|l|l|}
+  \sffamily
+  \small
+  % \centering
+  \begin{tabular}{ |r|l|r|r|l|l|}
    \hline
-   Item & Quantity & Ship Date & Customer name & Customer address \\
+   order\_id & item & quantity & ship\_date & customer\_name & customer\_address \\
    \hline \hline
-   Anvil & 1 & 2/3/23 & Wile E Coyote & 123 Desert Station \\
+   1 & Anvil & 1 & 2/3/23 & Wile E Coyote & 123 Desert Station \\
    \hline
-   Dynamite & 2 & & Daffy Duck & White Rock Lake \\
+   2 & Dynamite & 2 & & Daffy Duck & White Rock Lake \\
    \hline
-   Bird Seed & 1 & & Wile E Coyote & 123 Desert Station \\
+   3 & Bird Seed & 1 & & Wile E Coyote & 123 Desert Station \\
    \hline
   \end{tabular}
-\caption{Orders}
+  \caption{Orders}
 \end{table}
 
 The shipping department filters this table on blank ship dates to see what they need to ship. But after a while the orders department realizes they are wasting effort duplicating the address for new order from an old customer. And when the customer's address changes they have to go back and edit all of their orders. What is needed is two tables, one with orders that links to one with customers, like this:
 
 \begin{table}[h!]
-  \centering
-    \begin{tabular}{ |l|l|}
+  \sffamily
+  \small
+  % \centering
+    \begin{tabular}{ |r|l|l|}
       \hline
-      Name & Address \\
+      customer\_id & customer\_name & customer\_address \\
       \hline \hline
-      Wile E Coyote & 123 Desert Station \\
+      1 & Wile E Coyote & 123 Desert Station \\
       \hline
-      Daffy Duck & White Rock Lake \\
+      2 & Daffy Duck & White Rock Lake \\
       \hline
     \end{tabular}
   \caption{Customers}
 \end{table}
 
 \begin{table}[h!]
-  \centering
-    \begin{tabular}{ |l|c|c|l|}
+  \sffamily
+  \small
+  % \centering
+    \begin{tabular}{ |r|l|r|r|r|}
      \hline
-     Item & Quantity & Ship Date & Customer name \\
+     order\_id & item & quantity & ship\_date & customer\_id \\
      \hline \hline
-     Anvil & 1 & 2/3/23 & Wile E Coyote \\
+     1 & Anvil & 1 & 2/3/23 & 1 \\
      \hline
-     Dynamite & 2 & & Daffy Duck  \\
+     2 & Dynamite & 2 & & 2  \\
      \hline
-     Bird Seed & 1 & & Wile E Coyote \\
+     3 & Bird Seed & 1 & & 1 \\
      \hline
     \end{tabular}
   \caption{Orders linking to Customers}
 \end{table}
 
-We often encounter this sort of design change when we realize that attributes of one type of entity should actually belong to a new type of entity that will be associated with the first one. Often the motivation is to centralize changes to those attributes in one place. We call this operation \textit{Extract Entity}.
+We often encounter this situation when we realize that the attributes of one type of entity should actually belong to a distinct type of entity that will be associated with the first one. Often the motivation is to centralize changes to those attributes in one place. That is what it means to be an \textit{entity}: a referenceable holder of mutable attributes. We call this operation \textit{Extract Entity}.
 
-In a SQL database, \texttt{Customers.Name} would be a primary key and \texttt{Orders.Customer} would be a foreign key. But before \texttt{Customers.Name} can be made a primary key the two occurrences of \texttt{Wile E Coyote} must be deduplicated one way or another~\cite{dedupe}.
+Unique identifiers (here consecutive numbers) have been assigned to the customers and are referenced from the orders. This allows, for example, a spelling error in a customer address to be fixed in one place. It also allow a customer name or address to change without breaking the connection from all associated orders. Unique identifiers are the essence of entities, whether they are uniquely generated primary keys in a database or an abstraction of a memory address in a programming language.
 
-\textcolor{red}{this paragraph is now redundant with Related Owrk}
-Given the dominance of SQL databases it is not surprising that there are many tools for performing schema change on them~\cite{RailsMigrations, liquibase}. We do find it surprising how low-level these tools are. There is support for the basic SQL DDL commands like adding and dropping tables, columns, or constraints, but no higher level operations that would help solve our problem. One is left to write custom SQL, which can become difficult if the migration needs to be performed online without bring down the database. There is a rich theory of relational database \textit{normalization} based on \textit{functional dependencies}~\cite{Molina08} but that theory has not been implemented into schema change operations in databases -- all you get is SQL. \citet{ambler06} define higher-level patterns of schema change like \textit{Split Table} that sketch SQL implementations but don't provide everything required for Extract Entity. These difficulties fairly beg for new linguistic abstractions, though programming patterns and APIs are reasonable pragmatic solutions to our challenge.
+The \textit{Extract Entity} operation must 1) merge duplicates, 2) assign unique identifiers, and 3) reference these identifiers from the orders. Our example took the simple approach of merging entities whose attributes are all equal. But that might not be correct in all cases. What if there was a typo in one of the addresses that made it look different from other instances of the customer? To repair that error we need to merge the falsely distinct customers into one and fix any references from orders. We call this operation \textit{Merge Entities} -- note that it is not a schema change but a data change, yet nevertheless not commonly supported in data APIs.
 
-The Extract Entity schema change is straightforward in a spreadsheet. The \texttt{Customer Name} and \texttt{Customer Address} columns are copied and pasted into a new Customers table. The \textit{Remove Duplicates} command is used to deduplicate the customers. To preserve the original view for the shipping department the \texttt{Customer Address} column is redefined with a \texttt{VLOOKUP} formula to pull the address out of the customer table based on the customer's name. A spreadsheet won't maintain referential integrity between the two tables, but end-user database tools can do that~\cite{airtable, notion}.
+Acme Corp has a problem, for spreadsheets don't naturally support relationships between entities. End-user databases like Airtable~\cite{airtable} and Notion~\cite{notion} support \textit{links} between tables but do not provide operations that can do an \textit{Extract Entity}. Neither do the established database products (see Related Work). Acme will need to write code or do a big manual conversion.
 
-\subsection{Challenge}
-The Extract Entity challenge for live programming is to provide interactive operations in the programming environment that will perform the schema change on live code and data. The data can be in any form desired, including relations, objects, or JSON. The code can be a simple CRUD UI that also provides the shipping department its view of unshipped orders. The central problem is to coordinate the schema change with code edits/refactorings to keep the system executing live and correctly. Solutions should try to minimize:
+It is natural to expect every schema evolution to have an inverse, for the change in requirements that triggered an evolution might change back again, and we ought to pay off the technical debt of obsolete design decisions. Research on \textit{Divergence Control}~\cite{Foster2007, herrmann17, chillon22} further suggests operations should be invertible.
+The inverse of \textit{Extract Entity} is \textit{Absorb Entity}. It raises the question of how to handle \textit{one-to-many} relationships. For example should absorbing orders into customers do a relational join, returning us back to the starting point, or should it nest orders within customers, as a NoSQL database might do?
 
-\begin{enumerate}
-  \item The number and complexity of commands or UI affordances that must be introduced.
-  \item Interruption to live execution of the code.
-\end{enumerate}
+The inverse of \textit{Merge Entities} is \textit{Split Entity}, but that can be awkward. Imagine that we didn't have addresses for customers to disambiguate them with and only knew their non-unique names. Then \textit{Extract Entity} will conflate them and discard the information needed to properly invert the operation. Should this information be retained? One could object that we shouldn't have taken orders for people we can't uniquely identify yet. And even if that was necessary it means the customers really aren't distinct entities and shouldn't have been extracted. These are arguments that we shouldn't need \textit{Split Entity}, contradicting the principle that evolution operations should be invertible. It is interesting to observe that evolution in nature can also fail to invert, leaving behind vestigial features. We consider this to be an unsettled issue.
 
-The Extract Entity challenge for local-first software is similar to the live programming challenge except that the context is an application that offers similar functionality with peer-to-peer collaboration. In this context the schema change does not need to be performed interactively — a developer can take some time to build, test, and package a solution, perhaps using an API or DSL. The hard part comes when the schema change is to be deployed across all the replicas. This deployment must synchronize code and data upgrades (or decouple them as in Cambria~\cite{Cambria}). The deployment must also deal with migrating ``in flight'' operations so that all replicas converge on the same state without data loss, and ideally without centralized coordination. A radical approach could try to incorporate schema change operations into the underlying datastore/CRDT itself and integrate code as well, but layered solutions are welcome too.
+\subsection{Code Coevolution}
+A simple example of how code should evolve along with the schema is a SQL query to report all pending orders in the original schema:
 
-\subsection{Goals}
-Solutions should try to minimize:
+\begin{lstlisting}[language=SQL]
+SELECT order_id, item, quantity, customer_name, customer_address
+FROM Orders WHERE ship_date IS NULL;
+\end{lstlisting}
 
-\begin{enumerate}
-  \item The need for users to manually intervene.
-  \item Possibilities that developer-written code is subtly incorrect in edge cases, preferably by reducing the need for developer-written code.
-  \item The need for a centralized coordinator.
-  \item How long replicas might be partitioned until resynchronization is acquired.
-\end{enumerate}
+The \textit{Extract Entity} operation described earlier should rewrite this query into:
 
+\begin{lstlisting}[language=SQL]
+SELECT order_id, item, quantity, customer_name, customer_address
+FROM Orders
+JOIN Customers ON Orders.customer_id = Customers.customer_id
+WHERE ship_date IS NULL;
+\end{lstlisting}
 
+Alternatively the \textit{Extract Entity} operation could create a view in which the original query is executed.
 
-\section{Divergence Control}
-
-\subsection{Context}
-Schema change is usually concerned with migrating old data into a new schema. But sometimes we also want to migrate in the reverse direction: new data into an old schema. \citet{Cambria} discuss various ways that code changes can require bidirectional migration. Instead in this problem we focus on changes made by end-users. Users frequently make copies of structured documents like spreadsheets and then diverge them by altering both data content and schema. In the case of spreadsheets schema changes include rearrangements to the structure of rows and columns as well as changes to formulas. The problem is that the users want to transfer such data and schema changes between these divergent copies, and they want to pick and choose which of these changes to transfer. In practice such transfer is done manually through copy \& paste. \citet{Basman19} has documented an ecology of emailed spreadsheets. \citet{Burnett14} distilled field observations of these practices in the story of Frieda, which we quote here:
-
-\begin{quotation}
-
-For example, consider ``Frieda'', an office manager in charge of her department's budget tracking. (Frieda was a participant in a set of interviews with spreadsheet users that the first author conducted. Frieda is not her real name.) Every year, the company she works for produces an updated budget tracking spreadsheet with the newest reporting requirements embedded in its structure and formulas. But this spreadsheet is not a perfect fit to the kinds of projects and sub-budgets she manages, so every year Frieda needs to change it. She does this by working with four variants of the spreadsheet at once: the one the company sent out last year (we will call it Official-lastYear), the one she derived from that one to fit her department's needs (Dept-lastYear), the one the company sent out this year (Official-thisYear), and the one she is trying to put together for this year (Dept-thisYear).
-
-Using these four variants, Frieda exploratively mixes reverse engineering, reuse, programming, testing, and debugging, mostly by trial-and-error. She begins this process by reminding herself of ways she changed last year's by reverse engineering a few of the differences between Official-lastYear and Dept-lastYear. She then looks at the same portions of Official-thisYear to see if those same changes can easily be made, given her department's current needs.
-
-She can reuse some of these same changes this year, but copying them into Dept-thisYear is troublesome, with some of the formulas automatically adjusting themselves to refer to Dept-lastYear. She patches these up (if she notices them), then tries out some new columns or sections of Dept-thisYear to reflect her new projects. She mixes in ``testing'' along the way by entering some of the budget values for this year and eyeballing the values that come out, then debugs if she notices something amiss. At some point, she moves on to another set of related columns, repeating the cycle for these. Frieda has learned over the years to save some of her spreadsheet variants along the way (using a different filename for each), because she might decide that the way she did some of her changes was a bad idea, and she wants to revert to try a different way she had started before.
-\end{quotation}
-
-\subsection{Example}
-The Divergence Control challenge instantiates the problem of divergent state with the example from the Extract Entity challenge. Every month the orders department sends its spreadsheet to the accounting department, which adds the data to a version of the spreadsheet that it has customized for financial tracking. But when the orders department migrates its spreadsheet to extract out customers the accounting department does not want to conform. They could manually convert incoming data in the new schema into their variant of the old schema. But they shouldn't have to. It should be possible to run new data through the schema change in reverse, converting it back into the format the accounting department is used to ingesting. Note that this is not a matter of synchronizing the divergent spreadsheets -- they maintain differently evolved schema.
-
-\subsection{Challenge}
-What is needed is a user-friendly mechanism for transferring data changes from one schema to another bidirectionally. In one direction we want to transfer changes made in the new schema into a variant of the old schema. The opposite direction might be needed, for example, if the accounting department makes corrections to customer addresses, which ought to be pushed through into the orders department's new schema.
-
-Bidirectional transfer of changes between divergent copies is similar in some ways to source code version control as in Git~\cite{ProGit}. There is \textit{forking} of long-lived divergent copies. We want to \textit{diff} these forks to see exactly how they have diverged. We want to partially \textit{merge} them by \textit{cherry picking} certain differences. Yet there are also many dissimilarities with Git: our data is more richly structured than lines of text; our schema changes are higher-level transformations on these structures than inserting and deleting characters; and we expect that end-users be able to understand it~\cite{gitless}. The Divergence Control challenge is in a sense to provide ``version control for schema change'' meeting these criteria, with the key technical challenge being the ability to transfer selected differences bidirectionally through schema changes as independently as possible.
 
 \subsection{Goals}
-This challenge invites a change of perspective in both live programming and local-first software. Live programming must move from being a solitary activity to a collaborative workflow, and one where the collaboration is not just on editing source code but on live integrated code and data, as in the Smalltalk/Lisp images of old.\footnote{If only we had this in the 90's when Smalltalk had a shot at the mainstream!} For its part, local-first software must move from automatically converging data replicas to also interactively managing long-term divergence. That implies either application state is being directly exposed to the user, or the application code is using an API to present version control affordances. We encourage both communities to think outside the box of Git, which has proven to baffle not only end-users but also a substantial fraction of developers.
+A solution to this challenge should:
+\begin{enumerate}
+  \item Define the \textit{Extract Entity} operation.
+  \item Define the \textit{Absorb Entity} operation and motivate the tradeoff between joining and nesting.
+  \item Define a \textit{Merge Entities} operation or if using automatic deduplication then discuss how to handle mistakes.
+  \item Define the \textit{Split Entity} operation or justify why it is not needed.
+  \item If proposing a user-facing solution explain the UI affordances invoking these operations.
+  \item Extend these operations to the Divergence Control scenario.
+\end{enumerate}
+
+
+
 
 
 \newpage
