@@ -2,7 +2,6 @@
 
 \usepackage{inputenx}
 \usepackage[backend=biber]{biblatex}
-%\usepackage{natbib}
 \addbibresource{paper.bib}
 
 \usepackage{csquotes}
@@ -270,7 +269,7 @@ Schema evolution becomes more challenging when data, code, and schema cannot all
 
 Such situations are common in software engineering. Web backend architectures often put data and code on separate machines, which makes it impossible to update both atomically. To perform upgrades, teams must manually perform multi-step [zero-downtime deployment processes](https://planetscale.com/blog/zero-downtime-rails-migrations-planetscale-rails-gem) to step the database and the code servers forward gradually such that they are compatible with one another at any given step. One example would be deploying a change to add a database column before deploying the code that uses the column.
 
-In the simplest cases, divergence can last only for a brief moments in between zero-downtime deployment steps. But divergence can also occur across longer timescales, especially in situations where the different parts of a system are not all centrally controlled. For example, a public web API may need to support applications using old versions of the API for months or years, since it is not realistic to force all consumers to upgrade immediately. Divergence can even be indefinite—\citet{Cambria} addresses collaborative applications where different users may want to collaborate on shared data through different tools using different schemas, with no intention of ever converging.
+In the simplest cases, divergence can last only for a brief moments in between zero-downtime deployment steps. But divergence can also occur across longer timescales, especially in situations where the different parts of a system are not all centrally controlled. For example, a public web API may need to support applications using old versions of the API for months or years, since it is not realistic to force all consumers to upgrade immediately. Divergence can even be indefinite -- \citet{Cambria} addresses collaborative applications where different users may want to collaborate on shared data through different tools using different schemas, with no intention of ever converging.
 
 Divergence does not just occur in software engineering; it also appears in end-user workflows. Users frequently make copies of structured documents like spreadsheets and then diverge them by altering both data content and schema. In the case of spreadsheets schema changes include rearrangements to the structure of rows and columns as well as changes to formulas. The problem is that the users want to transfer such data and schema changes between these divergent copies, and they want to pick and choose which of these changes to transfer. In practice such transfer is done manually through copy \& paste. \citet{Basman19} has documented an ecology of emailed spreadsheets. \citet{Burnett14} distilled field observations of these practices in the story of Frieda, which we quote here:
 
@@ -305,7 +304,7 @@ The Extract Entity challenge for live programming is to provide interactive oper
   \item Interruption to live execution of the code.
 \end{enumerate}
 
-The Extract Entity challenge for local-first software is similar to the live programming challenge except that the context is an application that offers similar functionality with peer-to-peer collaboration. In this context the schema change does not need to be performed interactively — a developer can take some time to build, test, and package a solution, perhaps using an API or DSL. The hard part comes when the schema change is to be deployed across all the replicas. This deployment must synchronize code and data upgrades (or decouple them as in Cambria~\cite{Cambria}). The deployment must also deal with migrating ``in flight'' operations so that all replicas converge on the same state without data loss, and ideally without centralized coordination. A radical approach could try to incorporate schema change operations into the underlying datastore/CRDT itself and integrate code as well, but layered solutions are welcome too.
+The Extract Entity challenge for local-first software is similar to the live programming challenge except that the context is an application that offers similar functionality with peer-to-peer collaboration. In this context the schema change does not need to be performed interactively -- a developer can take some time to build, test, and package a solution, perhaps using an API or DSL. The hard part comes when the schema change is to be deployed across all the replicas. This deployment must synchronize code and data upgrades (or decouple them as in Cambria~\cite{Cambria}). The deployment must also deal with migrating ``in flight'' operations so that all replicas converge on the same state without data loss, and ideally without centralized coordination. A radical approach could try to incorporate schema change operations into the underlying datastore/CRDT itself and integrate code as well, but layered solutions are welcome too.
 
 \subsection{Goals}
 Solutions should try to minimize:
@@ -338,7 +337,7 @@ Convex migration DSL: https://stack.convex.dev/migrating-data-with-mutations
 
 dataframe diff https://homepages.inf.ed.ac.uk/csutton/publications/datadiff.pdf
 
-Durable computing: pins runtime data frames to code versions. Doesn’t handle problem of global data schema change.
+Durable computing: pins runtime data frames to code versions. Doesn't handle problem of global data schema change.
 https://restate.dev/blog/solving-durable-executions-immutability-problem/
 https://restate.dev/blog/code-that-sleeps-for-a-month/
 
@@ -1039,7 +1038,7 @@ modify & structure of \texttt{State} & migrate state value and edit code accordi
 
 
 \subsection{Goals}
-As above, the key requirement from the live programming perspective is to “do minimal harm”. In this case, this results in the following goals:
+As above, the key requirement from the live programming perspective is to ``do minimal harm''. In this case, this results in the following goals:
 
 \begin{itemize}
 \item When migrating the application state, this needs to be done automatically and the system should strive to produce new state that is as near as possible to the previous state.
@@ -1078,7 +1077,7 @@ type Item = { id : id; title : string; assignees : Array<string> }
 \end{lstlisting}
 \end{quote}
 
-Our goal is to preserve the ability for actors in the system to read and write to a shared todo list in either the old or new schema—for example, they should be able to write to either the scalar assignee field or to the list of assignees.
+Our goal is to preserve the ability for actors in the system to read and write to a shared todo list in either the old or new schema -- for example, they should be able to write to either the scalar assignee field or to the list of assignees.
 
 A natural invariant to preserve across these schemas is that the value of the scalar field should equal the first element of the list field (and if the list is empty, the scalar field should be null). If we were to write code for a one-time data migration from the scalar to list schema, we could easily satisfy this invariant:
 
