@@ -131,6 +131,28 @@ solutions.
 
 \section{Introduction}
 
+\textcolor{red}{[TVDS] Super rough attempt at the paragraph:}
+
+
+
+Modern day software development is collaborative. Single user programming does not exist anymore.
+Just as document editing is becoming more collaborative through online systems like pioneered by Google Docs,
+programming would benefit form online collaboration. In a sense this is live programming++: whereas traditional
+live programming systems assume a single developer editing code and see their changes immediately reflected
+in the running system, online collaborative programming is the same but for multiple programmers at the same time.
+The key challenge here, we posit, the *schema change*. We take inspiration from database migration,
+model evolution, and version control, and identify benchmark problems. This is already evident in live programming:
+editing a program, consisting of type definitions defining the structure run-time state and (transient) procedures, functions
+etc. operating on that state, requires run-time state to be migrated, after the programmer edits their program.
+Adding the dimension of multiple programs brings us into the domain local-first, and decentralized version control, where 
+copies are created and edited, which eventually have to be reconciled again (e.g., through merging). 
+Whereas schema evolution and its associated migration problems has seen a lot of attention in the database world,
+the model-driven world, and the bidirectional transformation (BX) communities, the techniques are still too low-level,
+too manual, and too much focused on a single user perspectives. By identifying the similarities between analogous
+problems in live, multi-user programming systems, we hope to stimulate further research on more comprehensive, automatic, 
+high-level, and online solutions. So that the benefits of live programming can be enjoyed in a global and distributed setting
+involving multiple programmers at the same time. 
+
 \textcolor{red}{[JE] We should adopt the term Schema Evolution, which is favored in the research literature, defined to include schema change, data migration, and query rewriting. }
 
 Schema change won't go away. Changing requirements and changing code lead to changing the schema of a database. Schema change, also called schema migration, is the problem of migrating existing data from the old schema to the new. This often involves custom migration programs or specialized Domain Specific Langiuages. The migration must be carefully coordinated with upgrading the application code and associated artifacts that assume the new schema. Schema change on database servers is often delegated to Database Administrators and DevOps. Live programming~\cite{tanimoto90,Hancock03} and local-first software~\cite{localfirst} both move data away from the server, eliminating those jobs, but not eliminating the need to do schema change, and indeed increasing the need to do it automatically. Recently \citet{Cambria} spotlighted these problems and proposed an approach using lenses~\cite{Foster2007}, but otherwise there has been surprisingly little research. To promote further progress we offer a set of challenge problems to the live programming and local-first communities, inviting them to propose and compare solutions.
@@ -296,6 +318,7 @@ This challenge invites a change of perspective in both live programming and loca
 
 \section{Challenge goals}
 \textcolor{red}{Text from the Extract Entity challenge that maybe should be lifted up to the top-level discussion of goals}
+
 
 The Extract Entity challenge for live programming is to provide interactive operations in the programming environment that will perform the schema change on live code and data. The data can be in any form desired, including relations, objects, or JSON. The code can be a simple CRUD UI that also provides the shipping department its view of unshipped orders. The central problem is to coordinate the schema change with code edits/refactorings to keep the system executing live and correctly. Solutions should try to minimize:
 
@@ -854,7 +877,7 @@ state opened
   on close => closed
 \end{lstlisting}
 \end{minipage}
-\hspace*{2pt}\vline
+\hspace*{5pt}\vline
 \begin{minipage}[t]{0.4\textwidth}
 \begin{lstlisting}[language=java,morekeywords={on}]
   class Machine
@@ -931,7 +954,7 @@ The space of possible (well-formed\footnote{The abstract syntax schema is not ex
 The first column indicates the change category, the second the affected kind of object, and third a short description of how to deal with the respective change category. Some notes about this table:
 \begin{itemize}
 \item all rows with ``simple'' in the third column only require a quiescent~\cite{Tranquility} point in the interpreter loop to update the run-time structure (e.g., as shown in Figure~\ref{FIG:doorsRuntime}).
-\item removing a state, however, is only \textit{structurally} simple, since removal is easy, but special care needs is required if the subject of removal is the current state. In this case, some heuristic is needed, such as: reject the edit, point the current state to the initial state, or some other strategy (e.g., the nearest state, previous state etc.)
+\item removing a state, however, is only \textit{structurally} simple, since removal is easy, but special care is required if the subject of removal is the current state. In this case, some heuristic is needed, such as: reject the edit, point the current state to the initial state, or some other strategy (e.g., the nearest state, previous state etc.)
 \item everywhere a row mentions ``migrate class'' in the third column, data migration is needed: the run-time objects conforming to the old class must be transformed to instances of the updated class, similar to how Smalltalk migrates objects using \lstinline{become:}.
 \item removing a transition or changing the event of a transition potentially has to deal with pending events (e.g., in an event queue) expecting such transitions, since such events are now potentially stale. Strategies to deal with this situation include: simply dropping the events, or requiring that such edits cannot be patched at run time when there are pending events.
 \item the type change edit of variable requires a strategy for the current value: either discard and reinitialize, or perform value conversion. For instance, if the type change is from boolean to integer, then true could become 1, and false could become 0.
