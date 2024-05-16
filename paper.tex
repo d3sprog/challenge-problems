@@ -129,11 +129,8 @@ solutions.
 
 \end{abstract}
 
-\section{Introduction}
 
-\textcolor{red}{[TVDS] Super rough attempt at the paragraph:}
-
-
+\section{\textcolor{red}{[TVDS] Super rough attempt at the paragraph}}
 
 Modern day software development is collaborative. Single user programming does not exist anymore.
 Just as document editing is becoming more collaborative through online systems like pioneered by Google Docs,
@@ -144,14 +141,23 @@ The key challenge here, we posit, the *schema change*. We take inspiration from 
 model evolution, and version control, and identify benchmark problems. This is already evident in live programming:
 editing a program, consisting of type definitions defining the structure run-time state and (transient) procedures, functions
 etc. operating on that state, requires run-time state to be migrated, after the programmer edits their program.
-Adding the dimension of multiple programs brings us into the domain local-first, and decentralized version control, where 
-copies are created and edited, which eventually have to be reconciled again (e.g., through merging). 
+Adding the dimension of multiple programs brings us into the domain local-first, and decentralized version control, where
+copies are created and edited, which eventually have to be reconciled again (e.g., through merging).
 Whereas schema evolution and its associated migration problems has seen a lot of attention in the database world,
 the model-driven world, and the bidirectional transformation (BX) communities, the techniques are still too low-level,
 too manual, and too much focused on a single user perspectives. By identifying the similarities between analogous
-problems in live, multi-user programming systems, we hope to stimulate further research on more comprehensive, automatic, 
+problems in live, multi-user programming systems, we hope to stimulate further research on more comprehensive, automatic,
 high-level, and online solutions. So that the benefits of live programming can be enjoyed in a global and distributed setting
-involving multiple programmers at the same time. 
+involving multiple programmers at the same time.
+
+\section{\textcolor{red}{[JE] Type evolution for live programming}}
+
+Many past improvements in the practice of programming worked by speeding up feedback loops. Live Programming aspires to the optimum of immediate feedback. The problem is that modern software is built out of many layers of different technologies -- thoroughly live programming would propagate changes immediately up and down the entire stack of a running system, from the database to the code, and from the client to the server. We call this \textit{full-stack} live programming. Another problem is that modern software is built with complex collaborations involving development, testing, deployment, and suppport. Such workflows are themselves feedback loops -- throughly live programming would propagate changes between participants frictionlessly. We call this \textit{end-to-end} live programming.
+
+We propose a research agenda towards this greater vision of live programming. The starting point is database \textit{schema evolution}, which propagates database schema changes into data migrations and query rewriting. We call for generalized \textit{type evolution} that works immediately across the entire software stack, and automatically across the entire software workflow. This paper contributes a set of challenge problems to serve as targets for research on type evolution and as a basis of comparison for the results.
+
+
+\section{Introduction}
 
 \textcolor{red}{[JE] We should adopt the term Schema Evolution, which is favored in the research literature, defined to include schema change, data migration, and query rewriting. }
 
