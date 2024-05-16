@@ -156,6 +156,14 @@ Many past improvements in the practice of programming worked by speeding up feed
 
 We propose a research agenda towards this greater vision of live programming. The starting point is database \textit{schema evolution}, which propagates database schema changes into data migrations and query rewriting. We call for generalized \textit{type evolution} that works immediately across the entire software stack, and automatically across the entire software workflow. This paper contributes a set of challenge problems to serve as targets for research on type evolution and as a basis of comparison for the results.
 
+\section{\textcolor{red}{[GL] Rough paragraph}}
+
+Most programming languages analysis treats state as ephemeral: tied to the lifetime of a running program, and reset when the program is edited. But when we take a broader view, most _programming systems_ (cite) have state that lasts beyond the lifetime of a single execution. This includes collaboration applications with state persisted in a database, image-based systems like Smalltalk, and live programming environments where the program can be edited without resetting all state.
+
+Although these programming systems exist in very different contexts, they all encounter similar problems related to the essential difficulty of preserving state across program edits. New versions of the program must correctly handle pre-existing data. When the data schema or type definitions change, existing data must be evolved to conform to the new schema. Changing data representations or types can also require changing corresponding parts of the program. These problems have been noticed, named, and studied in these different programming systems: "schema evolution" in the databases literature, "hot reloading" in live programming, etc.
+
+In this paper, we draw connections between these different contexts, pointing out essential shared structure in the hopes of motivating further research on this important problem and encouraging knowledge sharing across subfields. Our contributions are: 1) a shared framework for thinking about the relationship between schema, code, and data in a programming system, 2) Case studies of the framework in a highly diverse set of programming systems, motivated by real-world examples.
+
 
 \section{Introduction}
 
