@@ -165,6 +165,34 @@ Although these programming systems exist in very different contexts, they all en
 In this paper, we draw connections between these different contexts, pointing out essential shared structure in the hopes of motivating further research on this important problem and encouraging knowledge sharing across subfields. Our contributions are: 1) a shared framework for thinking about the relationship between schema, code, and data in a programming system, 2) Case studies of the framework in a highly diverse set of programming systems, motivated by real-world examples.
 
 
+\section{\textcolor{red}{[TP] Rough paragraph}}
+
+Programming is increasingly collaborative and interactive. We welcome this trend, because
+greater collaboration and interactivity make programming more effective. Future programming
+environments enable programmers to collaborate at a more fine-grained level, adopting individual
+code changes created by their collaborators as needed. They also let programmers interactively
+edit code, often during program execution.
+
+In order to support this new way of working, programming systems increasingly have to tackle the
+problem of schema evolution. If a programmer imports a change that edits a schema, code and data
+that relies on such schema needs to be adapted to match the new schema. Similarly, if a programmer
+in a live programming environment modifies their type definition, current program state needs to
+be updated to match the new structure of types. This is a well-understood and well-studied problem
+in database community, but it has received little attention in work on programming systems.
+
+The aim of this paper is to provide a conceptual framework for talking about schema evolution in
+collaborative and live programming systems. Taking inspiration from Stewart Brand's analysis of
+pace layers, we propose to think of the problem as the problem of evolution of occuring at three
+layers, the most permanent schema layer, less permanent code layer and least permanent data layer.
+A change at the most permanent layer affects the less permanent layer, which then has to be
+updated to keep correspondence between the layers.
+
+We consider four case studies of such schema evolution in collaborative and live programming
+systems. We present those throught the perspective of our unified conceptual framework. The work
+both sheds a new light at how schema change needs to be handled in programming systems and also
+provides a range of challenges that show interesting problems that future programming systems
+will need to tackle.
+
 \section{Introduction}
 
 \textcolor{red}{[JE] We should adopt the term Schema Evolution, which is favored in the research literature, defined to include schema change, data migration, and query rewriting. }
