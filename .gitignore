@@ -12,3 +12,4 @@
 .vscode/settings.json
 # Tomas' build scripts
 build.*
+*SAVE-ERROR

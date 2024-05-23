@@ -396,23 +396,27 @@ Solutions should try to minimize:
 
 \section{diagrams}
 
-\begin{figure}
-
   \begin{tikzcd}[sep = huge]
-    schema_1  \arrow[r, "constrains"] \arrow[d, "change"{left},""{name=L}]& data_1 \arrow[d, ""{name=R, left}, "migration"{right}] \\
-    schema_2 \arrow[r, "constrains"{below}] & data_2
-    \arrow[Rightarrow, from=L, to=R, "propagate"]
+    \textsf{code}_1
+    \arrow[d, "\textsf{refactor}"{left},""{name=L}]
+    &
+    \textsf{schema}_1
+    \arrow[l, "\textsf{constrains}"{above}]
+    \arrow[r, "\textsf{constrains}"]
+    \arrow[d, red, "\textsf{change}"{near start, description}, ""{name=CL, left}, ""{name=CR}]
+    &
+    \textsf{data}_1
+    \arrow[d, ""{name=R, left}, "\textsf{migrate}"{right}]
+    \\
+    \textsf{code}_2
+    &
+    \textsf{schema}_2
+    \arrow[l, "\textsf{constrains}"{below}]
+    \arrow[r, "\textsf{constrains}"{below}] &
+    \textsf{data}_2
+    \arrow[Rightarrow, from=CL, to=L, "\textsf{propagate}"{below}]
+    \arrow[Rightarrow, from=CR, to=R, "\textsf{propagate}"{below}]
   \end{tikzcd}
-
-  \begin{tikzcd}[sep = huge]
-    schema_1  \arrow[r, "constrains"] \arrow[d, "change"{left},""{name=L}]& code_1 \arrow[d, ""{name=R, left}, "refactor"{right}] \\
-    schema_2 \arrow[r, "constrains"{below}] & code_2
-    \arrow[Rightarrow, from=L, to=R, "propagate"]
-  \end{tikzcd}
-
-  \caption{Commutative diagrams.}
-  \label{fig:diagrams}
-\end{figure}
 
 
 \section{Related Work}
