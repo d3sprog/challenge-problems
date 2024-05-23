@@ -1,7 +1,7 @@
 \documentclass[english,submission]{programming}
 
 \usepackage{inputenx}
-\usepackage[backend=biber]{biblatex}
+\usepackage[backend=bibtex]{biblatex}
 \addbibresource{paper.bib}
 
 \usepackage{csquotes}
@@ -49,7 +49,7 @@
 \newcommand{\citet}[1]{\citeauthor*{#1}~\cite{#1}}
 
 
-\title{Schema Change: Challenge Problems}
+\title{Type Evolution in Programming Systems}
 
 \author[a]{Jonathan Edwards}%[0000-0003-1958-7967]
 \authorinfo{is TBD. Contact him at \email{jonathanmedwards@gmail.com}.}
@@ -129,153 +129,126 @@ solutions.
 
 \end{abstract}
 
-
-\section{\textcolor{red}{[TVDS] Super rough attempt at the paragraph}}
-
-Modern day software development is collaborative. Single user programming does not exist anymore.
-Just as document editing is becoming more collaborative through online systems like pioneered by Google Docs,
-programming would benefit form online collaboration. In a sense this is live programming++: whereas traditional
-live programming systems assume a single developer editing code and see their changes immediately reflected
-in the running system, online collaborative programming is the same but for multiple programmers at the same time.
-The key challenge here, we posit, the *schema change*. We take inspiration from database migration,
-model evolution, and version control, and identify benchmark problems. This is already evident in live programming:
-editing a program, consisting of type definitions defining the structure run-time state and (transient) procedures, functions
-etc. operating on that state, requires run-time state to be migrated, after the programmer edits their program.
-Adding the dimension of multiple programs brings us into the domain local-first, and decentralized version control, where
-copies are created and edited, which eventually have to be reconciled again (e.g., through merging).
-Whereas schema evolution and its associated migration problems has seen a lot of attention in the database world,
-the model-driven world, and the bidirectional transformation (BX) communities, the techniques are still too low-level,
-too manual, and too much focused on a single user perspectives. By identifying the similarities between analogous
-problems in live, multi-user programming systems, we hope to stimulate further research on more comprehensive, automatic,
-high-level, and online solutions. So that the benefits of live programming can be enjoyed in a global and distributed setting
-involving multiple programmers at the same time.
-
-\section{\textcolor{red}{[JE] Type evolution for live programming}}
-
-Many past improvements in the practice of programming worked by speeding up feedback loops. Live Programming aspires to the optimum of immediate feedback. The problem is that modern software is built out of many layers of different technologies -- thoroughly live programming would propagate changes immediately up and down the entire stack of a running system, from the database to the code, and from the client to the server. We call this \textit{full-stack} live programming. Another problem is that modern software is built with complex collaborations involving development, testing, deployment, and suppport. Such workflows are themselves feedback loops -- thoroughly live programming would propagate changes between participants frictionlessly. We call this \textit{end-to-end} live programming.
-
-We propose a research agenda towards this greater vision of live programming. The starting point is database \textit{schema evolution}, which propagates database schema changes into data migrations and query rewriting. We call for generalized \textit{type evolution} that works immediately across the entire software stack, and automatically across the entire software workflow. This paper contributes a set of challenge problems to serve as targets for research on type evolution and as a basis of comparison for the results.
-
-\section{\textcolor{red}{[GL] Rough paragraph}}
-
-Most programming languages analysis treats state as ephemeral: tied to the lifetime of a running program, and reset when the program is edited. But when we take a broader view, most \textit{programming systems} (cite) have state that lasts beyond the lifetime of a single execution. This includes collaboration applications with state persisted in a database, image-based systems like Smalltalk, and live programming environments where the program can be edited without resetting all state.
-
-Although these programming systems exist in very different contexts, they all encounter similar problems related to the essential difficulty of preserving state across program edits. New versions of the program must correctly handle pre-existing data. When the data schema or type definitions change, existing data must be evolved to conform to the new schema. Changing data representations or types can also require changing corresponding parts of the program. These problems have been noticed, named, and studied in these different programming systems: ``schema evolution'' in the databases literature, ``hot reloading'' in live programming, etc.
-
-In this paper, we draw connections between these different contexts, pointing out essential shared structure in the hopes of motivating further research on this important problem and encouraging knowledge sharing across subfields. Our contributions are: 1) a shared framework for thinking about the relationship between schema, code, and data in a programming system, 2) Case studies of the framework in a highly diverse set of programming systems, motivated by real-world examples.
-
-
-\section{\textcolor{red}{[TP] Rough paragraph}}
-
-Programming is increasingly collaborative and interactive. We welcome this trend, because
-greater collaboration and interactivity make programming more effective. Future programming
-environments enable programmers to collaborate at a more fine-grained level, adopting individual
-code changes created by their collaborators as needed. They also let programmers interactively
-edit code, often during program execution.
-
-In order to support this new way of working, programming systems increasingly have to tackle the
-problem of schema evolution. If a programmer imports a change that edits a schema, code and data
-that relies on such schema needs to be adapted to match the new schema. Similarly, if a programmer
-in a live programming environment modifies their type definition, current program state needs to
-be updated to match the new structure of types. This is a well-understood and well-studied problem
-in database community, but it has received little attention in work on programming systems.
-
-The aim of this paper is to provide a conceptual framework for talking about schema evolution in
-collaborative and live programming systems. Taking inspiration from Stewart Brand's analysis of
-pace layers, we propose to think of the problem as the problem of evolution of occuring at three
-layers, the most permanent schema layer, less permanent code layer and least permanent data layer.
-A change at the most permanent layer affects the less permanent layer, which then has to be
-updated to keep correspondence between the layers.
-
-We consider four case studies of such schema evolution in collaborative and live programming
-systems. We present those throught the perspective of our unified conceptual framework. The work
-both sheds a new light at how schema change needs to be handled in programming systems and also
-provides a range of challenges that show interesting problems that future programming systems
-will need to tackle.
-
-% UNIFIED VERSION
-%
-% 1. past improvements & feedback loops
-% 2. for this we need to transcend treating state as ephemeral and adopt systems view
-% 3. two current directions - live and collaborative
-% 4. we welcome this development, but it poses challenges for programming systems
-% 5. schema change in databases, hot reloading in programming, dynamic software update
-% (maybe) pace layers and structure
-% 6. contributions are a (i) framework and (ii) challenges
-
 \section{Introduction}
 
-\textcolor{red}{[JE] We should adopt the term Schema Evolution, which is favored in the research literature, defined to include schema change, data migration, and query rewriting. }
+Many past improvements in the practice of programming worked by speeding up feedback loops,
+both in collaboration with other programmers (as in collaborative development tools
+\cite{goldman2011real,kurniawan2015coder,replit}) and in individual's interaction with the
+programming environment (as in live programming \cite{rein2018exploratory}).
 
-Schema change won't go away. Changing requirements and changing code lead to changing the schema of a database. Schema change, also called schema migration, is the problem of migrating existing data from the old schema to the new. This often involves custom migration programs or specialized Domain Specific Langiuages. The migration must be carefully coordinated with upgrading the application code and associated artifacts that assume the new schema. Schema change on database servers is often delegated to Database Administrators and DevOps. Live programming~\cite{tanimoto90,Hancock03} and local-first software~\cite{localfirst} both move data away from the server, eliminating those jobs, but not eliminating the need to do schema change, and indeed increasing the need to do it automatically. Recently \citet{Cambria} spotlighted these problems and proposed an approach using lenses~\cite{Foster2007}, but otherwise there has been surprisingly little research. To promote further progress we offer a set of challenge problems to the live programming and local-first communities, inviting them to propose and compare solutions.
+To further tighten the feedback loop and make programming more effective, future programming
+systems will need to enable programmers to collaborate at a fine-grained level, letting them
+adopt individual changes created by their collaborators (as in local-first software
+\cite{localfirst}). To provide immediate feedback, future programming systems will need to
+transcend treating state as ephemeral, tied to the lifetime of a running program and reset when the
+program is edited.
 
-Live programming seeks to erase the boundary between editing and running programs. In order to do so program data must be kept around while the program is being edited. Classic Lisp and Smalltalk systems integrated code and data into a persistent \textit{image}~\cite{Sandewall78, Goldberg80}. An interactive shell or \textit{Read Eval Print Loop (REPL)}~\cite{Deutsch64} is more transient than an image, but still builds up a context of data over long-lived programming sessions the loss of which disrupts the programmer's workflow. In all of these environments programs eventually get changed to create and expect data in a form incompatible with extant data. This happens whether or not the form of the data is specified explicitly in a type system or database schema, or whether it is left implicit in the behavior of the code. Some languages can tolerate a larger set of such changes, most notably Smalltalk which will automatically insert and delete members in existing instances when a class definition is changed~\cite[pp.252-272]{Goldberg80}.\footnote{Gemstone turns the Smalltalk image into a production-quality database and accordingly provides a sophisticated schema change API~\cite{Gemstone}. Schema change won't go away.} But there is still a large class of changes that create incompatibilities with existing data, whether it is inside an image, programming environment, REPL, or an external database. Some live programming environments generate data with unit tests, but that only shifts the problem of schema change to adapting those tests. One way or another, stopping everything to manually deal with schema change contradicts the goals of live programming. Schema change won't go away.
+We need to shift our focus to \emph{programming systems} \cite{techdims} where program state
+is persistent and co-evolves with the behavior and data of the system. This is already the case
+in collaborative applications with state persistent in a database, image-based systems like
+Smalltalk and live programming environments with hot-reloading where the program can be edited
+without resetting all state.
 
-Local-first software faces related problems. Its goal is to empower users by moving code and data from the cloud to the user's own devices. Distributed programming techniques like Convergent Replicated Data Types (CRDTs)~\cite{Shapiro11} are used to coordinate data changes peer-to-peer. Unfortunately these techniques so far have not addressed schema change nor code deployment The traditional techniques of schema change used in centrally managed databases are complicated by the distributed and intermittently connected nature of local-first data. Schema change won't go away.
+While we are firmly convinced that more collaborative and live programming systems are the
+future of programming, there are a number of problems that need to be resolved in order for
+such systems to become a reality. The key problem is of \emph{type evolution}, i.e., how to
+handle the change of schema of the data program works with in a way that preserves integrity
+constraints, existing data and the logic of code.
 
-In the following sections we present a series of challenge problems dealing with schema change in the context of live programming and local-first software. These problems are necessarily expressed using established idioms or conventions, but nevertheless we welcome solutions that translate the spirit of the problem into other contexts.
+Type evolution is not a new problem. It exists in various forms in a range of existing systems.
+In the database world, the problem of schema evolution is well-studied \cite{erhard06}.
+It typically focuses on ensuring data integrity, although co-evolution of database structure
+and code that manipulates the database has also been studied \cite{Cleve2006,wang2019synthesizing}.
+In live programming, the problem is known as hot code reloading \cite{barenz2020essence,beckmann2021shortening},
+although it typically focuses on updating transient state and ignores the problem of more complex
+data migrations. The problem is equally studied in the bidirectional transformation (BX)
+communities \cite{czarnecki2009bidirectional} and in work on model-driven development
+\cite{metamodels,alanen2003difference}.
 
-~
+Type evolution is an important challenge for future programming systems. But looking at the problem
+from the perspective of programming systems can also offer a new perspective that
+unfies the many different aspects of the problem partially explored in other areas. A programming
+system may have permanent data (as in a database) whose structure can change, requiring
+corresponding change to data and code. A programming system may have a transient state conforming
+to a type structure that may change during live programming. A programming system may also need
+to allow programmers to independently work on different versions of a program.
 
-~
+In this paper, we draw connections between these different kinds of type evolution, pointing out
+essential shared structure. By doing so, we aim to motivate further research on this important
+problem and encouraging knowledge sharing across subfields. Our contributions are twofold.
+First, we present a shared conceptual framework for thinking about the relationship between
+schema, code, and data in a programming system. Second, we present five case studies that use
+the framework to study type evolution in a highly diverse set of real-world programming scenarios.
 
-\textcolor{red}{TODO: Need to explain that we take the programming system view - program is not something
-built centrally, but something that exists and can be modified}
-
-~
-
-\textcolor{red}{TODO: Maybe the right way to frame this is to say that the challenges are intended
-less for evaluating particular solutions but more for framing and making sense of different
-kinds of schema-change-related problems.  You can read this paper and when you face a schema-change-related
-problem, think about it in terms of our dimensions. Maybe compare it to our challenges.
-We do not necessarilly expect that people will directly solve our challenges though. (Although
-some might and that would be nice..)}
-
-~
-
-\textcolor{red}{TODO: I also guess this is more about just ``change'' than ``schema change''
-which is one particular (most challenging) instance - i.e., change at the most permanent
-pace layer.}
-
-\newpage
-\section{Dimensions of change}
 
 \begin{figure}[t]
-\vspace{-1em}
 \centering
-\includegraphics[width=0.5\textwidth]{figures/layers.png}
+\vspace{-1em}
+\includegraphics[width=0.45\textwidth]{figures/layers.png}
 \caption{Pace layers from Stewart Brand's classic \emph{How Buildings Learn} \cite{Brand95}.
-  The outer layers rarely change, while the inner layers change frequently. The geographic
+  Different layers of a building change at different pace. The geographic
   site of a building is eternal, its structure remains stable for decades, space plan
-  needs to change every couple of years. ``Because of the different rates of change of its
-  components, a building is always tearing itself apart.''
-  \textcolor{red}{[JE] Except the outer skin changes faster than the structure.}
-  }
+  changes every couple of years.}
 \label{fig:layers}
 \end{figure}
 
-\textcolor{red}{[JE] `change in a program' might be misunderstood as changes to the source code. Perhaps `system' or `software system' might be better than `program'? }
 
-In the broadest sense, this paper is concerned with the difficulties posed by a change
-in a program. The first dimension of difficulties that we consider in this paper is
-local. When something in a program changes, other parts of the program typically
-need to be brought to sync with the changed part. The complexity of the problem varies.
-If nothing else in the program depends on the changed part, for example when changing
-a runtime value of an object field, the change poses no difficulty.
-If many other parts of the program depend on the changed part, the difficulty is greater.
-For example, if we change the schema of data structures used in the program, we also need to
-change code that works with it and existing data that the users created. To structure our
-discussion about this part of the problem, we will use the idea of pace layers introduced by
-Brand \cite{Brand95,Brand18} (Figure~\ref{fig:layers}).
+\section{Type Evolution}
+To paraphrase Stewart Brand \cite{Brand95}, ``almost no programs evolve well. But all programs
+(except for monuments) evolve anyway, however poorly, because the usages in and around them are
+changing constantly.'' Programs evolve both while they are being created and during their operation
+in response to new needs. As with buildings (Figure~\ref{fig:layers}), different aspects of
+program evolve at different pace. And ``because of the different rates of change of its components,
+a program is always tearing itself apart.''
 
-The second dimension that we consider in this paper is non-local. A program may have multiple
+\subsection{Types, Code and Data}
+
+As is the case for buildings, making a change at some layers (skin or stuff) is relatively easy,
+but a change at a more basic layer (structure) has cascading effects on layers that depend on it.
+In the case of programs, a more basic layer is a structure that defines the shape of data and code.
+We refer to this structure as \emph{types}, although we do not use the term in an precise technical
+sense. In our conceptual framework, types may be data types that define the shape of data. They
+may be explicitly declared in code and checked statically, as well as dynamically checked or
+even implicit. The key property of types for us is that they define the shape of other layers
+of a program, such as data and code. As a result, a change of program types requires a
+corresponding change in program data and code.
+
+The situation is illustrated in Figure~\ref{fig:change} using two variations of a diagram that
+we will return to repeatedly in this paper. When a type changes from $T_1$ to $T_2$,
+we need to find and apply a corresponding change to other parts of the program whose shape
+is defined by the changed type. The problem of \emph{type evolution} is thus finding and
+applying changes that will update data $D_1$ and code $C_1$ into new versions $D_2$ and $C_2$
+that correspond to the new type.
+
+The complexity of the problem varies. The first dimension of challenges that we consider
+is local. The complexity of the challenge depends on how many other parts of the program
+depend on the modified type. If both code and data depend on the type, the complexity of the
+program is greater. If there is no associated code or the existing data can be safely discarded,
+the complexity is lesser.
+
+The second dimension of challenges that we consider is non-local. A program may have multiple
 variants that exist independently and need to be synchronized. The difficulty of the problem
-depends on what kind of synchronization we want to support. In the easier case, all variants
-of the program converge, i.e.~all variants should eventually adopt all changes. In the more
-challenging case, variants of a program may diverge, i.e.~a user may want to apply only certain
-changes from other users. Note the non-local dimension may interact with the pace layers of the
-local dimension. A typical case may be that the code and schema of a program should converge,
-while data and the transient state of a program may diverge.
+depends on what kind of synchronization we want to support. If all variants of the program should
+eventually adopt all changes (converge), the complexity is lesser. If we allow user to apply
+only certain changes from other users (divergence), the complexity is greater. A typical case
+may be that the types and schema of a program should converge, but data may diverge.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.65\textwidth]{figures/arrows.png}
+\caption{When a type changes from $T_1$ to $T_2$, a corresponding change needs to take place
+  in data and code whose shape is defined by type. The challenge is finding a suitable
+  corresponding transformation (semi-)automatically.}
+\label{fig:change}
+\end{figure}
+
+\subsection{Conceptual Framework}
+
+~
+
+\textcolor{red}{TODO: got as far as here so far...}
+
+~
 
 \paragraph{Dimensions.}
 The framework for talking about schema change used in this paper thus distinguishes between
@@ -305,6 +278,8 @@ programming is frequently necessary. In this paper, we distinguish between four 
   requires adapting code to work with the new structure and also updating data and state.
 \end{itemize}
 
+
+
 \paragraph{Program variants.} We are interested in programs that are distributed across multiple
 environments as, for example, in local-first software. As discussed earlier, one aspect of this
 dimension is whether all variants of a program eventually converge or whether it is possible to
@@ -332,6 +307,27 @@ is, however, not to enumerate all options. Instead, our goal is to present a num
 and often encountered challenge problems. We use the above framework to more precisely define
 the nature of the challenge problem. We also often use the above framework to discuss variations
 on the particular challenge.
+
+
+
+% elm
+% database
+% divergence
+% cambria
+% documents
+% state machine
+
+% DIVERGENCE IN TRANSITION (because you cannot do big bang update) c.f. Tijs' example
+
+% typically people just blow away the state but Elm actually has demos
+% of people doing hot reload without losing state.
+% (maybe they never change the type?)
+
+% ELM EXAMPLE
+% current example ("completes") is contrived - it is equivalent data
+% more interesting is when you lose / add data
+% add "completed" with default instead
+
 
 
 \section{Divergence Control}
@@ -396,6 +392,10 @@ Solutions should try to minimize:
 
 \section{Related Work}
 
+TODO: Maybe insert something about methodology in general?
+(ref the table challenges paper? although this paper is no longer so much about challenges)
+
+\paragraph{Schema evolution.}
 Schema evolution has long been a major problem for SQL databases, which provide suprisingly little help. SQLite~\cite{sqliteDatatypes} uses dynamically typed values allowing them to be implicitly converted if the datatype of the column changes. MYSql~\cite{mysqlAlterTable} can reorder columns without destroying their data. But apart from such special cases, SQL databases have no general purpose support for data migration. As a result in practice schema evolution is still mostly done by writing custom SQL code to alter the schema and migrate the data. Such custom code is greatly complicated if it needs to be done without taking the database offline or must be coordinated across multiple shards. In \textit{Refactoring Databases} \citet{ambler06} offer a comprehensive taxonomy of schema evolution patterns, including typical strategies for online migration and sample SQL implementations.
 
 \citet{bernstein07} observed in 2007 ``There are hardly any schema evolution tools today. This is rather surprising since there is a huge literature on schema evolution spanning more than two decades.'' There are now more tools available. Some tools such as Liquibase~\cite{liquibase} and PlanetScale\cite{planetscale} could be characterized as version control and continuous integration/deployment for schema. They track schema changes and can calculate diffs in the form of SQL DDL statements to convert one schema version to another, but do not help migrate data. Unfortunately comparing schemas can be ambiguous about the intention of changes. For example has a column been renamed or has it been deleted and a new one created? That distinction makes a big difference to the data in that column. EvolveDB\cite{evolvedb} addresses this ambiguity by reverse-engineering the schema into a richer data model and tracking the edits to that model within an IDE. This more precise edit history can be used to infer higher level intentions of a schema change, which then generate SQL scripts to evolve the database. EdgeDB~\cite{edgedb} resolves ambiguities by asking questions of the developer, with some answers supplying custom migration code in a proprietary query language.
@@ -405,6 +405,27 @@ Some tools provide a Domain Specific Language (DSL) to describe schema evolution
 Schema evolution is also a problem for NoSQL~\cite{sadalage12} databases. While such databases are sometimes called ``schemaless'' in effect that means the schema is left implicit and tools must try to infer it~\cite{storl20, storl22}. \citet{Cambria} uses lenses~\cite{Foster2007} for bidirectional transformation of JSON. \citet{scherzinger13} define a set of operators like the relational SMOs discussed above. \citeauthor*{chillon21}~\cite{chillon21, chillon22} offer a more comprehensive set of SMOs that may be capable of handling \textit{Extract/Absorb Entity} and \textit{Multiplicity Change} but not \textit{Split/Merge Entity} nor divergence. None of the above approaches to NoSQL evolution have yet extended into updating code or rewriting queries like their SQL cousins.
 
 Schema evolution has also been studied for Object Oriented Databases(OODB)~\cite{li99,banerjee87}. Smalltalk~\cite{Goldberg80} is itself an OODB, persisting all object instances in an ``image file'' with some evolution capabilities incorporated in the programming environment~\cite[pp.252-272]{Goldberg80}. Gemstone turns the Smalltalk image into a production-quality database and accordingly provides a complex schema evolution API~\cite{Gemstone}.
+
+\paragraph{Live, MDD, etc. programming?}
+
+
+% Some references from Tomas
+%
+% collaborative programmign tools
+\cite{goldman2011real,kurniawan2015coder,replit}
+% exploratory/live review paper
+\cite{rein2018exploratory}
+% hot reload in live systems
+\cite{barenz2020essence,beckmann2021shortening}
+
+% Some references from Tijs
+%
+% SQL+code
+\cite{Cleve2006,wang2019synthesizing}
+% BX
+\cite{czarnecki2009bidirectional}
+% MDD
+\cite{metamodels,alanen2003difference}.
 
 \begin{comment}
 
@@ -1215,6 +1236,106 @@ There are good cases for denormalizing from 1NF, i.e. nesting structures. Local-
 %\bibliographystyle{abbrv}
 %\bibliography{paper}
 \printbibliography
+
+\appendix
+
+\section{\textcolor{red}{[TVDS] Super rough attempt at the paragraph}}
+
+Modern day software development is collaborative. Single user programming does not exist anymore.
+Just as document editing is becoming more collaborative through online systems like pioneered by Google Docs,
+programming would benefit form online collaboration. In a sense this is live programming++: whereas traditional
+live programming systems assume a single developer editing code and see their changes immediately reflected
+in the running system, online collaborative programming is the same but for multiple programmers at the same time.
+The key challenge here, we posit, the *schema change*. We take inspiration from database migration,
+model evolution, and version control, and identify benchmark problems. This is already evident in live programming:
+editing a program, consisting of type definitions defining the structure run-time state and (transient) procedures, functions
+etc. operating on that state, requires run-time state to be migrated, after the programmer edits their program.
+Adding the dimension of multiple programs brings us into the domain local-first, and decentralized version control, where
+copies are created and edited, which eventually have to be reconciled again (e.g., through merging).
+Whereas schema evolution and its associated migration problems has seen a lot of attention in the database world,
+the model-driven world, and the bidirectional transformation (BX) communities, the techniques are still too low-level,
+too manual, and too much focused on a single user perspectives. By identifying the similarities between analogous
+problems in live, multi-user programming systems, we hope to stimulate further research on more comprehensive, automatic,
+high-level, and online solutions. So that the benefits of live programming can be enjoyed in a global and distributed setting
+involving multiple programmers at the same time.
+
+\section{\textcolor{red}{[JE] Type evolution for live programming}}
+
+Many past improvements in the practice of programming worked by speeding up feedback loops. Live Programming aspires to the optimum of immediate feedback. The problem is that modern software is built out of many layers of different technologies -- thoroughly live programming would propagate changes immediately up and down the entire stack of a running system, from the database to the code, and from the client to the server. We call this \textit{full-stack} live programming. Another problem is that modern software is built with complex collaborations involving development, testing, deployment, and suppport. Such workflows are themselves feedback loops -- thoroughly live programming would propagate changes between participants frictionlessly. We call this \textit{end-to-end} live programming.
+
+We propose a research agenda towards this greater vision of live programming. The starting point is database \textit{schema evolution}, which propagates database schema changes into data migrations and query rewriting. We call for generalized \textit{type evolution} that works immediately across the entire software stack, and automatically across the entire software workflow. This paper contributes a set of challenge problems to serve as targets for research on type evolution and as a basis of comparison for the results.
+
+\section{\textcolor{red}{[GL] Rough paragraph}}
+
+Most programming languages analysis treats state as ephemeral: tied to the lifetime of a running program, and reset when the program is edited. But when we take a broader view, most \textit{programming systems} (cite) have state that lasts beyond the lifetime of a single execution. This includes collaboration applications with state persisted in a database, image-based systems like Smalltalk, and live programming environments where the program can be edited without resetting all state.
+
+Although these programming systems exist in very different contexts, they all encounter similar problems related to the essential difficulty of preserving state across program edits. New versions of the program must correctly handle pre-existing data. When the data schema or type definitions change, existing data must be evolved to conform to the new schema. Changing data representations or types can also require changing corresponding parts of the program. These problems have been noticed, named, and studied in these different programming systems: ``schema evolution'' in the databases literature, ``hot reloading'' in live programming, etc.
+
+In this paper, we draw connections between these different contexts, pointing out essential shared structure in the hopes of motivating further research on this important problem and encouraging knowledge sharing across subfields. Our contributions are: 1) a shared framework for thinking about the relationship between schema, code, and data in a programming system, 2) Case studies of the framework in a highly diverse set of programming systems, motivated by real-world examples.
+
+
+\section{\textcolor{red}{[TP] Rough paragraph}}
+
+Programming is increasingly collaborative and interactive. We welcome this trend, because
+greater collaboration and interactivity make programming more effective. Future programming
+environments enable programmers to collaborate at a more fine-grained level, adopting individual
+code changes created by their collaborators as needed. They also let programmers interactively
+edit code, often during program execution.
+
+In order to support this new way of working, programming systems increasingly have to tackle the
+problem of schema evolution. If a programmer imports a change that edits a schema, code and data
+that relies on such schema needs to be adapted to match the new schema. Similarly, if a programmer
+in a live programming environment modifies their type definition, current program state needs to
+be updated to match the new structure of types. This is a well-understood and well-studied problem
+in database community, but it has received little attention in work on programming systems.
+
+The aim of this paper is to provide a conceptual framework for talking about schema evolution in
+collaborative and live programming systems. Taking inspiration from Stewart Brand's analysis of
+pace layers, we propose to think of the problem as the problem of evolution of occuring at three
+layers, the most permanent schema layer, less permanent code layer and least permanent data layer.
+A change at the most permanent layer affects the less permanent layer, which then has to be
+updated to keep correspondence between the layers.
+
+We consider four case studies of such schema evolution in collaborative and live programming
+systems. We present those throught the perspective of our unified conceptual framework. The work
+both sheds a new light at how schema change needs to be handled in programming systems and also
+provides a range of challenges that show interesting problems that future programming systems
+will need to tackle.
+
+
+\section{Introduction}
+
+\textcolor{red}{[JE] We should adopt the term Schema Evolution, which is favored in the research literature, defined to include schema change, data migration, and query rewriting. }
+
+Schema change won't go away. Changing requirements and changing code lead to changing the schema of a database. Schema change, also called schema migration, is the problem of migrating existing data from the old schema to the new. This often involves custom migration programs or specialized Domain Specific Langiuages. The migration must be carefully coordinated with upgrading the application code and associated artifacts that assume the new schema. Schema change on database servers is often delegated to Database Administrators and DevOps. Live programming~\cite{tanimoto90,Hancock03} and local-first software~\cite{localfirst} both move data away from the server, eliminating those jobs, but not eliminating the need to do schema change, and indeed increasing the need to do it automatically. Recently \citet{Cambria} spotlighted these problems and proposed an approach using lenses~\cite{Foster2007}, but otherwise there has been surprisingly little research. To promote further progress we offer a set of challenge problems to the live programming and local-first communities, inviting them to propose and compare solutions.
+
+Live programming seeks to erase the boundary between editing and running programs. In order to do so program data must be kept around while the program is being edited. Classic Lisp and Smalltalk systems integrated code and data into a persistent \textit{image}~\cite{Sandewall78, Goldberg80}. An interactive shell or \textit{Read Eval Print Loop (REPL)}~\cite{Deutsch64} is more transient than an image, but still builds up a context of data over long-lived programming sessions the loss of which disrupts the programmer's workflow. In all of these environments programs eventually get changed to create and expect data in a form incompatible with extant data. This happens whether or not the form of the data is specified explicitly in a type system or database schema, or whether it is left implicit in the behavior of the code. Some languages can tolerate a larger set of such changes, most notably Smalltalk which will automatically insert and delete members in existing instances when a class definition is changed~\cite[pp.252-272]{Goldberg80}.\footnote{Gemstone turns the Smalltalk image into a production-quality database and accordingly provides a sophisticated schema change API~\cite{Gemstone}. Schema change won't go away.} But there is still a large class of changes that create incompatibilities with existing data, whether it is inside an image, programming environment, REPL, or an external database. Some live programming environments generate data with unit tests, but that only shifts the problem of schema change to adapting those tests. One way or another, stopping everything to manually deal with schema change contradicts the goals of live programming. Schema change won't go away.
+
+Local-first software faces related problems. Its goal is to empower users by moving code and data from the cloud to the user's own devices. Distributed programming techniques like Convergent Replicated Data Types (CRDTs)~\cite{Shapiro11} are used to coordinate data changes peer-to-peer. Unfortunately these techniques so far have not addressed schema change nor code deployment The traditional techniques of schema change used in centrally managed databases are complicated by the distributed and intermittently connected nature of local-first data. Schema change won't go away.
+
+In the following sections we present a series of challenge problems dealing with schema change in the context of live programming and local-first software. These problems are necessarily expressed using established idioms or conventions, but nevertheless we welcome solutions that translate the spirit of the problem into other contexts.
+
+~
+
+~
+
+\textcolor{red}{TODO: Need to explain that we take the programming system view - program is not something
+built centrally, but something that exists and can be modified}
+
+~
+
+\textcolor{red}{TODO: Maybe the right way to frame this is to say that the challenges are intended
+less for evaluating particular solutions but more for framing and making sense of different
+kinds of schema-change-related problems.  You can read this paper and when you face a schema-change-related
+problem, think about it in terms of our dimensions. Maybe compare it to our challenges.
+We do not necessarilly expect that people will directly solve our challenges though. (Although
+some might and that would be nice..)}
+
+~
+
+\textcolor{red}{TODO: I also guess this is more about just ``change'' than ``schema change''
+which is one particular (most challenging) instance - i.e., change at the most permanent
+pace layer.}
 
 \end{document}
 
