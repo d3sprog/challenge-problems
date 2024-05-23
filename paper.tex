@@ -9,6 +9,8 @@
 \usepackage{multicol}
 \usepackage{ccicons}
 \usepackage[many]{tcolorbox}
+\usepackage{tikz-cd}
+
 \lstdefinelanguage[programming]{TeX}[AlLaTeX]{TeX}{%
   deletetexcs={title,author,bibliography},%
   deletekeywords={tabular},
@@ -392,6 +394,25 @@ Solutions should try to minimize:
 \end{enumerate}
 
 
+\section{diagrams}
+
+\begin{figure}
+
+  \begin{tikzcd}[sep = huge]
+    schema_1  \arrow[r, "constrains"] \arrow[d, "change"{left},""{name=L}]& data_1 \arrow[d, ""{name=R, left}, "migration"{right}] \\
+    schema_2 \arrow[r, "constrains"{below}] & data_2
+    \arrow[Rightarrow, from=L, to=R, "propagate"]
+  \end{tikzcd}
+
+  \begin{tikzcd}[sep = huge]
+    schema_1  \arrow[r, "constrains"] \arrow[d, "change"{left},""{name=L}]& code_1 \arrow[d, ""{name=R, left}, "refactor"{right}] \\
+    schema_2 \arrow[r, "constrains"{below}] & code_2
+    \arrow[Rightarrow, from=L, to=R, "propagate"]
+  \end{tikzcd}
+
+  \caption{Commutative diagrams.}
+  \label{fig:diagrams}
+\end{figure}
 
 
 \section{Related Work}
