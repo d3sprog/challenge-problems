@@ -10,6 +10,7 @@
 \usepackage{ccicons}
 \usepackage[many]{tcolorbox}
 \usepackage{tikz-cd}
+\usepackage{float}
 
 \lstdefinelanguage[programming]{TeX}[AlLaTeX]{TeX}{%
   deletetexcs={title,author,bibliography},%
@@ -392,27 +393,78 @@ Solutions should try to minimize:
 
 \section{diagrams}
 
-  \begin{tikzcd}[sep = huge]
-    \textsf{code}_1
-    \arrow[d, "\textsf{refactor}"{left},""{name=L}]
+\begin{figure}[H]
+  \begin{tikzcd}[sep = 6em]
+    \textsf{query}
+    \arrow[d, "\textsf{refactor}_\alpha"{name=L, description}]
     &
-    \textsf{schema}_1
+    \textsf{schema}
     \arrow[l, "\textsf{constrains}"{above}]
-    \arrow[r, "\textsf{constrains}"]
-    \arrow[d, red, "\textsf{change}"{near start, description}, ""{name=CL, left}, ""{name=CR}]
+    \arrow[r, "\textsf{constrains}"{above}]
+    \arrow[d, red, "\textsf{change}_\alpha"{name=C, description}]
     &
-    \textsf{data}_1
-    \arrow[d, ""{name=R, left}, "\textsf{migrate}"{right}]
+    \textsf{data}
+    \arrow[d, "\textsf{migrate}_\alpha"{name=R, description}]
     \\
-    \textsf{code}_2
+    \textsf{query}_\alpha
     &
-    \textsf{schema}_2
-    \arrow[l, "\textsf{constrains}"{below}]
-    \arrow[r, "\textsf{constrains}"{below}] &
-    \textsf{data}_2
-    \arrow[Rightarrow, from=CL, to=L, "\textsf{propagate}"{below}]
-    \arrow[Rightarrow, from=CR, to=R, "\textsf{propagate}"{below}]
+    \textsf{schema}_\alpha
+    \arrow[l, "\textsf{constrains}"{above}]
+    \arrow[r, "\textsf{constrains}"{above}]
+    &
+    \textsf{data}_\alpha
+    \arrow[Rightarrow, from=C, to=L, "\textsf{propagate}"{above}]
+    \arrow[Rightarrow, from=C, to=R, "\textsf{propagate}"{above}]
   \end{tikzcd}
+  \caption{Extract Entity}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{tikzcd}[column sep = large, row sep = 5em]
+    &
+    \textsf{schema}
+    \arrow[ld, red, "\textsf{change}_\alpha"{name=L2, near start, description}]
+    \arrow[rr, "\textsf{constrains}"]
+    \arrow[dd, red, "\textsf{change}_\beta"{name=L, near start, description}]
+    &
+    &
+    \textsf{data}
+    \arrow[dd, "\textsf{migrate}_\beta"{name=R, near start, description}]
+    \arrow[Rightarrow, from=L, to=R]
+    \\
+    \textsf{schema}_\alpha
+    %\arrow[dd, "\textsf{change}_\beta"{name=L3, near start, description}]
+    \arrow[rr, crossing over]
+    &
+    &
+    \textsf{data}_\alpha
+    \arrow[from=ur, crossing over, "\textsf{migrate}_\alpha"{name=R2, near start, description}]
+    \arrow[Rightarrow, from=L2, to=R2, crossing over, "\textsf{propagate}"{above}]
+    &
+    \\
+    &
+    \textsf{schema}_\beta
+    \arrow[ld, red, "\mathit{merge}\left(\textsf{change}_\alpha {\,,\;} \textsf{change}_\beta\right)"{name=L4, near start, description}]
+    \arrow[rr]
+    &
+    &
+    \textsf{data}_\beta
+    \arrow[ld, "\textsf{migrate}_{\alpha\beta}"{name=R4, near start, description}]
+    \arrow[Rightarrow, from=L4, to=R4]
+    \\
+    \textsf{schema}_{\alpha\beta}
+    \arrow[rr]
+    &
+    &
+    \textsf{data}_{\alpha\beta}
+    %\arrow[from=uu, crossing over, "\textsf{migrate}_\beta"{name=R3, near start, description}]
+    %\arrow[Rightarrow, from=L3, to=R3, crossing over]
+    &
+  \end{tikzcd}
+  \caption{Mergeing divergent changes}
+\end{figure}
+
+
 
 
 \section{Related Work}
