@@ -22,22 +22,28 @@
 \lstset{%
   language={[programming]TeX},%
   keywordstyle=\firamedium,
-  stringstyle=\color{RosyBrown},%
-  texcsstyle=*{\color{Purple}\mdseries},%
-  texcsstyle=*[2]{\color{Blue1}},%
-  texcsstyle=*[3]{\color{ForestGreen}},%
-  commentstyle={\color{FireBrick}},%
+  belowskip=1em,
+  aboveskip=1em,
+  framesep=0.5em,
+  basicstyle=\normalsize\ttfamily,
+  %stringstyle=\color{RosyBrown},%
+  %texcsstyle=*{\color{Purple}\mdseries},%
+  %texcsstyle=*[2]{\color{Blue1}},%
+  %texcsstyle=*[3]{\color{ForestGreen}},%
+  %commentstyle={\color{FireBrick}},%
+  numbersep=1em,
+  xleftmargin=1.5em,
   escapechar=`,}
 \newcommand*{\CTAN}[1]{\href{http://ctan.org/tex-archive/#1}{\nolinkurl{CTAN:#1}}}
 %%
 
 \newcounter{challengen}
-\newcommand{\challenge}[1]{\subsection*{\addtocounter{challengen}{1} Challenge \#\thechallengen: #1}}
+\newcommand{\challenge}[1]{\subsection*{\addtocounter{challengen}{1}Challenge \#\thechallengen: #1}}
 
 \DeclareRobustCommand{\frameworkbox}[2][gray!15]{
 \begin{tcolorbox}[breakable,left=3pt,right=3pt,top=3pt,bottom=3pt,colback=#1,colframe=#1,parbox=false,
   width=\dimexpr\textwidth\relax,enlarge left by=0mm,boxsep=5pt,arc=0pt,enlarge top by=0.5em,%enlarge bottom by=0.0em,
-  outer arc=0pt]\setlength{\parskip}{0.5em}\setlength{\parindent}{0em}\textbf{\sffamily Framework perspective.}\quad #2
+  outer arc=0pt]\setlength{\parskip}{0.5em}\setlength{\parindent}{0em}{\firamedium Framework perspective.}\quad #2
 \end{tcolorbox}}
 
 \paperdetails{
@@ -134,41 +140,41 @@ solutions.
 \section{Introduction}
 
 Many past improvements in the practice of programming worked by speeding up feedback loops,
-both in collaboration with other programmers (as in collaborative development tools
+both in collaboration with other programmers (through collaborative development tools
 \cite{goldman2011real,kurniawan2015coder,replit}) and in individual's interaction with the
-programming environment (as in live programming \cite{rein2018exploratory}).
+programming environment (through live programming \cite{rein2018exploratory}).
 
-To further tighten the feedback loop and make programming more effective, future programming
-systems will need to enable programmers to collaborate at a fine-grained level, letting them
-adopt individual changes created by their collaborators (as in local-first software
-\cite{localfirst}). To provide immediate feedback, future programming systems will need to
+To make programming more effective, future programming systems will need to further tighten
+the feedback loop. They will need to enable programmers to collaborate at a fine-grained level,
+letting them adopt individual changes created by their collaborators (as in local-first software
+\cite{localfirst}). To provide immediate feedback, future programming systems will also need to
 transcend treating state as ephemeral, tied to the lifetime of a running program and reset when the
 program is edited.
 
-We need to shift our focus to \emph{programming systems} \cite{techdims} where program state
-is persistent and co-evolves with the behavior and data of the system. This is already the case
-in collaborative applications with state persistent in a database, image-based systems like
-Smalltalk and live programming environments with hot-reloading where the program can be edited
-without resetting all state.
+To conceive of such systems, we need to shift our focus to \emph{programming systems} \cite{techdims}
+where program state is persistent and co-evolves with the behavior and data of the system. This is
+already the case in collaborative applications with state persistent in a database, image-based
+systems like Smalltalk and live programming environments with hot-reloading where the program can
+be edited without resetting all state.
 
 While we are firmly convinced that more collaborative and live programming systems are the
 future of programming, there are a number of problems that need to be resolved in order for
-such systems to become a reality. The key problem is of \emph{type evolution}, i.e., how to
+such systems to become a reality. The key problem is \emph{type evolution}, i.e., how to
 handle the change of schema of the data program works with in a way that preserves integrity
 constraints, existing data and the logic of code.
 
 Type evolution is not a new problem. It exists in various forms in a range of existing systems.
-In the database world, the problem of schema evolution is well-studied \cite{erhard06}.
-It typically focuses on ensuring data integrity, although co-evolution of database structure
-and code that manipulates the database has also been studied \cite{Cleve2006,wang2019synthesizing}.
+The problem of schema evolution in databases is well-studied \cite{erhard06}.
+It typically considers data integrity, although co-evolution of database schema
+and code has also been studied \cite{Cleve2006,wang2019synthesizing}.
 In live programming, the problem is known as hot code reloading \cite{barenz2020essence,beckmann2021shortening},
 although it typically focuses on updating transient state and ignores the problem of more complex
-data migrations. The problem is equally studied in the bidirectional transformation (BX)
-communities \cite{czarnecki2009bidirectional} and in work on model-driven development
-\cite{metamodels,alanen2003difference}.
+data migrations. The problem is also studied in the bidirectional transformation (BX)
+community \cite{czarnecki2009bidirectional}, in work on model-driven development
+\cite{metamodels,alanen2003difference} and in more low-level work on dynamic software updating
+\cite{hicks2005dynamic}.
 
-Type evolution is an important challenge for future programming systems. But looking at the problem
-from the perspective of programming systems can also offer a new perspective that
+Looking at type evolution from the perspective of programming systems can offer a new perspective that
 unfies the many different aspects of the problem partially explored in other areas. A programming
 system may have permanent data (as in a database) whose structure can change, requiring
 corresponding change to data and code. A programming system may have a transient state conforming
@@ -176,18 +182,19 @@ to a type structure that may change during live programming. A programming syste
 to allow programmers to independently work on different versions of a program.
 
 In this paper, we draw connections between these different kinds of type evolution, pointing out
-essential shared structure. By doing so, we aim to motivate further research on this important
-problem and encouraging knowledge sharing across subfields. Our contributions are twofold.
-First, we present a shared conceptual framework for thinking about the relationship between
-schema, code, and data in a programming system. Second, we present five case studies that use
-the framework to study type evolution in a highly diverse set of real-world programming scenarios.
-
+an essential shared structure. First, we present a shared conceptual
+framework for thinking about the relationship between schema, code, and data in a programming
+system. Second, we present five case studies that use the framework to study type evolution in a
+highly diverse set of real-world programming scenarios. We hope this will encourage knowledge
+sharing across different subfields, motivate further research on this important problem and
+offer inspiring challenges that developers of future live and collaborative programming systems
+will attempt to tackle.
 
 \begin{figure}[t]
 \centering
 \vspace{-1em}
 \includegraphics[width=0.45\textwidth]{figures/layers.png}
-\caption{Pace layers from Stewart Brand's classic \emph{How Buildings Learn} \cite{Brand95}.
+\caption{Pace layers from Stewart Brand's \emph{How Buildings Learn} \cite{Brand95}.
   Different layers of a building change at different pace. The geographic
   site of a building is eternal, its structure remains stable for decades, space plan
   changes every couple of years.}
@@ -199,20 +206,20 @@ the framework to study type evolution in a highly diverse set of real-world prog
 To paraphrase Stewart Brand \cite{Brand95}, ``almost no programs evolve well. But all programs
 (except for monuments) evolve anyway, however poorly, because the usages in and around them are
 changing constantly.'' Programs evolve both while they are being created and during their operation
-in response to new needs. As with buildings (Figure~\ref{fig:layers}), different aspects of
-program evolve at different pace. And ``because of the different rates of change of its components,
+in response to new needs. As with buildings, different aspects of program evolve at different pace
+(Figure~\ref{fig:layers}). And ``because of the different rates of change of its components,
 a program is always tearing itself apart.''
 
-\subsection{Types, Code and Data}
+\subsection{Types, Data and Code}
 
-As is the case for buildings, making a change at some layers (skin or stuff) is relatively easy,
-but a change at a more basic layer (structure) has cascading effects on layers that depend on it.
-In the case of programs, a more basic layer is a structure that defines the shape of data and code.
+As is the case for buildings, making a change at surface layers (skin or stuff) is relatively easy,
+but a change at a more fundamental layer (structure) has cascading effects on layers that depend on it.
+In the case of programs, a more fundamental layer defines the shape of data and code.
 We refer to this structure as \emph{types}, although we do not use the term in an precise technical
-sense. In our conceptual framework, types may be data types that define the shape of data. They
+sense. In our conceptual framework, types may be data types that define the shape of data, they
 may be explicitly declared in code and checked statically, as well as dynamically checked or
-even implicit. The key property of types for us is that they define the shape of other layers
-of a program, such as data and code. As a result, a change of program types requires a
+even implicit. The key property of types for us is that they determine the shape of other layers
+of a program, namely data and code. As a result, a change of program types requires a
 corresponding change in program data and code.
 
 The situation is illustrated in Figure~\ref{fig:change} using two variations of a diagram that
@@ -233,11 +240,12 @@ variants that exist independently and need to be synchronized. The difficulty of
 depends on what kind of synchronization we want to support. If all variants of the program should
 eventually adopt all changes (converge), the complexity is lesser. If we allow user to apply
 only certain changes from other users (divergence), the complexity is greater. A typical case
-may be that the types and schema of a program should converge, but data may diverge.
+may be a combination of the two where types and schema of a program should converge, but data
+may diverge.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.65\textwidth]{figures/arrows.png}
+\includegraphics[width=0.6\textwidth]{figures/arrows.png}
 \caption{When a type changes from $T_1$ to $T_2$, a corresponding change needs to take place
   in data and code whose shape is defined by type. The challenge is finding a suitable
   corresponding transformation (semi-)automatically.}
@@ -246,71 +254,195 @@ may be that the types and schema of a program should converge, but data may dive
 
 \subsection{Conceptual Framework}
 
-~
+We now describe a conceptual framework lets us view a range of diverse set of real-world
+type evolution problems in a unified way. We distinguish between two dimensions.
+The \emph{local dimension} is concerned with how type evolution affects data and code within
+a single program. The \emph{non-local dimension} is concerned with how type evolution
+propagates across different program variants that may exist independently.
 
-\textcolor{red}{TODO: got as far as here so far...}
-
-~
-
-\paragraph{Dimensions.}
-The framework for talking about schema change used in this paper thus distinguishes between
-two dimensions:
-
-\begin{itemize}
-  \item The \emph{local dimension} is concerned with difficulties that a change causes
-    across different program pace layers that exist within a single program.
-  \item The \emph{non-local dimension} is concerned with the difficulties that a change causes
-    across different program variants that exist independently.
-\end{itemize}
-
-\paragraph{Program pace layers.} As with buildings (Figure~\ref{fig:layers}), programs consist
-of multiple pace layers that change at a different rate. As with buildings, making a change
-to a more permanent layer also typically affects all the less permanent layers. Making a change
-at a more permanent layer is thus more challenging. Alas, changing more permanent structures in
-programming is frequently necessary. In this paper, we distinguish between four layers.
+\paragraph{Program Layers.}
+We consider the more permanent layer of \emph{types} and two less permanent layers of code and
+data that are structured according to types. In specific case studies, the layers may map to
+different aspects of programs, some may be not present and some may be implicit.
 
 \begin{itemize}
-\item \emph{State} -- transient state of a program. This is typically never shared across
-  multiple variants of a program and it can often be discarded when a change occurs.
-\item \emph{Data} -- data collected by the program. This represents a more permanent structure
-  that is typically stored in a database and outlives program restarts.
-\item \emph{Code} -- program logic. This layer changes whenever any aspect of the program logic
-  is modified. A change typically affects transient state, but may not affect data.
-\item \emph{Schema} -- the structures of program data. A change at this layer typically
-  requires adapting code to work with the new structure and also updating data and state.
+\item \emph{Types} -- structure program data and determine aspects of code. A change in types
+  requires a corresponding change in data and code. Types may be explicit (database schema, type definition)
+  or implicit (shape of data structures, shape of a document).
+\item \emph{Data} -- information stored by the program. Data may be more permanent (data in a
+  database) or less permanent (state in live programming). When types evolve, data needs to be
+  updated or (in case of transient state) discarded.
+\item \emph{Code} -- or program logic, but not including source code that defines types.
+  When types evolve, code needs to change to consume/produce data of a correct shape.
 \end{itemize}
 
-
-
-\paragraph{Program variants.} We are interested in programs that are distributed across multiple
-environments as, for example, in local-first software. As discussed earlier, one aspect of this
-dimension is whether all variants of a program eventually converge or whether it is possible to
-maintain a diverging version. It is also useful to distinguish the directions in which a
-change may flow, i.e., can a change originate in any variant or is there a single centralized
-source of change. Note that each of this characteristics may  be associated with individual pace
-layers of a program.
+\paragraph{Program Variants.}
+In programming systems that enable collaboration, multiple variants of a program may exist
+concurrently and their types, data and code may need to be synchronized. Although collaboration
+is missing from some of our case studies, it adds an important dimension that is crucial for
+type evolution in future programming systems. We consider two characteristics.
 
 \begin{itemize}
 \item \emph{Convergence} vs. \emph{Divergence}. In the convergence model, all program variants
-  eventually adopt all changes. It may not be possible to adopt a particular change before adopting
-  other changes it depends on. In the divergence model, a user may choose only particular changes
-  they want to adopt.
-\item \emph{Centralized} vs. \emph{Decentralized}. In the centralized model, changes (at a
-  specific layer) can only originate from a particular source. In the decentralized model,
+  eventually adopt all changes. It may not be possible to adopt a change without adopting
+  all earlier changes. In the divergence model, a user may choose only
+  particular changes they want to adopt, but keep other aspects of their custom design.
+\item \emph{Centralized} vs. \emph{Decentralized}. In the centralized model, changes (type
+  evolution) can only originate from a particular source. In the decentralized model,
   changes can be done on any of the multiple co-existing variants of a program.
 \end{itemize}
 
-\paragraph{Challenge problems.}
-The framework outlined above offers a wide range of configurations and one could conceive of
-a challenge problem for many of those configurations. We can start with a change at each of the
-four layers, consider each of the four configurations with respect to program variants (and also
-consider different behaviour at all the affected less permanent layers). The aim of this paper
-is, however, not to enumerate all options. Instead, our goal is to present a number of typical
-and often encountered challenge problems. We use the above framework to more precisely define
-the nature of the challenge problem. We also often use the above framework to discuss variations
-on the particular challenge.
+\paragraph{Challenge Problems.}
+The conceptual framework offers a wide range of configurations for challenge problems, but
+our aim is not to enumerate all options. We use it to recast a number of
+existing challenges in real-world programming systems as instances of the same problem of
+type evolution. The case studies show how well-known solutions or problems in one domain
+map to another domain and they also provide and inspiration and a benchmark for
+developers of future programming systems.
+
+\section{Live programming in the Elm architecture}
+\label{SECT:elm}
+
+The first challenge problem we recast in terms of our conceptual framework is live programming
+of user interfaces based on the Elm architecture. In this model, a reactive web application is
+structured in terms of current state and events that affect the state. The implementation then
+consists of two functions called \texttt{update} and \texttt{render}:
+
+\begin{lstlisting}[language=ml,morekeywords={on}]
+type State = { .. }
+type Event = .. | ..
+
+val update : State -> Event -> State
+val render : State -> Html
+\end{lstlisting}
+
+\noindent
+The programming model works as follows:
+
+\begin{itemize}
+\setlength\itemsep{0em}
+\item \texttt{State} represents the application state, i.e., everything that the user can work with.
+\item \texttt{Event} represents events that the user can trigger by interacting with the application.
+\item \texttt{update} is called when an event happens and computes a new program state.
+\item \texttt{render} takes the current state and produces a visual representation of the page.
+\end{itemize}
+
+\noindent
+As an example, consider the well-known TODO list app. Its state consists of a list of items,
+each with a unique ID, a title and a flag indicating whether it has been completed.
+The events represent changing of an item, deletion and addition:
+
+\begin{lstlisting}[language=ml]
+type Item = { id : id; title : string, completed : bool }
+type State = { items : Item list }
+type Event =
+  | SetTitle of id * string
+  | SetCompleted of id * bool
+  | Remove of id
+  | Add of string
+\end{lstlisting}
+
+\noindent
+Some programming systems that use the Elm architecture support hot reloading when the
+implementation of the \texttt{render} or \texttt{update} function changes, but they typically
+discard state and restart the application when types are changed. A more effective programming
+system based on live programming would allow updates to both the code of the two functions and
+the structure of the two types.
+
+\begin{table}[t]
+\begin{tabular}{lll}\toprule
+{\firamedium Change} & {\firamedium What} & {\firamedium How}\\\midrule
+add & case to \texttt{Event} & requires adding corresponding case to \texttt{update} \\
+remove & case from \texttt{Event} & remove unused code from \texttt{update} \\
+add & field to \texttt{State} & migrate state value and initialize field \\
+remove & field from \texttt{State} & migrate state (assuming field unused) \\
+modify & structure of \texttt{State} & migrate state value and edit code accordingly \\
+\bottomrule
+\end{tabular}
+\vspace{0.3em}
+\caption{Changes to types and how a programming system should handle them}
+\label{TBL:elmchanges}
+\vspace{-1em}
+\end{table}
+
+\challenge{Live Type Evolution of State and Events}
+Assume that we have a running TODO list with the above state and events. To test the application,
+the programmer has already created a number of items and so there is a value of the
+\texttt{State} type that represents the current state of the application such as:
+
+\begin{lstlisting}[language=ml,morekeywords={true,false}]
+{ items : [
+   { id = 1; title = "Check Twitter"; completed = true }
+   { id = 2; title = "Write the paper"; completed = false } ] }
+\end{lstlisting}
+
+\noindent
+There is a number of edits to the types that the programmer may now want to do without
+restarting the application and losing the data. For example, they may want to change the
+\texttt{completed} field of \texttt{Item} to instead store optional completion time:
+
+\begin{lstlisting}[language=ml]
+type Item = { id : id; title : string; completed : DateTime option }
+type State = { items : Item list }
+type Event =
+  | .. | SetCompleted of id * DateTime option | ..
+\end{lstlisting}
+
+\noindent
+To apply the change without restarting the application, the existing data need to be migrated
+to match the new type definition. In this case, this likely cannot be done fully automatically
+and the programmer may need to provide mapping (\texttt{false} to \texttt{None}, \texttt{true}
+to \texttt{Some(DateTime(2024,5,1))}). If the programmer changes \texttt{Item} and \texttt{SetCompleted}
+at the same time, the \texttt{update} function likely does not need to change, but the rendering
+code needs to be modified (the programmer needs to specify how to map \texttt{DateTime option}
+back to a Boolean for a checkbox).
+
+More generally, there is a number of edits to the types that the programmer may want to do
+without restarting the application. The edits and the desired handling in the programming
+system are summarized in Table~\ref{TBL:elmchanges}. Modifying the \texttt{Event} type does not
+require data migration (assuming that the change does not happen while there are unprocessed
+events). It may result in unused code or missing cases in \texttt{update} that need to be addressed.
+Modifying \texttt{State} ranges from relatively simple problems (e.g., adding a new field with a
+default value) to challenging case. In particular, if a programer refactors \texttt{State} to
+semantically equivalent type, the programming system should, in principle, be able to automatically
+migrate both the original value and implementation of both functions to match the new type.
+
+~
+
+~
+
+\textcolor{red}{TODO: The rest needs more editing}
+
+~
+
+~
+
+\frameworkbox{
+In this
+}
 
 
+
+
+\subsection{Goals}
+As above, the key requirement from the live programming perspective is to ``do minimal harm''. In this case, this results in the following goals:
+
+\begin{itemize}
+\item When migrating the application state, this needs to be done automatically and the system should strive to produce new state that is as near as possible to the previous state.
+\item The solution may rely on structure editing so that the system has access to a high-level logical description of the edits performed by the user.
+\item The system needs to handle the case when the type structure diverges from the code structure. This can be addressed in various ways (transform code, add error handlers, etc.) but it is desirable to avoid "breaking" the \texttt{render} function as this would make the new application state impossible to see.
+\end{itemize}
+
+\subsection{Remarks}
+It is worth noting that the particularly difficult aspect of this challenge, i.e., the case where the structure of state is refactored to an equivalent one, is related to the Extract Entity challenge.
+
+
+\newpage
+\textcolor{red}{TODO: The rest needs more editing}
+
+~
+
+~
 
 % elm
 % database
@@ -1003,14 +1135,14 @@ state opened
 
 In the following we assume that the state machine is executed by an interpreter that process an incoming stream of events, and traversing run-time pointers representing transitions accordingly, executing on-entry actions, where the notion of the current state and the values of the global variables are the collective run-time state of the program. The structure that the interpreter operates on can be described as derived  schema from the abstract syntax scheme shown on the right of Figure~\ref{LST:statemachines}, but specialized for a particular machine, e.g., \lstinline{Doors}.
 This schema will have additional fields and associations modeling the run-time data required for execution. For the \lstinline{Doors} statemachine, this means adding the current state to the \lstinline{Machine} type (required for any machine) and the machine specific data fields, namely \lstinline{isClosed}. The run-time schema for \lstinline{Doors} is then the following\footnote{It is possible to represent the global variables at run-time using an untyped table or hashmap, but for the sake of schema migration complexity, the encoding as fields in classes is more instructive.}:
-\begin{quote}
+
 \begin{lstlisting}[language=java,morekeywords={on},mathescape=true]
 class Machine$^{++}$
   states: State*
   current: State
   isClosed: bool
 \end{lstlisting}
-\end{quote}
+
 This \textit{extended} class $\text{\lstinline{Machine}}^{++}$ also represents state machines, but this time at run time.
 
 
@@ -1071,104 +1203,6 @@ From the language engineering perspective the goal is to employ techniques, form
 While the above example is arguably simple, the problem becomes much more challenging when the programs themselves define data types, classes, records, structures etc. Since possibly many instances (values, objects) of such data types may exist at run-time, these all have to be migrated in such a way that programmer experience is minimally disrupted, and that the invariants of said data types is maintained.
 Another extension, tying in with the data-oriented examples above, involves refactorings of data types in a program. Typically a refactoring should be behavior preserving, but can it also preserve run-time data? The minimal example is the consistent variable rename rename in Table~\ref{TBL:changes}, which should not have any effect on run-time state.  A more complex refactoring is described in Section~\ref{SECT:elm}.
 
-\section{Live programming in the context of Elm architecture}
-\label{SECT:elm}
-\subsection{Context}
-Another challenge involving stateful live programming can be drawn from the programming model based on the Elm architecture. In this model, a reactive (web) application is structured in terms of current state and events that affect the state. The implementation then consists of two functions that we may call \texttt{update} and \texttt{render}:
-
-\begin{quote}
-\begin{lstlisting}[language=ml,morekeywords={on}]
-type State = { .. }
-type Event = .. | ..
-
-val update : State -> Event -> State
-val render : State -> Html
-\end{lstlisting}
-\end{quote}
-
-The programming model works as follows:
-\begin{itemize}
-    \item \texttt{State} represents the entire application state, i.e., everything that the user can work with.
-    \item \texttt{Event} represents all events that the user can trigger by interacting with the application.
-    \item \texttt{update} is called whenever an event happens. It takes the current state, the event and computes a new state.
-    \item \texttt{render} takes the current state and produces a representation of what should be displayed on the screen (e.g., an HTML tree).
-\end{itemize}
-
-Traditionally, when Elm applications are developed, they are restarted each time the code is modified and any previous state is discarded. However, a more effective programming model based on live programming would allow live updates to both the code of the two functions and the structure of the two types.
-
-\subsection{Example}
-
-As an example, consider the uninspiring, but well-known, TODO list application. The types that capture the state and events in the application may look as follows:
-
-\begin{quote}
-\begin{lstlisting}[language=ml,morekeywords={on}]
-type Item = { id : id; title : string; completed : bool }
-type State = { items : Item list }
-type Event =
-  | SetCompleted of id * bool
-  | SetTitle of id * string
-  | Remove of id
-  | Add of string
-\end{lstlisting}
-\end{quote}
-
-The application state consists of a list of items. Each item has a unique ID alongside with a title and a flag indicating whether it is completed. The events represent edits to the items, deletion and addition. The implementation of the \texttt{update} and \texttt{render} functions is simple and not important for the challenge.
-
-\subsection{Challenge}
-Now, imagine that we have a running TODO list application with the above state and events. To test the application, the programmer has already created a number of items and so there is a single value of the \texttt{State} type that represents a current state of the application such as:
-
-\begin{quote}
-\begin{lstlisting}[language=ml,morekeywords={on}]
-{ items : [
-   [ { id = 1; title = "check twitter"; completed = true  }
-     { id = 1; title = "Write paper"; completed = false } ] }
-\end{lstlisting}
-\end{quote}
-
-As above, there are a number of edits to the code and types that the programmer may want to do without restarting the application. Those are summarized in Table~\ref{TBL:elmchanges}. Modifying the code is simple and only requires waiting until the current execution completes. Modifying the \texttt{Event} type is also simple, but it may lead to unused code or missing case in \texttt{update} that needs to be addressed. Finally, modifying \texttt{State} ranges from relatively simple problems (adding a new field) to challenging case when the structure of \texttt{State} is changed.
-
-For example, imagine that the programmer would want to edit the structure of the state and migrate the previous definition of \texttt{State} to the following new definition where individual fields are stored in separate lists:
-
-\begin{quote}
-\begin{lstlisting}[language=ml,morekeywords={on}]
-type State =
-  { ids : id list
-    titles string list
-    completes : bool list }
-\end{lstlisting}
-\end{quote}
-
-This representation is semantically equivalent (assuming the lists have the same length) to the original one. It should thus, in principle, be possible to migrate the original state value to a value using the new structure. Moreover, it should, in principle, be also possible to automatically transform the implementations of \texttt{update} and \texttt{render} to work as before, but using the new state structure.
-
-\begin{table}[t]
-  \centering
-\begin{tabular}{lll}\toprule
-\textsc{Change} & \textsc{What} & \textsc{How}\\\midrule
-modify & \texttt{render} & simple, but wait until current execution finishes  \\
-modify & \texttt{update} & simple, but wait until current execution finishes  \\
-add & case to \texttt{Event} & requires adding corresponding case to \texttt{update} \\
-remove & case from \texttt{Event} & remove unused code from \texttt{update} \\
-add & field to \texttt{State} & migrate state value and initialize field \\
-remove & field from \texttt{State} & migrate state (assuming field unused) \\
-modify & structure of \texttt{State} & migrate state value and edit code accordingly \\
-\bottomrule
-\end{tabular}
-\caption{Possible program changes and how to deal with them at run time}
-\label{TBL:elmchanges}
-\end{table}
-
-
-\subsection{Goals}
-As above, the key requirement from the live programming perspective is to ``do minimal harm''. In this case, this results in the following goals:
-
-\begin{itemize}
-\item When migrating the application state, this needs to be done automatically and the system should strive to produce new state that is as near as possible to the previous state.
-\item The solution may rely on structure editing so that the system has access to a high-level logical description of the edits performed by the user.
-\item The system needs to handle the case when the type structure diverges from the code structure. This can be addressed in various ways (transform code, add error handlers, etc.) but it is desirable to avoid "breaking" the \texttt{render} function as this would make the new application state impossible to see.
-\end{itemize}
-
-\subsection{Remarks}
-It is worth noting that the particularly difficult aspect of this challenge, i.e., the case where the structure of state is refactored to an equivalent one, is related to the Extract Entity challenge.
 
 \section{Multiplicity change}
 
@@ -1184,42 +1218,34 @@ Multiplicity change clearly requires changing both the data and the code. It bec
 
 Consider the following schema for a todo list item, in which each item has a single assignee, represented by a user ID:
 
-\begin{quote}
 \begin{lstlisting}[language=ml]
 type Item = { id : id; title : string; assignee : string }
 \end{lstlisting}
-\end{quote}
 
 Now, we change the schema so that each item has a list of assignees:
 
-\begin{quote}
 \begin{lstlisting}[language=ml]
 type Item = { id : id; title : string; assignees : Array<string> }
 \end{lstlisting}
-\end{quote}
 
 Our goal is to preserve the ability for actors in the system to read and write to a shared todo list in either the old or new schema -- for example, they should be able to write to either the scalar assignee field or to the list of assignees.
 
 A natural invariant to preserve across these schemas is that the value of the scalar field should equal the first element of the list field (and if the list is empty, the scalar field should be null). If we were to write code for a one-time data migration from the scalar to list schema, we could easily satisfy this invariant:
 
-\begin{quote}
 \begin{lstlisting}[language=ml]
 item.assignees = if (item.assignee == null) then [] else [item.assignee]
 \end{lstlisting}
-\end{quote}
 
 Ongoing edits to the array schema can also be handled in a straightforward way. After edits are made, the value of the scalar field should be set to the first element of the new array (or null if the new array is empty.)
 
 However, handling edits to the scalar schema presents more of a challenge. Consider the following todo with two assignees, presented in terms of the scalar and array schemas. A write is made in the scalar schema to set the new assignee to C.
 
-\begin{quote}
 \begin{lstlisting}[language=ml]
 todoScalar = { id: 1, title: "Foo", assignee: A }
 todoArray = { id: 1, title: "Foo", assignees: [A, B] }
 
 todoScalar.assignee = C
 \end{lstlisting}
-\end{quote}
 
 What should the array value become after this edit to the scalar schema? To satisfy our invariant, we know that C must become the first element of the array, but this leaves open several options with different tradeoffs:
 
