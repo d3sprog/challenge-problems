@@ -652,69 +652,6 @@ Solutions should try to minimize:
 
 \textcolor{red}{[JE] These diagrams are getting hairy. Are they actually helpful?}
 
-\section{Related Work}
-
-TODO: Maybe insert something about methodology in general?
-(ref the table challenges paper? although this paper is no longer so much about challenges)
-
-\paragraph{Schema evolution.}
-Schema evolution has long been a major problem for SQL databases, which provide suprisingly little help. SQLite~\cite{sqliteDatatypes} uses dynamically typed values allowing them to be implicitly converted if the datatype of the column changes. MYSql~\cite{mysqlAlterTable} can reorder columns without destroying their data. But apart from such special cases, SQL databases have no general purpose support for data migration. As a result in practice schema evolution is still mostly done by writing custom SQL code to alter the schema and migrate the data. Such custom code is greatly complicated if it needs to be done without taking the database offline or must be coordinated across multiple shards. In \textit{Refactoring Databases} \citet{ambler06} offer a comprehensive taxonomy of schema evolution patterns, including typical strategies for online migration and sample SQL implementations.
-
-\citet{bernstein07} observed in 2007 ``There are hardly any schema evolution tools today. This is rather surprising since there is a huge literature on schema evolution spanning more than two decades.'' There are now more tools available. Some tools such as Liquibase~\cite{liquibase} and PlanetScale\cite{planetscale} could be characterized as version control and continuous integration/deployment for schema. They track schema changes and can calculate diffs in the form of SQL DDL statements to convert one schema version to another, but do not help migrate data. Unfortunately comparing schemas can be ambiguous about the intention of changes. For example has a column been renamed or has it been deleted and a new one created? That distinction makes a big difference to the data in that column. EvolveDB\cite{evolvedb} addresses this ambiguity by reverse-engineering the schema into a richer data model and tracking the edits to that model within an IDE. This more precise edit history can be used to infer higher level intentions of a schema change, which then generate SQL scripts to evolve the database. EdgeDB~\cite{edgedb} resolves ambiguities by asking questions of the developer, with some answers supplying custom migration code in a proprietary query language.
-
-Some tools provide a Domain Specific Language (DSL) to describe schema evolution. Rails Migrations~\cite{RailsMigrations} embeds a DSL in Ruby to manage schema migration but is comparable to the capabilities of SQL DDL, often requiring the addition of custom Ruby or SQL code. \citet{curino08} spawned a stream of research on Database Evolution Languages (DEL) by defining a Schema Modification Operator (SMO) as ``a function that receives as input a relational schema and the underlying database, and produces as output a (modified) version of the input schema and a migrated version of the database''. SMOs can also rewrite queries to accomodate schema changes. \citet{herrmann15} defined a relationally complete DEL and then extended it into a Bidirectional Database Evolution Language (BiDEL)~\cite{herrmann17}. BiDEL appears capable of handling the basic requirements of our \textit{Extract/Absorb Entity} and \textit{Multiplicity Change} challenges, though \textit{Split/Merge Entity} is less clear. It provides schema divergence by supporting multiple schema within one database, but would need some extension to handle data divergence.
-
-Schema evolution is also a problem for NoSQL~\cite{sadalage12} databases. While such databases are sometimes called ``schemaless'' in effect that means the schema is left implicit and tools must try to infer it~\cite{storl20, storl22}. \citet{Cambria} uses lenses~\cite{Foster2007} for bidirectional transformation of JSON. \citet{scherzinger13} define a set of operators like the relational SMOs discussed above. \citeauthor*{chillon21}~\cite{chillon21, chillon22} offer a more comprehensive set of SMOs that may be capable of handling \textit{Extract/Absorb Entity} and \textit{Multiplicity Change} but not \textit{Split/Merge Entity} nor divergence. None of the above approaches to NoSQL evolution have yet extended into updating code or rewriting queries like their SQL cousins.
-
-Schema evolution has also been studied for Object Oriented Databases(OODB)~\cite{li99,banerjee87}. Smalltalk~\cite{Goldberg80} is itself an OODB, persisting all object instances in an ``image file'' with some evolution capabilities incorporated in the programming environment~\cite[pp.252-272]{Goldberg80}. Gemstone turns the Smalltalk image into a production-quality database and accordingly provides a complex schema evolution API~\cite{Gemstone}.
-
-\paragraph{Live, MDD, etc. programming?}
-
-
-% Some references from Tomas
-%
-% collaborative programmign tools
-\cite{goldman2011real,kurniawan2015coder,replit}
-% exploratory/live review paper
-\cite{rein2018exploratory}
-% hot reload in live systems
-\cite{barenz2020essence,beckmann2021shortening}
-
-% Some references from Tijs
-%
-% SQL+code
-\cite{Cleve2006,wang2019synthesizing}
-% BX
-\cite{czarnecki2009bidirectional}
-% MDD
-\cite{metamodels,alanen2003difference}.
-
-\begin{comment}
-
-Convex migration DSL: https://stack.convex.dev/migrating-data-with-mutations
-
-dataframe diff https://homepages.inf.ed.ac.uk/csutton/publications/datadiff.pdf
-
-Durable computing: pins runtime data frames to code versions. Doesn't handle problem of global data schema change.
-https://restate.dev/blog/solving-durable-executions-immutability-problem/
-https://restate.dev/blog/code-that-sleeps-for-a-month/
-
-Tijs on Live programming and model-driven engineering
-https://ir.cwi.nl/pub/23770
-https://dl.acm.org/doi/10.1007/s10270-017-0608-7
-https://dl.acm.org/doi/10.1145/3276604.3276611
-https://ir.cwi.nl/pub/21858
-
-
-From Geoffrey:
-1) Finding Data Compatibility Bugs with JSON Subschema Checking
-https://dl.acm.org/doi/pdf/10.1145/3460319.3464796
-I just found this paper this morning so I haven't read it yet, but the abstract seems very relevant. It's about automatically determining whether two JSON schemas are "compatible", with a subtyping metaphor.
-2) Confluent Schema Registry:
-https://docs.confluent.io/platform/current/schema-registry/index.html
-An interesting example of how schema change is handled in the wild. In the Cambria essay we wrote some reflections on it which basically capture my opinions.
-\end{comment}
-
 \newpage
 
 \section{Extract/Absorb/Split/Merge Entity}
@@ -1370,24 +1307,105 @@ However, ongoing divergence makes multiplicity change much more difficult, and e
 
 Although there is likely no silver bullet to navigate these tradeoffs, a good solution to this problem would give developers or users tools to manage these tradeoffs. For example, a system might allow developers to specify the desired behavior for a particular pair of schemas based on the requirements of the domain. Or a system might even allow users to manually disambiguate their intent for a given write.
 
-\begin{comment}
-\section{Rename field; Add new required field}
-Starter problems suggested by Geoffrey. These are already directly supported in SQL, so there is good support in SQL schema change tools, but they don't address how to synchronize the change with live code refactoring or local-first code deployment.
-\end{comment}
+
+
+\section{Related Work}
+
+TODO: Maybe insert something about methodology in general?
+(ref the table challenges paper? although this paper is no longer so much about challenges)
+
+\paragraph{Schema evolution.}
+Schema evolution has long been a major problem for SQL databases, which provide suprisingly little help. SQLite~\cite{sqliteDatatypes} uses dynamically typed values allowing them to be implicitly converted if the datatype of the column changes. MYSql~\cite{mysqlAlterTable} can reorder columns without destroying their data. But apart from such special cases, SQL databases have no general purpose support for data migration. As a result in practice schema evolution is still mostly done by writing custom SQL code to alter the schema and migrate the data. Such custom code is greatly complicated if it needs to be done without taking the database offline or must be coordinated across multiple shards. In \textit{Refactoring Databases} \citet{ambler06} offer a comprehensive taxonomy of schema evolution patterns, including typical strategies for online migration and sample SQL implementations.
+
+\citet{bernstein07} observed in 2007 ``There are hardly any schema evolution tools today. This is rather surprising since there is a huge literature on schema evolution spanning more than two decades.'' There are now more tools available. Some tools such as Liquibase~\cite{liquibase} and PlanetScale\cite{planetscale} could be characterized as version control and continuous integration/deployment for schema. They track schema changes and can calculate diffs in the form of SQL DDL statements to convert one schema version to another, but do not help migrate data. Unfortunately comparing schemas can be ambiguous about the intention of changes. For example has a column been renamed or has it been deleted and a new one created? That distinction makes a big difference to the data in that column. EvolveDB\cite{evolvedb} addresses this ambiguity by reverse-engineering the schema into a richer data model and tracking the edits to that model within an IDE. This more precise edit history can be used to infer higher level intentions of a schema change, which then generate SQL scripts to evolve the database. EdgeDB~\cite{edgedb} resolves ambiguities by asking questions of the developer, with some answers supplying custom migration code in a proprietary query language.
+
+Some tools provide a Domain Specific Language (DSL) to describe schema evolution. Rails Migrations~\cite{RailsMigrations} embeds a DSL in Ruby to manage schema migration but is comparable to the capabilities of SQL DDL, often requiring the addition of custom Ruby or SQL code. \citet{curino08} spawned a stream of research on Database Evolution Languages (DEL) by defining a Schema Modification Operator (SMO) as ``a function that receives as input a relational schema and the underlying database, and produces as output a (modified) version of the input schema and a migrated version of the database''. SMOs can also rewrite queries to accomodate schema changes. \citet{herrmann15} defined a relationally complete DEL and then extended it into a Bidirectional Database Evolution Language (BiDEL)~\cite{herrmann17}. BiDEL appears capable of handling the basic requirements of our \textit{Extract/Absorb Entity} and \textit{Multiplicity Change} challenges, though \textit{Split/Merge Entity} is less clear. It provides schema divergence by supporting multiple schema within one database, but would need some extension to handle data divergence.
+
+Schema evolution is also a problem for NoSQL~\cite{sadalage12} databases. While such databases are sometimes called ``schemaless'' in effect that means the schema is left implicit and tools must try to infer it~\cite{storl20, storl22}. \citet{Cambria} uses lenses~\cite{Foster2007} for bidirectional transformation of JSON. \citet{scherzinger13} define a set of operators like the relational SMOs discussed above. \citeauthor*{chillon21}~\cite{chillon21, chillon22} offer a more comprehensive set of SMOs that may be capable of handling \textit{Extract/Absorb Entity} and \textit{Multiplicity Change} but not \textit{Split/Merge Entity} nor divergence. None of the above approaches to NoSQL evolution have yet extended into updating code or rewriting queries like their SQL cousins.
+
+Schema evolution has also been studied for Object Oriented Databases(OODB)~\cite{li99,banerjee87}. Smalltalk~\cite{Goldberg80} is itself an OODB, persisting all object instances in an ``image file'' with some evolution capabilities incorporated in the programming environment~\cite[pp.252-272]{Goldberg80}. Gemstone turns the Smalltalk image into a production-quality database and accordingly provides a complex schema evolution API~\cite{Gemstone}.
+
+\paragraph{Live, MDD, etc. programming?}
+
+
+% Some references from Tomas
+%
+% collaborative programmign tools
+\cite{goldman2011real,kurniawan2015coder,replit}
+% exploratory/live review paper
+\cite{rein2018exploratory}
+% hot reload in live systems
+\cite{barenz2020essence,beckmann2021shortening}
+
+% Some references from Tijs
+%
+% SQL+code
+\cite{Cleve2006,wang2019synthesizing}
+% BX
+\cite{czarnecki2009bidirectional}
+% MDD
+\cite{metamodels,alanen2003difference}.
 
 \begin{comment}
-\section{Cambria (Geoffrey/pvh)}
-\citet{Cambria} exhumed and studied the old problem of schema change, primarily in the context of local-first software. In this paper we add more scenarios and the complementary problems of live programming. The primary goal of local-first software is user autonomy, which could include letting users stay on older versions of application code while continuing to collaborate with newer versions. This problem is a nice counterpart to that of Divergence Control. They both require a kind of bidirectional schema change, with Cambria building upon research on bidirectional programming with lenses, while Divergence Control is more closely connected to version control techniques. Appendix III of \cite{Cambria} discusses the tricky problem of converting between scalars and arrays (which in data modeling is called a multiplicity change). That could be the challenge problem right there.
+From Tijs:
 
-The Cambria paper also presents motivating examples of schema change problems in Stripe, Kafka, and Mastodon. Perhaps one of those examples could be crafted into a challenge problem.
+BX community:
+https://www.cs.cornell.edu/~jnfoster/papers/grace-report.pdf
+(overview paper)
+
+Isil Dilig's stuff;
+https://www.cs.utexas.edu/~isil/pldi19b.pdf
+https://www.cs.utexas.edu/~isil/vldb20.pdf
+
+Eelco Visser/Sander Vermolen
+https://dblp.org/pid/10/6098.html
+(we’ve discussed the catalog before)
+
+On the code-database co-evolution problem:
+https://link.springer.com/chapter/10.1007/11877028_17
+(little less technical than Isil’s stuff)
+
+Coupled transformations:
+https://dl.acm.org/doi/10.1007/978-3-540-69611-7_19
+https://www.sciencedirect.com/science/article/pii/S1571066108003058
+https://link.springer.com/chapter/10.1007/978-3-540-87875-9_45
+
+(from the MDD angle, only the tip of the ice berg…)
+
+Divergence in model-driven:
+https://dl.acm.org/doi/10.1145/2000410.2000414
+
+The seminal model-diffing paper:
+http://btn1x4.inf.uni-bayreuth.de/publications/dotor_buchmann/SCM/ChefRepo/DiffUndMerge/Alanen2003.pdf
+(Diffing, versioning, collaborative editing, it’s all well researched in MDD)
+
+
+
+Convex migration DSL: https://stack.convex.dev/migrating-data-with-mutations
+
+dataframe diff https://homepages.inf.ed.ac.uk/csutton/publications/datadiff.pdf
+
+Durable computing: pins runtime data frames to code versions. Doesn't handle problem of global data schema change.
+https://restate.dev/blog/solving-durable-executions-immutability-problem/
+https://restate.dev/blog/code-that-sleeps-for-a-month/
+
+Tijs on Live programming and model-driven engineering
+https://ir.cwi.nl/pub/23770
+https://dl.acm.org/doi/10.1007/s10270-017-0608-7
+https://dl.acm.org/doi/10.1145/3276604.3276611
+https://ir.cwi.nl/pub/21858
+
+
+From Geoffrey:
+1) Finding Data Compatibility Bugs with JSON Subschema Checking
+https://dl.acm.org/doi/pdf/10.1145/3460319.3464796
+I just found this paper this morning so I haven't read it yet, but the abstract seems very relevant. It's about automatically determining whether two JSON schemas are "compatible", with a subtyping metaphor.
+2) Confluent Schema Registry:
+https://docs.confluent.io/platform/current/schema-registry/index.html
+An interesting example of how schema change is handled in the wild. In the Cambria essay we wrote some reflections on it which basically capture my opinions.
 \end{comment}
 
-\begin{comment}
-\section{Denormalization (Matt Tantaman)}
-Matt points out Extract Entity is a normalization so we ought to complement it with a denormalization. Note that copying/duplication is a technical problem in some formalisms like lenses. Denormalization is often done for performance reasons but that isn't an issue in our small-scale scenarios. What is a small-scale use case for denormalization?
 
-There are good cases for denormalizing from 1NF, i.e. nesting structures. Local-first software seems focused on JSON data rather than relational. An extension of Extract Entity is \textit{Nest Entity} where a table of orders are nested inside each customer.
-\end{comment}
 
 %\bibliographystyle{abbrv}
 %\bibliography{paper}
