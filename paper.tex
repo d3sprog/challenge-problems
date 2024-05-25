@@ -578,7 +578,7 @@ Solutions should try to minimize:
     \\
     &
     \textsf{schema}_\beta
-    \arrow[ld, "\mathit{rebase}\left(\textsf{change}_\alpha {\,,\;} \textsf{change}_\beta\right)"{name=L4, near start, description}]
+    \arrow[ld, "\textsf{change}_\alpha \succ\, \textsf{change}_\beta"{name=L4, near start, description}]
     \arrow[rr]
     &
     &
@@ -595,7 +595,7 @@ Solutions should try to minimize:
     %\arrow[Rightarrow, from=L3, to=R3, crossing over]
     &
   \end{tikzcd}
-  \caption{Mergeing divergent changes}
+  \caption{Mergeing divergent changes with rebase ($\succ$)}
 \end{figure}
 
 
@@ -624,7 +624,7 @@ Solutions should try to minimize:
     &
     &
     \textsf{data}_{\alpha\gamma}
-    \arrow[dd, "\mathit{rebase}\left(\textsf{update}_\beta {\,,\;} \textsf{update}_\gamma\right)"{near start, description}]
+    \arrow[dd, "\textsf{update}_\beta \succ\, \textsf{migrate}_\alpha \succ\, \textsf{update}_\gamma"{near start, description}]
     \\
     &
     \textsf{schema}
@@ -633,7 +633,7 @@ Solutions should try to minimize:
     &
     &
     \textsf{data}_\beta
-    \arrow[ld, "\textsf{migrate}_{\alpha\beta}"{name=R4, near start, description}]
+    \arrow[ld, "\textsf{migrate}_\alpha"{name=R4, near start, description}]
     \arrow[Rightarrow, from=L4, to=R4]
     \\
     \textsf{schema}_\alpha
@@ -641,6 +641,7 @@ Solutions should try to minimize:
     &
     &
     \textsf{data}_{\alpha\beta}
+    \arrow[from=uu, crossing over, "\textsf{update}_\beta \succ\, \textsf{migrate}_\alpha"{near start, description}]
     &
     &
     \textsf{data}_{\alpha\beta\gamma}
