@@ -526,6 +526,7 @@ Solutions should try to minimize:
 \section{diagrams}
 
 \begin{figure}[H]
+  \centering
   \begin{tikzcd}[sep = 6em]
     \textsf{query}
     \arrow[d, "\textsf{refactor}_\alpha"{name=L, description}]
@@ -552,6 +553,7 @@ Solutions should try to minimize:
 \end{figure}
 
 \begin{figure}[H]
+  \centering
   \begin{tikzcd}[column sep = large, row sep = 5em]
     &
     \textsf{schema}
@@ -576,7 +578,7 @@ Solutions should try to minimize:
     \\
     &
     \textsf{schema}_\beta
-    \arrow[ld, red, "\mathit{merge}\left(\textsf{change}_\alpha {\,,\;} \textsf{change}_\beta\right)"{name=L4, near start, description}]
+    \arrow[ld, "\mathit{rebase}\left(\textsf{change}_\alpha {\,,\;} \textsf{change}_\beta\right)"{name=L4, near start, description}]
     \arrow[rr]
     &
     &
@@ -594,6 +596,56 @@ Solutions should try to minimize:
     &
   \end{tikzcd}
   \caption{Mergeing divergent changes}
+\end{figure}
+
+
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzcd}[column sep = large, row sep = 5em]
+    &
+    \textsf{schema}
+    \arrow[ld, red, "\textsf{change}_\alpha"{name=L2, near start, description}]
+    \arrow[rr, "\textsf{constrains}"]
+    \arrow[dd, "\textsf{identity}"{near start, description}]
+    &
+    &
+    \textsf{data}
+    \arrow[dd, red, "\textsf{update}_\beta"{near start, description}]
+    \\
+    \textsf{schema}_\alpha
+    \arrow[rr, crossing over]
+    &
+    &
+    \textsf{data}_\alpha
+    \arrow[from=ur, crossing over, "\textsf{migrate}_\alpha"{name=R2, near start, description}]
+    \arrow[Rightarrow, from=L2, to=R2, crossing over, "\textsf{propagate}"{above}]
+    \arrow[rr, red, crossing over, "\textsf{update}_\gamma"{near start, description}]
+    &
+    &
+    \textsf{data}_{\alpha\gamma}
+    \arrow[dd, "\mathit{rebase}\left(\textsf{update}_\beta {\,,\;} \textsf{update}_\gamma\right)"{near start, description}]
+    \\
+    &
+    \textsf{schema}
+    \arrow[ld, "\textsf{change}_\alpha"{name=L4, near start, description}]
+    \arrow[rr]
+    &
+    &
+    \textsf{data}_\beta
+    \arrow[ld, "\textsf{migrate}_{\alpha\beta}"{name=R4, near start, description}]
+    \arrow[Rightarrow, from=L4, to=R4]
+    \\
+    \textsf{schema}_\alpha
+    \arrow[rr]
+    &
+    &
+    \textsf{data}_{\alpha\beta}
+    &
+    &
+    \textsf{data}_{\alpha\beta\gamma}
+  \end{tikzcd}
+  \caption{Conference Organizer merging schema and divergent data updates}
 \end{figure}
 
 
