@@ -134,9 +134,9 @@ programming environment (through live programming \cite{rein2018exploratory}).
 To make programming more effective, future programming systems will need to further tighten
 the feedback loop. They will need to enable programmers to collaborate at a fine-grained level,
 letting them adopt individual changes created by their collaborators (as in local-first software
-\cite{localfirst}). To provide immediate feedback, future programming systems will also need to
-transcend treating state as ephemeral, tied to the lifetime of a running program and reset when the
-program is edited.
+\cite{localfirst}). To provide live feedback, future programming systems will also need to
+transcend treating state as ephemeral and reset when the
+program is edited and rerun.
 
 To conceive of such systems, we need to shift our focus to \emph{programming systems} \cite{techdims}
 where program state is persistent and co-evolves with the behavior and data of the system. This is
@@ -146,8 +146,8 @@ be edited without resetting all state.
 
 While we are firmly convinced that more collaborative and live programming systems are the
 future of programming, there are a number of problems that need to be resolved in order for
-such systems to become a reality. The key problem is \emph{type evolution}, i.e., how to
-handle the change of schema of the data program works with in a way that preserves integrity
+such systems to become a reality. A key problem is \emph{type evolution}, i.e., how to
+gracefully adapt the shape of data used in a program while preserving integrity
 constraints, existing data and the logic of code.
 
 Type evolution is not a new problem. It exists in various forms in a range of existing systems.
@@ -205,10 +205,10 @@ a program is always tearing itself apart.''
 As is the case for buildings, making a change at surface layers (skin or stuff) is relatively easy,
 but a change at a more fundamental layer (structure) has cascading effects on layers that depend on it.
 In the case of programs, a more fundamental layer defines the shape of data and code.
-We refer to this structure as \emph{types}, although we do not use the term in an precise technical
+We refer to this structure as \emph{types}, although we do not use the term in a precise technical
 sense. In our conceptual framework, types may be data types that define the shape of data, they
 may be explicitly declared in code and checked statically, as well as dynamically checked or
-even implicit. The key property of types for us is that they determine the shape of other layers
+even implicit. The key property of types for us is that they constrain the shape of other layers
 of a program, namely data and code. As a result, a change of program types requires a
 corresponding change in program data and code.
 
@@ -244,7 +244,7 @@ may diverge.
 
 \subsection{Conceptual Framework}
 
-We now describe a conceptual framework lets us view a range of diverse set of real-world
+We now describe a conceptual framework that lets us view a diverse set of real-world
 type evolution problems in a unified way. We distinguish between two dimensions.
 The \emph{local dimension} is concerned with how type evolution affects data and code within
 a single program. The \emph{non-local dimension} is concerned with how type evolution
@@ -252,7 +252,7 @@ propagates across different program variants that may exist independently.
 
 \paragraph{Program Layers.}
 We consider the more permanent layer of \emph{types} and two less permanent layers of code and
-data that are structured according to types. In specific case studies, the layers may map to
+data that are structured by types. In specific case studies, the layers may map to
 different aspects of programs, some may be not present and some may be implicit.
 
 \begin{itemize}
@@ -1386,19 +1386,19 @@ Schema evolution is also a problem for NoSQL~\cite{sadalage12} databases. While 
 
 Schema evolution has also been studied for Object Oriented Databases(OODB)~\cite{li99,banerjee87}. Smalltalk~\cite{Goldberg80} is itself an OODB, persisting all object instances in an ``image file'' with some evolution capabilities incorporated in the programming environment~\cite[pp.252-272]{Goldberg80}. Gemstone turns the Smalltalk image into a production-quality database and accordingly provides a complex schema evolution API~\cite{Gemstone}.
 
-\paragraph{Type-driven transformations}
+\paragraph{Type-driven transformations.}
 Programming language theory undergirds research on type-driven transformations. Bidirectional Transformations~\cite{czarnecki2009bidirectional} have been used for data format conversion and view update.
 Coupled Transformations~\cite{Berdaguer07, alcino06, Cleve2006} express transformations coordinated between types and their instances by encoding them into functions on Haskell GADTs built with strategy combinators. \citet{JVisser08} extends the encoding to transform queries written in point-free style. \citet{lammel16} recapitulates coupled transformations within logic programming which extends it to transform logic programs. It is not clear how bidirectional transformations can handle generating the unique IDs required in some evolutions, nor the information loss and duplication which can arise in some divergence scenarios.
 
-\paragraph{Model Driven Engineering}
+\paragraph{Model Driven Engineering.}
 Model Driven Engineering has also studied evolution. Unlike the textual artifacts involved in other domains, models typically assign unique indentifiers enabling more precise differencing and mergeing~\cite{alanen2003}.
 Models are often themselves modeled by a metamodel, which lifts the evolution problem to the metalevel: models must be migrated through the evolution of their metamodel, analogously to changing the grammar of a programming language.~\cite{Herrmannsdoerfer11}. \citet{Cicchetti11} study metamodel evolution in the context of divergent changes.
 \citet{vermolen11} define a DSL for evolving a data model by generating SQL migrations on the backing database. They consider the evolution of OO-style subclass hierarchies which goes beyond most other work. Their running example includes both our Extract Entity and Multiplicty Change examples, and would make for a good follow-on problem. However they do not address code/query rewriting.
 
-\paragraph{Program synthesis}
-\citet{wang19} use program synthesis to rewrite SQL programs to adapt to a schema change. This process is driven by finding possible correspondences between columns in the old and new schema guided by hueristics on textual similarity. It is assumed the migration does not change datatypes or lose any information visible to the programs yet those are real needs. It is not clear how pathologically ambiguous schema changes are resolved (for example renaming equityped columns).
+\paragraph{Program synthesis.}
+\citet{wang19} use program synthesis to rewrite SQL programs to adapt to a schema change. This process is driven by finding possible correspondences between columns in the old and new schema guided by heuristics on textual similarity. It is assumed the migration does not change datatypes or lose any information visible to the programs yet those are real needs. It is not clear how pathologically ambiguous schema changes are resolved (for example renaming equityped columns).
 
-\paragraph{Migration by example}
+\paragraph{Migration by example.}
 Programming by example has been used to infer schema migration programs~\cite{wang20, Alexe11}. This work has dealt with the reality that schema live in the database and so examples must be supplied separately, but we wonder why not incorporate examples into a schema definition language? Then purely textual edits that properly adapted the examples could be used to infer migrations and resolve the ambiguities from comparing pure schema.
 
 \paragraph{Tijs} \cite{vanRozen15, vanRozen19, RuntimeConstraint, SemanticDeltas}
