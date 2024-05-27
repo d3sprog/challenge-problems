@@ -1386,15 +1386,19 @@ Schema evolution is also a problem for NoSQL~\cite{sadalage12} databases. While 
 
 Schema evolution has also been studied for Object Oriented Databases(OODB)~\cite{li99,banerjee87}. Smalltalk~\cite{Goldberg80} is itself an OODB, persisting all object instances in an ``image file'' with some evolution capabilities incorporated in the programming environment~\cite[pp.252-272]{Goldberg80}. Gemstone turns the Smalltalk image into a production-quality database and accordingly provides a complex schema evolution API~\cite{Gemstone}.
 
+\paragraph{Type-driven transformations}
 Programming language theory undergirds research on type-driven transformations. Bidirectional Transformations~\cite{czarnecki2009bidirectional} have been used for data format conversion and view update.
 Coupled Transformations~\cite{Berdaguer07, alcino06, Cleve2006} express transformations coordinated between types and their instances by encoding them into functions on Haskell GADTs built with strategy combinators. \citet{JVisser08} extends the encoding to transform queries written in point-free style. \citet{lammel16} recapitulates coupled transformations within logic programming which extends it to transform logic programs. It is not clear how bidirectional transformations can handle generating the unique IDs required in some evolutions, nor the information loss and duplication which can arise in some divergence scenarios.
 
+\paragraph{Model Driven Engineering}
 Model Driven Engineering has also studied evolution. Unlike the textual artifacts involved in other domains, models typically assign unique indentifiers enabling more precise differencing and mergeing~\cite{alanen2003}.
 Models are often themselves modeled by a metamodel, which lifts the evolution problem to the metalevel: models must be migrated through the evolution of their metamodel, analogously to changing the grammar of a programming language.~\cite{Herrmannsdoerfer11}. \citet{Cicchetti11} study metamodel evolution in the context of divergent changes.
 \citet{vermolen11} define a DSL for evolving a data model by generating SQL migrations on the backing database. They consider the evolution of OO-style subclass hierarchies which goes beyond most other work. Their running example includes both our Extract Entity and Multiplicty Change examples, and would make for a good follow-on problem. However they do not address code/query rewriting.
 
+\paragraph{Program synthesis}
 \citet{wang19} use program synthesis to rewrite SQL programs to adapt to a schema change. This process is driven by finding possible correspondences between columns in the old and new schema guided by hueristics on textual similarity. It is assumed the migration does not change datatypes or lose any information visible to the programs yet those are real needs. It is not clear how pathologically ambiguous schema changes are resolved (for example renaming equityped columns).
 
+\paragraph{Migration by example}
 Programming by example has been used to infer schema migration programs~\cite{wang20, Alexe11}. This work has dealt with the reality that schema live in the database and so examples must be supplied separately, but we wonder why not incorporate examples into a schema definition language? Then purely textual edits that properly adapted the examples could be used to infer migrations and resolve the ambiguities from comparing pure schema.
 
 \paragraph{Tijs} \cite{vanRozen15, vanRozen19, RuntimeConstraint, SemanticDeltas}
