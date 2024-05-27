@@ -167,12 +167,12 @@ constraints, existing data and the logic of code.
 Type evolution is not a new problem. It exists in various forms in a range of existing systems.
 The problem of schema evolution in databases is well-studied \cite{erhard06}.
 It typically considers data integrity, although co-evolution of database schema
-and code has also been studied \cite{Cleve2006,wang2019synthesizing}.
+and code has also been studied \cite{Cleve2006,wang19}.
 In live programming, the problem is known as hot code reloading \cite{barenz2020essence,beckmann2021shortening},
 although it typically focuses on updating transient state and ignores the problem of more complex
 data migrations. The problem is also studied in the bidirectional transformation (BX)
 community \cite{czarnecki2009bidirectional}, in work on model-driven development
-\cite{metamodels,alanen2003difference} and in more low-level work on dynamic software updating
+\cite{Cicchetti11,alanen2003} and in more low-level work on dynamic software updating
 \cite{hicks2005dynamic}.
 
 Looking at type evolution from the perspective of programming systems can offer a new perspective that
@@ -1325,61 +1325,31 @@ Schema evolution is also a problem for NoSQL~\cite{sadalage12} databases. While 
 
 Schema evolution has also been studied for Object Oriented Databases(OODB)~\cite{li99,banerjee87}. Smalltalk~\cite{Goldberg80} is itself an OODB, persisting all object instances in an ``image file'' with some evolution capabilities incorporated in the programming environment~\cite[pp.252-272]{Goldberg80}. Gemstone turns the Smalltalk image into a production-quality database and accordingly provides a complex schema evolution API~\cite{Gemstone}.
 
+Programming language theory undergirds research on type-driven transformations. Bidirectional Transformations~\cite{czarnecki2009bidirectional} have been used for data format conversion and view update.
+Coupled Transformations~\cite{Berdaguer07, alcino06, Cleve2006} express transformations coordinated between types and their instances by encoding them into functions on Haskell GADTs built with strategy combinators. \citet{JVisser08} extends the encoding to transform queries written in point-free style. \citet{lammel16} recapitulates coupled transformations within logic programming which extends it to transform logic programs. It is not clear how bidirectional transformations can handle generating the unique IDs required in some evolutions, nor the information loss and duplication which can arise in some divergence scenarios.
+
+Model Driven Engineering has also studied evolution. Unlike the textual artifacts involved in other domains, models typically assign unique indentifiers enabling more precise differencing and mergeing~\cite{alanen2003}.
+Models are often themselves modeled by a metamodel, which lifts the evolution problem to the metalevel: models must be migrated through the evolution of their metamodel, analogously to changing the grammar of a programming language.~\cite{Herrmannsdoerfer11}. \citet{Cicchetti11} study metamodel evolution in the context of divergent changes.
+\citet{vermolen11} define a DSL for evolving a data model by generating SQL migrations on the backing database. They consider the evolution of OO-style subclass hierarchies which goes beyond most other work. Their running example includes both our Extract Entity and Multiplicty Change examples, and would make for a good follow-on problem. However they do not address code/query rewriting.
+
+\citet{wang19} use program synthesis to rewrite SQL programs to adapt to a schema change. This process is driven by finding possible correspondences between columns in the old and new schema guided by hueristics on textual similarity. It is assumed the migration does not change datatypes or lose any information visible to the programs yet those are real needs. It is not clear how pathologically ambiguous schema changes are resolved (for example renaming equityped columns).
+
+Programming by example has been used to infer schema migration programs~\cite{wang20, Alexe11}. This work has dealt with the reality that schema live in the database and so examples must be supplied separately, but we wonder why not incorporate examples into a schema definition language? Then purely textual edits that properly adapted the examples could be used to infer migrations and resolve the ambiguities from comparing pure schema.
+
+\paragraph{Tijs} \cite{vanRozen15, vanRozen19, RuntimeConstraint, SemanticDeltas}
+
 \paragraph{Live, MDD, etc. programming?}
 
-
 % Some references from Tomas
-%
-% collaborative programmign tools
+\paragraph{collaborative programmign tools}
 \cite{goldman2011real,kurniawan2015coder,replit}
-% exploratory/live review paper
+\paragraph{exploratory/live review paper}
 \cite{rein2018exploratory}
-% hot reload in live systems
+\paragraph{hot reload in live systems}
 \cite{barenz2020essence,beckmann2021shortening}
 
-% Some references from Tijs
-%
-% SQL+code
-\cite{Cleve2006,wang2019synthesizing}
-% BX
-\cite{czarnecki2009bidirectional}
-% MDD
-\cite{metamodels,alanen2003difference}.
 
 \begin{comment}
-From Tijs:
-
-BX community:
-https://www.cs.cornell.edu/~jnfoster/papers/grace-report.pdf
-(overview paper)
-
-Isil Dilig's stuff;
-https://www.cs.utexas.edu/~isil/pldi19b.pdf
-https://www.cs.utexas.edu/~isil/vldb20.pdf
-
-Eelco Visser/Sander Vermolen
-https://dblp.org/pid/10/6098.html
-(we’ve discussed the catalog before)
-
-On the code-database co-evolution problem:
-https://link.springer.com/chapter/10.1007/11877028_17
-(little less technical than Isil’s stuff)
-
-Coupled transformations:
-https://dl.acm.org/doi/10.1007/978-3-540-69611-7_19
-https://www.sciencedirect.com/science/article/pii/S1571066108003058
-https://link.springer.com/chapter/10.1007/978-3-540-87875-9_45
-
-(from the MDD angle, only the tip of the ice berg…)
-
-Divergence in model-driven:
-https://dl.acm.org/doi/10.1145/2000410.2000414
-
-The seminal model-diffing paper:
-http://btn1x4.inf.uni-bayreuth.de/publications/dotor_buchmann/SCM/ChefRepo/DiffUndMerge/Alanen2003.pdf
-(Diffing, versioning, collaborative editing, it’s all well researched in MDD)
-
-
 
 Convex migration DSL: https://stack.convex.dev/migrating-data-with-mutations
 
@@ -1388,13 +1358,6 @@ dataframe diff https://homepages.inf.ed.ac.uk/csutton/publications/datadiff.pdf
 Durable computing: pins runtime data frames to code versions. Doesn't handle problem of global data schema change.
 https://restate.dev/blog/solving-durable-executions-immutability-problem/
 https://restate.dev/blog/code-that-sleeps-for-a-month/
-
-Tijs on Live programming and model-driven engineering
-https://ir.cwi.nl/pub/23770
-https://dl.acm.org/doi/10.1007/s10270-017-0608-7
-https://dl.acm.org/doi/10.1145/3276604.3276611
-https://ir.cwi.nl/pub/21858
-
 
 From Geoffrey:
 1) Finding Data Compatibility Bugs with JSON Subschema Checking
@@ -1410,6 +1373,7 @@ An interesting example of how schema change is handled in the wild. In the Cambr
 %\bibliographystyle{abbrv}
 %\bibliography{paper}
 \printbibliography
+
 
 \appendix
 
