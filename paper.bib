@@ -1567,6 +1567,24 @@ year = 2024
   keywords   = {Text differencing, Models at run time, Model patching, Live programming, Domain-specific languages, Adapting models}
 }
 
+@inproceedings{vanRozen23,
+  author    = {van Rozen, Riemer},
+  title     = {Cascade: A Meta-language for Change, Cause and Effect},
+  year      = {2023},
+  isbn      = {9798400703966},
+  publisher = {Association for Computing Machinery},
+  url       = {https://doi.org/10.1145/3623476.3623515},
+  doi       = {10.1145/3623476.3623515},
+  abstract  = {Live programming brings code to life with immediate and continuous feedback. To enjoy its benefits, programmers need powerful languages and live programming environments for understanding the effects of code modifications on running programs. Unfortunately, the enabling technology that powers these languages, is missing. Change, a crucial enabler for explorative coding, omniscient debugging and version control, is a potential solution.
+               We aim to deliver generic solutions for creating these languages, in particular Domain-Specific Languages (DSLs). We present Cascade, a meta-language for expressing DSLs with interface- and feedback-mechanisms that drive live programming. We demonstrate run-time migrations, ripple effects and live desugaring of three existing DSLs. Our results show that an explicit representation of change is instrumental for how these languages are built, and that cause-and-effect relationships are vital for delivering precise feedback.},
+  booktitle = {Proceedings of the 16th ACM SIGPLAN International Conference on Software Language Engineering},
+  pages     = {149–162},
+  numpages  = {14},
+  keywords  = {bidirectional transformations, domain-specific languages, live programming, metamodels, model migration},
+  location  = {Cascais, Portugal},
+  series    = {SLE 2023}
+}
+
 @inproceedings{RuntimeConstraint,
   author    = {Tikhonova, Ulyana and Stoel, Jouke and van der Storm, Tijs and Degueule, Thomas},
   title     = {Constraint-Based Run-Time State Migration for Live Modeling},
@@ -1635,4 +1653,36 @@ year = 2024
   numpages  = {14},
   location  = {<conf-loc>, <city>Madison</city>, <state>Wisconsin</state>, </conf-loc>},
   series    = {PODS '02}
+}
+
+@article{Rauch_2019,
+  title     = {Babylonian-style Programming: Design and Implementation of an Integration of Live Examples into General-purpose Source Code},
+  volume    = {3},
+  issn      = {2473-7321},
+  url       = {http://dx.doi.org/10.22152/programming-journal.org/2019/3/9},
+  doi       = {10.22152/programming-journal.org/2019/3/9},
+  number    = {3},
+  journal   = {The Art, Science, and Engineering of Programming},
+  publisher = {Aspect-Oriented Software Association (AOSA)},
+  author    = {Rauch, David and Rein, Patrick and Ramson, Stefan and Lincke, Jens and Hirschfeld, Robert},
+  year      = {2019},
+  month     = feb
+}
+
+@inproceedings{mcdirmid13,
+  author    = {McDirmid, Sean},
+  title     = {Usable live programming},
+  year      = {2013},
+  isbn      = {9781450324724},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/2509578.2509585},
+  doi       = {10.1145/2509578.2509585},
+  abstract  = {Programming today involves code editing mixed with bouts of debugging to get feedback on code execution. For programming to be more fluid, editing and debugging should occur concurrently as live programming. This paper describes how live execution feedback can be woven into the editor by making places in program execution, not just code, navigable so that evaluation results can be probed directly within the code editor. A pane aside the editor also traces execution with entries that are similarly navigable, enabling quick problem diagnosis. Both probes and traces are refreshed continuously during editing, and are easily configured based on debugging needs. We demonstrate the usefulness of this live programming experience with a prototype.},
+  booktitle = {Proceedings of the 2013 ACM International Symposium on New Ideas, New Paradigms, and Reflections on Programming \& Software},
+  pages     = {53–62},
+  numpages  = {10},
+  keywords  = {live programming, debugging},
+  location  = {Indianapolis, Indiana, USA},
+  series    = {Onward! 2013}
 }
