@@ -79,64 +79,50 @@
 
 \authorrunning{J. Edwards, T. Petricek, T. van der Storm, G. Litt}
 
-\keywords{schema change, database migration, live programming, local-first programming}
+\keywords{Type Evolution, Schema Evolution, Live Programming, Local-first Programming}
 
 % TODO: Please go to https://dl.acm.org/ccs/ccs.cfm and generate your Classification System
 
 \maketitle
 
 \begin{abstract}
-Schema change is an unsolved problem in both live programming and local-first software. We include
-in schema change any change to the expected shape of data, whether that is expressed explicitly
-in a database schema or type system, or whether those expectations are implicit in the behavior
-of the code.
 
-Schema changes during live programming can create a mismatch between the code and
-data in the running environment. Correspondingly, Schema changes in local-first programming can
-create mismatches between data in different replicas, and between data in a replica and the code
-colocated with it. In all of these situations the problem of schema change is to migrate or
-translate existing data in coordination with changes to the code.
+% Context: What is the broad context of the work? What is the importance of the general research area?
+Many recent programming improvements have been enabled by shorter feedback loops. To further
+advance the state of programming, we need programming systems that enable rapid collaboration
+and make programming more live across the entire development stack. To do this, programming
+systems need to preserve state during development and interaction with the programmer.
 
-This paper contributes a set of concrete scenarios involving schema change that are offered as
-challenge problems to the live programming and local-first communities. We hope that these
-problems will spur progress by providing concrete objectives and a basis for comparing alternative
-solutions.
+% Inquiry: What problem or question does the paper address? How has this problem or question been addressed?
+The key obstacle to live collaborative programming systems is the problem of \emph{type evolution}.
+When programmer changes the structure of a type, programming system needs to co-evolve
+existing live data and adapt code that implements the program behaviour to match the new structure.
+This problem has been studied in isolation as schema evolution in databases, hot code reloading
+in live programming and dynamic software updating, but we lack a unified comprehensive perspective.
 
-~
+% Approach: What was done that unveiled new knowledge?
+In this paper, we develop a unfied conceptual framework for analysing the problem of type evolution.
+We use the framework to study type evolution in five diverse case studies.
+%
+% Knowledge: What new facts were uncovered? What new capabilities are enabled by the work?
+By looking at the case studies through a unified perspective, we hope to inspire new thinking
+about the problem of type evolution and also encourage knowledge transfer across sub-fields.
 
-~
-
-
-\noindent\textbf{Context}: \emph{What is the broad context of the work? What is the importance of the general research area?}
-Schema change is an unsolved problem in live and local-first programming that is poorly understood and calls for a more fundamental analysis. It is particularly important as more programming
-is done in programming systems where programs may be changed by their users and as more programming
-is local-first, meaning that such changes need to be synchronized.
-
-\noindent\textbf{Inquiry}: \emph{What problem or question does the paper address? How has this problem or question been addressed?}
-Specific systems have specific solutions, but what is lacking is a general framework for thinking
-about schema change and also a good suite of challenge problems to motivate and evaluate new solutions.
-
-\noindent\textbf{Approach}: \emph{What was done that unveiled new knowledge?}
-We collect challenge problems from a range of different kinds of (primarily) live and local-first
-application contexts. We develop a framework for thinking about program change and use it to
-present our challenge problems in a systematic way.
-
-\noindent\textbf{Knowledge}: \emph{What new facts were uncovered? What new capabilities are enabled by the work?}
-We understand change in programs in a novel way, using a two-dimensional framwork that looks at
-the different pace layers in a program and at the different ways in which change is propagated
-across program variants.
-
-\noindent\textbf{Grounding}: \emph{What argument, feasibility proof, artifacts, or results and evaluation support this work?}
-We use the framework to provide a framing for a range of challenge problems derived from both
-existing literature and our own expertise.
-
-\noindent\textbf{Importance}: \emph{Why does this work matter?}
-This paper contributes a set of concrete scenarios involving schema change that are offered as
-challenge problems to the live programming and local-first communities. We hope that these
-problems will spur progress by providing concrete objectives and a basis for comparing alternative
-solutions.
+% Grounding: What argument, feasibility proof, artifacts, or results and evaluation support this work?
+Our work takes the form of a sequence of challenge problems drawn from real-world programming
+scenario in diverse field such as live programming, database programming and model-driven
+development.
+%
+% Importance: Why does this work matter?
+Tackling the problem of type evolution in a unified way, enabled by our new conceptual framework,
+will make it possible to design and build a future generation of effective, live and collaborative
+programming systems.
 
 \end{abstract}
+
+% ==================================================================================================
+% INTRODUCTION
+% ==================================================================================================
 
 \section{Introduction}
 
@@ -202,6 +188,9 @@ will attempt to tackle.
 \label{fig:layers}
 \end{figure}
 
+% ==================================================================================================
+% FRAMEWORK
+% ==================================================================================================
 
 \section{Type Evolution}
 To paraphrase Stewart Brand \cite{Brand95}, ``almost no programs evolve well. But all programs
@@ -301,10 +290,14 @@ type evolution. The case studies show how well-known solutions or problems in on
 map to another domain and they also provide and inspiration and a benchmark for
 developers of future programming systems.
 
-\section{Live programming in the Elm architecture}
-\label{SECT:elm}
+% ==================================================================================================
+% ELM
+% ==================================================================================================
 
-The first challenge problem we recast in terms of our conceptual framework is live programming
+\section{Live Programming for the Elm Architecture}
+\label{sec:elm}
+
+The first challenge problem that we present in terms of our conceptual framework is live programming
 of user interfaces based on the Elm architecture. In this model, a reactive web application is
 structured in terms of current state and events that affect the state. The implementation then
 consists of two functions called \texttt{update} and \texttt{render}:
@@ -346,27 +339,27 @@ type Event =
 \noindent
 Some programming systems that use the Elm architecture support hot reloading when the
 implementation of the \texttt{render} or \texttt{update} function changes, but they typically
-discard state and restart the application when types are changed. A more effective programming
-system based on live programming would allow updates to both the code of the two functions and
-the structure of the two types.
+discard state and restart the application when the \texttt{State} type changes. A more effective
+programming system based on live programming would allow updates to both the code of the two
+functions and the structure of the two types.
 
 \begin{table}[t]
 \begin{tabular}{lll}\toprule
 {\firamedium Change} & {\firamedium What} & {\firamedium How}\\\midrule
-add & case to \texttt{Event} & requires adding corresponding case to \texttt{update} \\
-remove & case from \texttt{Event} & remove unused code from \texttt{update} \\
-add & field to \texttt{State} & migrate state value and initialize field \\
-remove & field from \texttt{State} & migrate state (assuming field unused) \\
-modify & structure of \texttt{State} & migrate state value and edit code accordingly \\
+Add & case to \texttt{Event} & Requires adding corresponding case to \texttt{update} \\
+Remove & case from \texttt{Event} & Remove unused code from \texttt{update} \\
+Add & field to \texttt{State} & Migrate state value and initialize field \\
+Remove & field from \texttt{State} & Migrate state (assuming field unused) \\
+Modify & structure of \texttt{State} & Migrate state value and edit code accordingly \\
 \bottomrule
 \end{tabular}
 \vspace{0.3em}
 \caption{Changes to types and how a programming system should handle them}
-\label{TBL:elmchanges}
+\label{tbl:elmchanges}
 \vspace{-1em}
 \end{table}
 
-\challenge{Live Type Evolution of State and Events}
+\challenge{Live State Type Evolution}
 Assume that we have a running TODO list with the above state and events. To test the application,
 the programmer has already created a number of items and so there is a value of the
 \texttt{State} type that represents the current state of the application such as:
@@ -400,50 +393,236 @@ back to a Boolean for a checkbox).
 
 More generally, there is a number of edits to the types that the programmer may want to do
 without restarting the application. The edits and the desired handling in the programming
-system are summarized in Table~\ref{TBL:elmchanges}. Modifying the \texttt{Event} type does not
-require data migration (assuming that the change does not happen while there are unprocessed
+system are summarized in Table~\ref{tbl:elmchanges}. Modifying the \texttt{Event} type does not
+require data migration (assuming that the change does not happen when there are unprocessed
 events). It may result in unused code or missing cases in \texttt{update} that need to be addressed.
 Modifying \texttt{State} ranges from relatively simple problems (e.g., adding a new field with a
-default value) to challenging case. In particular, if a programer refactors \texttt{State} to
+default value) to challenging case. In particular, if the programer refactors \texttt{State} to a
 semantically equivalent type, the programming system should, in principle, be able to automatically
 migrate both the original value and implementation of both functions to match the new type.
 
-~
-
-~
-
-\textcolor{red}{TODO: The rest needs more editing}
-
-~
-
-~
-
 \frameworkbox{
-In this
+The evolving \emph{type} in this case is the \texttt{State} type, \emph{code} is the
+program logic implemented in \texttt{update} and \texttt{render} and \emph{data} is the current
+state. To support live programming, a local type change requires synchronizing local data to
+match the new type, and also a change in code so that it continues working against the new type
+structure. In a non-local scenario, programmers would likely want to synchronize types and code,
+but not necessarily data. A collaborative programming system would need to support decentralized
+and possibly divergent type evolution, but without data synchronization.
 }
 
+\subsection{Remarks}
+The key requirement from the live programming perspective is to ``do minimal harm''.
+The migration of \emph{data} needs to be done automatically and the system should strive
+to produce a new state that is as near as possible to the previous state. Migrating
+\emph{code} can be done in various ways (transform code, trigger error condition, etc.),
+but it is desirable to avoid breaking the \texttt{render} function as this would make the
+new application state impossible to visualize.
 
+The specific case where the type is refactored to a semantically equivalent type is related to
+the Extract Entity challenge discussed below. Finally, a programming system tackling this
+challenge may rely on structure editing so that the system has access to a high-level logical
+description of the edits performed by the user.
 
+% ==================================================================================================
+% DATABASES
+% ==================================================================================================
 
-\subsection{Goals}
-As above, the key requirement from the live programming perspective is to ``do minimal harm''. In this case, this results in the following goals:
+\section{Entity Evolution in Data-Centric Systems}
+Many problems studied in the context of database systems equally apply to programming systems
+if we think of them as stateful environments where programs co-exist with their persistent data.
+Although schema evolution is well-studied in databses (Section~\ref{sec:related}), past work
+does not resolve all problems in our second challenge.
 
-\begin{itemize}
-\item When migrating the application state, this needs to be done automatically and the system should strive to produce new state that is as near as possible to the previous state.
-\item The solution may rely on structure editing so that the system has access to a high-level logical description of the edits performed by the user.
-\item The system needs to handle the case when the type structure diverges from the code structure. This can be addressed in various ways (transform code, add error handlers, etc.) but it is desirable to avoid "breaking" the \texttt{render} function as this would make the new application state impossible to see.
-\end{itemize}
+As an example, consider the Acme Corporation that records orders from various customers for
+various products. They use a spreadsheet (Figure~\ref{fig:db-orders}) with a row for each order
+and columns for information about the customer and product. The shipping department filters this
+table on blank ship dates to see what they need to ship. But after a while the orders department
+realizes they are wasting effort duplicating the address for new order from an old customer. And
+when the customer's address changes they have to go back and edit all of their orders.
+
+\begin{figure}
+\begin{adjustwidth}{-2em}{-3em}
+\begin{subfigure}[b]{35em}\vspace{0pt}
+  \sffamily
+  \small
+  \begin{tabular}{ |r|l|r|r|l|l|}
+     \hline
+     oid & item & quantity & ship\_date & customer\_name & customer\_address \\
+     \hline \hline
+     1 & Anvil & 1 & 2/3/23 & Wile E Coyote & 123 Desert Station \\
+     \hline
+     2 & Dynamite & 2 & & Daffy Duck & White Rock Lake \\
+     \hline
+     3 & Bird Seed & 1 & & Wile E Coyote & 123 Desert Station \\
+     \hline
+  \end{tabular}
+  \caption{Spreadsheet recording orders with all associated information}
+  \label{fig:db-orders}
+\end{subfigure}
+\hfill
+\\[-0.5em]~\\
+\begin{subfigure}[b]{20em}\vspace{0pt}
+  \sffamily
+  \small
+  \begin{tabular}{ |r|l|l|}
+    \hline
+    cid & customer\_name & customer\_address \\
+    \hline \hline
+    1 & Wile E Coyote & 123 Desert Station \\
+    \hline
+    2 & Daffy Duck & White Rock Lake \\
+    \hline
+  \end{tabular}
+  \caption{Customers table after type evolution}
+  \label{fig:db-customers}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{20em}\vspace{0pt}
+  \sffamily
+  \small
+  \begin{tabular}{ |r|l|r|r|r|}
+     \hline
+     oid & item & quantity & ship\_date & cid \\
+     \hline \hline
+     1 & Anvil & 1 & 2/3/23 & 1 \\
+     \hline
+     2 & Dynamite & 2 & & 2  \\
+     \hline
+     3 & Bird Seed & 1 & & 1 \\
+     \hline
+    \end{tabular}
+  \caption{Orders linking to Customers, after type evolution}
+ \label{fig:db-orders-link}
+\end{subfigure}
+\end{adjustwidth}
+\vspace{0.25em}
+\caption{Types and data before and after performing Extract Entity}
+\label{fig:db}
+\end{figure}
+
+\challenge{Extract Entity}
+Acme needs to evolve the above type and data into two tables (Figure~\ref{fig:db-customers}, \ref{fig:db-orders-link}),
+one with orders that links to one with customers.  We refer to this as \emph{Extract Entity}
+operation, because it introduces a new \emph{entity}, a referenceable holder of mutable attributes.
+The operation is needed when we realize that some attributes of one type of entity should belong to
+a  distinct type of entity that will be associated with the first one.
+
+The system needs to provide a mechanism for referencing entities, such as by using unique
+identifiers (here consecutive numbers). This allows, for example, a spelling error in a customer
+address to be fixed in one place. It also allow a customer name or address to change without
+breaking the connection from all associated orders. Unique identifiers are the essence of
+entities, whether they are uniquely generated primary keys in a database or an abstraction
+of a memory address in a programming language.
+
+The \textit{Extract Entity} operation must 1) merge duplicates, 2) assign unique identifiers,
+and 3) reference these identifiers from the orders. Our example took the simple approach of
+merging entities whose attributes are all equal. But that might not be correct in all cases.
+What if there was a typo in one of the addresses that made it look different from other instances
+of the customer? To repair that error we need to merge the falsely distinct customers into one
+and fix any references from orders. We call this operation \textit{Merge Entities} -- note that
+it is not a schema change but a data change, yet nevertheless not commonly supported in data APIs.
+
+More generally, entity evolution can happen through operations such as those listed in
+Table~\ref{tbl:dbchanges}. Every schema operation should have an inverse as the
+change in requirements that triggered an evolution might change back again. Inverse
+is also required in research on \emph{divergence control}~\cite{Foster2007, herrmann17, chillon22}.
+The inverse of \textit{Extract Entity} is \textit{Absorb Entity}. It raises the question of how
+to handle \textit{one-to-many} relationships. For example should absorbing orders into customers
+do a relational join, returning us back to the starting point, or should it nest orders within
+customers, as a NoSQL database might do?
+
+The inverse of \textit{Merge Entities} is \textit{Split Entity}, but that can be awkward.
+Imagine that we didn't have addresses for customers to disambiguate them with and only knew
+their non-unique names. Then \textit{Extract Entity} will conflate them and discard the
+information needed to properly invert the operation. Should this information be retained?
+One could object that we shouldn't have taken orders for people we can't uniquely identify
+yet. And even if that was necessary it means the customers really aren't distinct entities
+and shouldn't have been extracted. These are arguments that we shouldn't need \textit{Split
+Entity}, contradicting the principle that evolution operations should be invertible.
+It is interesting to observe that evolution in nature can also fail to invert, leaving
+behind vestigial features. We consider this to be an open issue.
+
+\begin{table}[t]
+\begin{tabular}{lll}\toprule
+{\firamedium Change} & {\firamedium What} & {\firamedium How}\\\midrule
+Extract & new type of entity & Migrate data to a new table and add links \\
+Absorb & a linked type of entity & Migrate data and remove unneeded table \\
+Merge & multiple data items & Automatic de-duplication with mistake handling \\
+Split & multiple data items & Interactively, following user guidance\\
+\bottomrule
+\end{tabular}
+\vspace{0.3em}
+\caption{Changes to types and how a programming system should handle them}
+\label{tbl:dbchanges}
+\vspace{-1em}
+\end{table}
+
+\frameworkbox{
+In a programming system, the \emph{types} to which entity evolution applies can be data tables,
+but also objects or JSON. When the type evolves, the system needs to update corresponding
+live \emph{data} and \emph{code}. In a non-local scenario, entity evolution
+typically concerns permanent data. As a result, the system needs to synchronize types,
+data and code across all replicas. Doing so in a way that allows divergence is discussed
+in the next section.
+}
 
 \subsection{Remarks}
-It is worth noting that the particularly difficult aspect of this challenge, i.e., the case where the structure of state is refactored to an equivalent one, is related to the Extract Entity challenge.
+The central problem is to coordinate the type evolution with code edits to keep the system
+executing live and correctly. Solutions may infer the desired type evolution by analysing
+source code edits, but would typically offer UI affordances for the commands. They should
+try to minimize the number and complexity of commands that must be introduced and also the
+interruption to live execution of the code.
+
+The Extract Entity challenge in the non-local case (for local-first software) is similar to the
+local live programming challenge except that the context is an application that offers similar
+functionality with peer-to-peer collaboration. In this context the schema change does not need
+to be performed interactively -- a developer can take some time to build, test, and package a
+solution, perhaps using an API or DSL. The hard part comes when the schema change is to
+be deployed across all the replicas. This deployment must synchronize code and data upgrades
+(or decouple them as in Cambria~\cite{Cambria}). The deployment must also deal with
+migrating ``in flight'' operations so that all replicas converge on the same state
+without data loss, and ideally without centralized coordination. A radical approach
+could try to incorporate schema change operations into the underlying datastore
+itself (possibly a CRDT) and integrate code as well, but layered solutions are welcome too.
+
+\challenge{Code Co-evolution for Extract Entity}
+
+In a programming system, there is typically also some code for programmatic manipulation
+of entities. The code can, for example, implement a simple CRUD UI that also provides the
+Acme shipping department its view of unshipped orders. The holistic perspective of programming
+systems lets us see this code not as separate from the system, but as its integral part.
+The code thus also needs to co-evolve when the entity evolves. An example is a SQL
+query to report all pending orders in the original schema:
+
+\begin{lstlisting}[language=SQL]
+SELECT order_id, item, quantity, customer_name, customer_address
+FROM Orders WHERE ship_date IS NULL;
+\end{lstlisting}
+
+\noindent
+After applying the \textit{Extract Entity} operation as described earlier, the code should
+be rewritten into the following query that joins the two linked tables:
+
+\begin{lstlisting}[language=SQL]
+SELECT order_id, item, quantity, customer_name, customer_address
+FROM Orders
+JOIN Customers ON Orders.customer_id = Customers.customer_id
+WHERE ship_date IS NULL;
+\end{lstlisting}
+
+\noindent
+The same code transformation would need to be applied to queries written over other
+data representations such as JSON. The system can also use mechanism such as a database
+view and execute the original query over the view. When applying code migrations,
+the system should minimize the need for users to manaually intervene. It should also
+minimize the possibilities that developer-written code is subtly incorrect in edge cases,
+preferably by reducing the need for developer-written code.
 
 
 \newpage
-\textcolor{red}{TODO: The rest needs more editing}
-
 ~
-
-~
+\newpage
 
 % elm
 % database
@@ -498,29 +677,6 @@ Bidirectional transfer of changes between divergent copies is similar in some wa
 \subsection{Goals}
 This challenge invites a change of perspective in both live programming and local-first software. Live programming must move from being a solitary activity to a collaborative workflow, and one where the collaboration is not just on editing source code but on live integrated code and data, as in the Smalltalk/Lisp images of old.\footnote{If only we had this in the 90's when Smalltalk had a shot at the mainstream!} For its part, local-first software must move from automatically converging data replicas to also interactively managing long-term divergence. That implies either application state is being directly exposed to the user, or the application code is using an API to present version control affordances. We encourage both communities to think outside the box of Git, which has proven to baffle not only end-users but also a substantial fraction of developers.
 
-
-\section{Challenge goals}
-\textcolor{red}{Text from the Extract Entity challenge that maybe should be lifted up to the top-level discussion of goals}
-
-
-The Extract Entity challenge for live programming is to provide interactive operations in the programming environment that will perform the schema change on live code and data. The data can be in any form desired, including relations, objects, or JSON. The code can be a simple CRUD UI that also provides the shipping department its view of unshipped orders. The central problem is to coordinate the schema change with code edits/refactorings to keep the system executing live and correctly. Solutions should try to minimize:
-
-\begin{enumerate}
-  \item The number and complexity of commands or UI affordances that must be introduced.
-  \item Interruption to live execution of the code.
-\end{enumerate}
-
-The Extract Entity challenge for local-first software is similar to the live programming challenge except that the context is an application that offers similar functionality with peer-to-peer collaboration. In this context the schema change does not need to be performed interactively -- a developer can take some time to build, test, and package a solution, perhaps using an API or DSL. The hard part comes when the schema change is to be deployed across all the replicas. This deployment must synchronize code and data upgrades (or decouple them as in Cambria~\cite{Cambria}). The deployment must also deal with migrating ``in flight'' operations so that all replicas converge on the same state without data loss, and ideally without centralized coordination. A radical approach could try to incorporate schema change operations into the underlying datastore/CRDT itself and integrate code as well, but layered solutions are welcome too.
-
-\subsection{Goals}
-Solutions should try to minimize:
-
-\begin{enumerate}
-  \item The need for users to manually intervene.
-  \item Possibilities that developer-written code is subtly incorrect in edge cases, preferably by reducing the need for developer-written code.
-  \item The need for a centralized coordinator.
-  \item How long replicas might be partitioned until resynchronization is acquired.
-\end{enumerate}
 
 
 \section{diagrams}
@@ -599,6 +755,14 @@ Solutions should try to minimize:
 \end{figure}
 
 
+\section{Related Work}
+\label{sec:related}
+
+Acme Corp has a problem, for spreadsheets don't naturally support relationships between entities.
+End-user databases like Airtable~\cite{airtable} and Notion~\cite{notion} support \textit{links}
+between tables but do not provide operations that can do an \textit{Extract Entity}. Neither do
+the established database products (see Related Work). Acme will need to write code or do a big manual conversion.
+
 
 \begin{figure}[H]
   \centering
@@ -653,109 +817,6 @@ Solutions should try to minimize:
 \textcolor{red}{[JE] These diagrams are getting hairy. Are they actually helpful?}
 
 \newpage
-
-\section{Extract/Absorb/Split/Merge Entity}
-\textcolor{red}{Maybe called \textit{Individuation}? Maybe called \textit{Entity Evolution}?}
-
-The Acme Corporation needs to record orders from various customers for various products. The simplest implementation is a spreadsheet with a row for each order and columns for information about the customer and product. It might look like this:
-
-\begin{table}[h!]
-  \sffamily
-  \small
-  % \centering
-  \begin{tabular}{ |r|l|r|r|l|l|}
-   \hline
-   order\_id & item & quantity & ship\_date & customer\_name & customer\_address \\
-   \hline \hline
-   1 & Anvil & 1 & 2/3/23 & Wile E Coyote & 123 Desert Station \\
-   \hline
-   2 & Dynamite & 2 & & Daffy Duck & White Rock Lake \\
-   \hline
-   3 & Bird Seed & 1 & & Wile E Coyote & 123 Desert Station \\
-   \hline
-  \end{tabular}
-  \caption{Orders}
-\end{table}
-
-The shipping department filters this table on blank ship dates to see what they need to ship. But after a while the orders department realizes they are wasting effort duplicating the address for new order from an old customer. And when the customer's address changes they have to go back and edit all of their orders. What is needed is two tables, one with orders that links to one with customers, like this:
-
-\begin{table}[h!]
-  \sffamily
-  \small
-  % \centering
-    \begin{tabular}{ |r|l|l|}
-      \hline
-      customer\_id & customer\_name & customer\_address \\
-      \hline \hline
-      1 & Wile E Coyote & 123 Desert Station \\
-      \hline
-      2 & Daffy Duck & White Rock Lake \\
-      \hline
-    \end{tabular}
-  \caption{Customers}
-\end{table}
-
-\begin{table}[h!]
-  \sffamily
-  \small
-  % \centering
-    \begin{tabular}{ |r|l|r|r|r|}
-     \hline
-     order\_id & item & quantity & ship\_date & customer\_id \\
-     \hline \hline
-     1 & Anvil & 1 & 2/3/23 & 1 \\
-     \hline
-     2 & Dynamite & 2 & & 2  \\
-     \hline
-     3 & Bird Seed & 1 & & 1 \\
-     \hline
-    \end{tabular}
-  \caption{Orders linking to Customers}
-\end{table}
-
-We often encounter this situation when we realize that the attributes of one type of entity should actually belong to a distinct type of entity that will be associated with the first one. Often the motivation is to centralize changes to those attributes in one place. That is what it means to be an \textit{entity}: a referenceable holder of mutable attributes. We call this operation \textit{Extract Entity}.
-
-Unique identifiers (here consecutive numbers) have been assigned to the customers and are referenced from the orders. This allows, for example, a spelling error in a customer address to be fixed in one place. It also allow a customer name or address to change without breaking the connection from all associated orders. Unique identifiers are the essence of entities, whether they are uniquely generated primary keys in a database or an abstraction of a memory address in a programming language.
-
-The \textit{Extract Entity} operation must 1) merge duplicates, 2) assign unique identifiers, and 3) reference these identifiers from the orders. Our example took the simple approach of merging entities whose attributes are all equal. But that might not be correct in all cases. What if there was a typo in one of the addresses that made it look different from other instances of the customer? To repair that error we need to merge the falsely distinct customers into one and fix any references from orders. We call this operation \textit{Merge Entities} -- note that it is not a schema change but a data change, yet nevertheless not commonly supported in data APIs.
-
-Acme Corp has a problem, for spreadsheets don't naturally support relationships between entities. End-user databases like Airtable~\cite{airtable} and Notion~\cite{notion} support \textit{links} between tables but do not provide operations that can do an \textit{Extract Entity}. Neither do the established database products (see Related Work). Acme will need to write code or do a big manual conversion.
-
-It is natural to expect every schema evolution to have an inverse, for the change in requirements that triggered an evolution might change back again, and we ought to pay off the technical debt of obsolete design decisions. Research on \textit{Divergence Control}~\cite{Foster2007, herrmann17, chillon22} further suggests operations should be invertible.
-The inverse of \textit{Extract Entity} is \textit{Absorb Entity}. It raises the question of how to handle \textit{one-to-many} relationships. For example should absorbing orders into customers do a relational join, returning us back to the starting point, or should it nest orders within customers, as a NoSQL database might do?
-
-The inverse of \textit{Merge Entities} is \textit{Split Entity}, but that can be awkward. Imagine that we didn't have addresses for customers to disambiguate them with and only knew their non-unique names. Then \textit{Extract Entity} will conflate them and discard the information needed to properly invert the operation. Should this information be retained? One could object that we shouldn't have taken orders for people we can't uniquely identify yet. And even if that was necessary it means the customers really aren't distinct entities and shouldn't have been extracted. These are arguments that we shouldn't need \textit{Split Entity}, contradicting the principle that evolution operations should be invertible. It is interesting to observe that evolution in nature can also fail to invert, leaving behind vestigial features. We consider this to be an unsettled issue.
-
-\subsection{Code Coevolution}
-A simple example of how code should evolve along with the schema is a SQL query to report all pending orders in the original schema:
-
-\begin{lstlisting}[language=SQL]
-SELECT order_id, item, quantity, customer_name, customer_address
-FROM Orders WHERE ship_date IS NULL;
-\end{lstlisting}
-
-The \textit{Extract Entity} operation described earlier should rewrite this query into:
-
-\begin{lstlisting}[language=SQL]
-SELECT order_id, item, quantity, customer_name, customer_address
-FROM Orders
-JOIN Customers ON Orders.customer_id = Customers.customer_id
-WHERE ship_date IS NULL;
-\end{lstlisting}
-
-Alternatively the \textit{Extract Entity} operation could create a view in which the original query is executed.
-
-
-\subsection{Goals}
-A solution to this challenge should:
-\begin{enumerate}
-  \item Define the \textit{Extract Entity} operation.
-  \item Define the \textit{Absorb Entity} operation and motivate the tradeoff between joining and nesting.
-  \item Define a \textit{Merge Entities} operation or if using automatic deduplication then discuss how to handle mistakes.
-  \item Define the \textit{Split Entity} operation or justify why it is not needed.
-  \item If proposing a user-facing solution explain the UI affordances invoking these operations.
-  \item Extend these operations to the Divergence Control scenario.
-\end{enumerate}
 
 
 
@@ -1219,10 +1280,10 @@ add/remove & statement & hotswap code at quiescent point of interpreter\\
 \bottomrule
 \end{tabular}
 \caption{Possible program changes and how to deal with them at run time}
-\label{TBL:changes}
+\label{tbl:smchanges}
 \end{table}
 
-The space of possible (well-formed\footnote{The abstract syntax schema is not expressive enough to define all static invariants of the language, such as: states must by unique by name, references variables in actions must be declared, etc.}) changes to a state machine are summarized in Table~\ref{TBL:changes}.
+The space of possible (well-formed\footnote{The abstract syntax schema is not expressive enough to define all static invariants of the language, such as: states must by unique by name, references variables in actions must be declared, etc.}) changes to a state machine are summarized in Table~\ref{tbl:smchanges}.
 The first column indicates the change category, the second the affected kind of object, and third a short description of how to deal with the respective change category. Some notes about this table:
 \begin{itemize}
 \item all rows with ``simple'' in the third column only require a quiescent~\cite{Tranquility} point in the interpreter loop to update the run-time structure (e.g., as shown in Figure~\ref{FIG:doorsRuntime}).
@@ -1243,7 +1304,7 @@ From the language engineering perspective the goal is to employ techniques, form
 \subsection{Extensions}
 
 While the above example is arguably simple, the problem becomes much more challenging when the programs themselves define data types, classes, records, structures etc. Since possibly many instances (values, objects) of such data types may exist at run-time, these all have to be migrated in such a way that programmer experience is minimally disrupted, and that the invariants of said data types is maintained.
-Another extension, tying in with the data-oriented examples above, involves refactorings of data types in a program. Typically a refactoring should be behavior preserving, but can it also preserve run-time data? The minimal example is the consistent variable rename rename in Table~\ref{TBL:changes}, which should not have any effect on run-time state.  A more complex refactoring is described in Section~\ref{SECT:elm}.
+Another extension, tying in with the data-oriented examples above, involves refactorings of data types in a program. Typically a refactoring should be behavior preserving, but can it also preserve run-time data? The minimal example is the consistent variable rename rename in Table~\ref{tbl:smchanges}, which should not have any effect on run-time state.  A more complex refactoring is described in Section~\ref{sec:elm}.
 
 
 \section{Multiplicity change}
