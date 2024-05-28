@@ -324,7 +324,7 @@ The programming model works as follows:
 \end{itemize}
 
 \noindent
-As an example, consider the well-known TODO list app. Its state consists of a list of items,
+As an example, consider the well-known todo list app. Its state consists of a list of items,
 each with a unique ID, a title and a flag indicating whether it has been completed.
 The events represent changing of an item, deletion and addition:
 
@@ -362,7 +362,7 @@ Modify & structure of \texttt{State} & Migrate state value and edit code accordi
 \end{table}
 
 \challenge{Live State Type Evolution}
-Assume that we have a running TODO list with the above state and events. To test the application,
+Assume that we have a running todo list with the above state and events. To test the application,
 the programmer has already created a number of items and so there is a value of the
 \texttt{State} type that represents the current state of the application such as:
 
@@ -416,7 +416,7 @@ while the latter is the current state (a live value of type \texttt{State}). The
 illustrates that code and data need to co-evolve as illustrated by a revised diagram on the right.
 }
 
-\subsection{Remarks}
+\subsection*{Remarks: Requirements and Implementation}
 The key requirement from the live programming perspective is to ``do minimal harm''.
 The migration of \emph{data} needs to be done automatically and the system should strive
 to produce a new state that is as near as possible to the previous state. Migrating
@@ -564,8 +564,8 @@ Split & multiple data items & Interactively, following user guidance\\
 \end{table}
 
 \frameworkbox{
-\begin{wrapfigure}{r}{8em}
-\includegraphics[scale=0.175]{figures/diag-variants.png}
+\begin{wrapfigure}{r}{9em}
+\includegraphics[scale=0.2]{figures/diag-variants.png}
 \end{wrapfigure}
 \frameworkboxtitle{Primitive Type Transformations}
 In this example, \emph{type} refers to data tables, but the same scenario applies to
@@ -577,7 +577,7 @@ primitive transformations through a user interface, or infer them from textual e
 programmer, e.g. to a database table schema definition.
 }
 
-\subsection{Remarks}
+\subsection*{Remarks: Representation and Replication}
 The central problem is to coordinate the type evolution with code edits to keep the system
 executing live and correctly. Solutions may infer the desired type evolution by analysing
 source code edits, but would typically offer UI affordances for the commands. They should
@@ -636,12 +636,12 @@ preferably by reducing the need for developer-written code.
 \section{Evolution of Computational Documents}
 A different kind of type evolution is present in programming systems based on documents.
 The idea, dating back to Boxer \cite{diSessa86}, is to represent programs as documents
-with embedded computed values. In our model, a computed value is a document node whose value is
-specified by a simple formula (akin to those in Potluck~\cite{Litt2023} or spreadsheets) that
-may refer to other nodes of the document. We assume that documents can be concurrently edited
-by multiple users in a local-first manner, i.e., local edits are later synchronized with peers.
+with embedded computations. In our model, document can contain simple formulas (akin to those
+in Potluck~\cite{Litt2023} or spreadsheets) that may refer to other nodes of the document.
+We assume that documents can be concurrently edited by multiple users in a local-first manner,
+i.e., local edits are later synchronized with peers.
 
-Our concrete example is collaborative conference planning, illustred in Figure~\ref{fig:conf}
+The challenge focuses on collaborative conference planning, illustred in Figure~\ref{fig:conf}
 and inspired by a typical use of Notion~\cite{notion}. A number of co-organizers are planning
 a conference that will feature talks by several invited speakers. They need to agree on the
 speaker list, contact speakers and calculate the conference budget.
@@ -755,8 +755,7 @@ with code (Fig.~\ref{fig:conf-budget} and Fig.~\ref{fig:conf-tab}). Formulas in 
 \label{fig:conf}
 \end{figure}
 
-\challenge{Merging Structured Document Edits}
-
+\challenge{Structured Document Edits}
 The conference organizers first need to agree on a list of speakers to invite, coordinate who
 contacts whom and track the acceptance of invitations. They start with a list of three
 speakers (not shown). The first challenge is to merge document edits done locally
@@ -764,230 +763,303 @@ by Jonathan and Tomas and change the list and the structure of the document:
 
 \begin{enumerate}
 \item Jonathan adds an additional speaker to the list and sorts the list of speakers
-  alphabetically by their first name. (Figure~\ref{fig:conf-add})
+  alphabetically by their first name. This changes data, but not the structure (type) of
+  the document (Figure~\ref{fig:conf-add}).
 \item Tomas refactors the list into a table. He splits the single textual value
   into a name and an email (using a comma as the separator) and adds an additional column for
-  tracking which of the organizers should contact the speaker.
+  tracking which of the organizers should contact the speaker (Figure~\ref{fig:conf-tab}).
+  This changes the document structure (type).
 \end{enumerate}
 
 \noindent
 The system should be able to merge the changes and produce a table containing the new data
 in a tabular format (not shown). The result needs to include the additional speaker
 created by Jonathan, use the order specified by Jonathan, but use the format defined by
-Tomas. The newly added speaker should be reformatted into the new format. For the newly added
-``Organizer'' column, Tomas may specify default value or the newly added row may use an
-empty value.
+Tomas. The newly added speaker should be reformatted into the new format; for the
+``Organizer'' column, the system may use a suitable default value or ask the user interactively.
 
 \frameworkbox{
-\frameworkboxtitle{Framework perspective}
-In this scenario, the only transient \emph{state} is the result of computed values. The content
-of the document corresponds to the \emph{data} pace layer. A change in the data layer may invalidate
-the computed value at the state layer. Formulas correspond to the \emph{code} layer and changing them,
-again, invalidates the state. The \emph{schema} pace layer is implicit. A change to the document that
-modifies content is a mere data change, but restructuring the document is an implicit schema
-change. Such schema change that may affect the code pace layer.
+\begin{wrapfigure}{r}{8em}
+\includegraphics[scale=0.25]{figures/diag-data-change.png}
+\end{wrapfigure}
+\frameworkboxtitle{Independent Data and Code Edits}
+In this example, the \emph{type} is implicit and represents the structure of the document.
+A change to the \emph{type} done by one organizer needs to be applied to \emph{data} that
+has been modified by the other organizer in the meantime, as illustrated on the right.
+In the next section, we will see similar pattern, but with formulas, or \emph{code}.
+We assume the \emph{decentralized} scenario where \emph{type} evolution can occur in any variant
+and \emph{covergence} model where all variants eventually adopt all changes. As discussed
+later, the system could also operate in the more challenging \emph{divergence} model.}
 
-The scenario assumes the \emph{decentralized} model. There are multiple program (document)
-variants and it should be possible to propagate a change at any pace layer to other program
-variants. The challenge may be solved using both the easier \emph{convergence} and the more
-challenging \emph{divergence} model.}
+\subsection*{Remarks: Requirements and Representation}
+It should be possible to automatically merge any two sequences of edits (changing both
+the document structure and data) and the order in which the edits are applied should also not
+matter. This may not always be possible and the system may ask the user for resolution or,
+possibly, use a default behavior specified by the user.
 
-\frameworkbox{
-\frameworkboxtitle{Framework perspective}
-In this challenge, the change done by the first organizer is at the \emph{data} layer,
-while the change done by the second organizer spans the \emph{schema} and \emph{data} layers.
-In implementing the schema change, the second organizer transforms the affected document data.
-The challenge is to apply the same transformation to the data independently added by the
-second organizer.
-}
+The type and data evolution happens through a sequence of edits. Table~\ref{tbl:docchanges}
+lists edits appearing in our examples (but not a complete list). A system may
+use a structure editor that provides high-level commands for triggering those edits.
+Recognising user intent from plain text editing of source code may make the challenge harder.
 
-\paragraph{Requirements.}
-The challenge is concerned with merging two sequences edits to a base document.
-A solution to the challenge should strive to satisfy the following goals:
-
-\begin{itemize}
-\item \emph{Completeness.} It should be possible to semi-automatically merge any two sequences
-  of edits. In other words, the merging should always be defined, regardless of what edits the
-  users perform, although user input may sometimes be necessary.
-\item \emph{Commutativity.} The order of edits should not matter, regardless of their pace layer.
-  If users $A$ and $B$ perform edits independently starting from the same initial document, the
-  resulting document should be the same if the system treats edits from $A$ as occurring before
-  the edits of $B$ and vice versa.
-\item \emph{Conflict resolution.} It may not always be possible to merge conflicting edits.
-  In this case, the system should interactively ask the user for guidance or, possibly, use
-  default behavior specified by the user.
-\item \emph{Structure editing.} The system may use a structure editor that provides high-level
-  commands for operations such as reordering of elements or refactoring of a list into a table.
-  In other words, we recognise that the challenge may not be solvable in a system based on plain
-  text editing of document source code.
-\end{itemize}
-
-\paragraph{Remarks.}
-As discussed earlier, this challenge does not make an explicit distinction between the schema
-of the document and data. The implementing system may or may not maintain such distinction.
-In our example, adding a new speaker and sorting the list is a mere change of the data, but the
-refactoring of a list into a table is a schema change. The system may offer different user interface
-for changes at different layers and leverage knowledge about such distinction, for example,
-by handling the merging of schema-related and data-related changes differently.
-
-
-
-
-\challenge{Applying schema edits in presence of code}
-
-This challenge extends the previous problem. The conference organizers now also want to use
-the document to manage the conference budget. In a very simplified form, one aspect
-of this is calculating the estimated travel expenses for the speakers. For this,
-they add a computed value to the document that counts the number of speakers
-and multiplies the result by a fixed cost per speaker elsewhere in the document.
-
-The scenario is shown in Figure~\ref{fig:conf-budget}. Assume two co-organizers start with
-the same original document shown in Figure~\ref{fig:conf-orig}. One adds an additional
-section with computed values, while the other performs the edits discussed earlier.
-The challenge is, again, to merge the edits done independently by the co-organizers.
+\challenge{Code Co-Evolution for Structured Document Edits}
+The conference organizers now also use the document to calculate the conference budget.
+They add a formula that multiplies a fixed value by the number of speakers, obtained
+by counting the number of element of a specified list in the document.
 
 \begin{enumerate}
-\item The first co-organizer adds the budget calculation as shown in Figure~\ref{fig:conf-budget}.
-  This includes two formulas. The first selects all \texttt{li} elements of a \texttt{ul} element
-  with ID \texttt{speakers} (not visible in the UI) and counts their number. The second formula
-  multiplies the constant travel cost per speaker by the number of speakers. Here, we assume the
-  new section uses the HTML definition list \texttt{dl} and the formula selects its first and
+\item Tijs adds budget calculation to the original document (Figure~\ref{fig:conf-budget}).
+  This includes two formulas. The first selects all \texttt{li} elements of an \texttt{ul} element
+  with ID \texttt{speakers} (not visible in the user interface) and counts their number. The second
+  formula multiplies the constant travel cost per speaker by the number of speakers. Here, we assume
+  the new section uses the HTML definition list \texttt{dl} and the formula selects its first and
   second \texttt{dd} item, respectively.
 
-\item The second co-organizer performs the refactoring and data edits discussed previously.
-  They edit the speakers and refactor the structure to use a table, resulting in the document
-  shown in Figure~\ref{fig:conf-fin}.
+\item At the same time, Jonathan updates the list of speakers (Figure~\ref{fig:conf-add})
+  and Tomas refactors the data from list into a table as discussed previously (Figure~\ref{fig:conf-tab}).
 \end{enumerate}
 
 \noindent
-As before, the system should be able to merge the edits made to the document.
-
-\frameworkbox{
-\frameworkboxtitle{Framework perspective}
-In this challenge, the change done by the first organizer is at the \emph{code} layer, while
-the change done by the second organizer is both at the \emph{data} layer and, implicitly,
-at the \emph{schema} layer. A change solely at the \emph{data} layer would not affect code,
-but a change at the \emph{schema} layer requires adapting some aspects of the code.
-}
-
-\paragraph{Remarks.}
-Addressing the challenge requires that the refactoring of the document structure done in (1),
-is also reflected in the code of the equations added in (2). As shown in
-Figure~\ref{fig:conf-finfin}, in this specific case, the system needs to change the equation
+The challenge is, again, to merge the edits done independently by the co-organizers.
+The challenge extends the previous one by adding code. The change to the document structure
+(\emph{type}) thus has to co-evolve with both the \emph{data} and the \emph{code}.
+As shown in Figure~\ref{fig:conf-finfin}, the system needs to change the equation
 \texttt{COUNT(/ul[id='speakers']/li)} to \texttt{COUNT(/table[id='speakers']/tbody/tr)}.
-This is the case because the refactoring consists of four steps that each transform the
-document and also need to update the code of the equation accordingly:
+If the edit is recorded as a list of high-level edits shown in Figure~\ref{tbl:docchanges}
+(wrapping element, changing their types, etc.), then each edit needs to perform corresponding
+edit to selectors in formulas in the document.
 
-\begin{itemize}
-    \item[--] Change the type of the \texttt{ul} element to \texttt{table}
-    \item[--] Wrap the body of the \texttt{table} element with \texttt{tbody}
-    \item[--] Change the type of all children of \texttt{tbody} from \texttt{li} to \texttt{tr}
-    \item[--] Further split the body into two \texttt{td} elements
-\end{itemize}
+\begin{table}[t]
+\begin{adjustwidth}{-2em}{-2em}
+\begin{tabular}{lll}\toprule
+{\firamedium Change} & {\firamedium What} & {\firamedium How}\\\midrule
+Change & Tag of an element & Apply to all matching elements and affected formulas\\
+Wrap & Selected element(s) & Wrap elements and update selectors in affected formulas  \\
+Split & Selected element(s) & Split matching elements using a rule (regular expression)\\
+Add & New item to a list & Add data without affecting document structure (type)\\
+Reorder & List items & Reorder data without affecting document structure (type)\\
+\bottomrule
+\end{tabular}
+\vspace{0.3em}
+\caption{Changes to type and data and how the programming system should respond}
+\label{tbl:docchanges}
+\end{adjustwidth}
+\vspace{-1em}
+\end{table}
 
-\noindent
-It is expected that the system solving the challenge will need to be aware of those high-level
-edits. In particular, they may be explicitly specified by the user (through an interactive
-user interface for editing the document) or semi-automatically inferred.
+\subsection*{Remarks: Liveness and Divergence}
+The above challenge focuses on the local-first software scenario, but it can be extended to also
+apply to live programming. If formulas in the document are evaluated on-the-fly, the system
+needs to identify edits that invalide some of the values (by changing the data that a formula
+depends on, or by changing the equation). It should then automatically re-evaluate or invalidate
+the computed results (requiring explicit re-evaluation). In this scenario, we distinguish between
+\emph{permanent data} (information in the document) and transient \emph{data} (computed by code).
+Whereas permanent data should be synchronized and co-evolve with the document structure (type),
+transient data can be discarded.
 
-\paragraph{Requirements.}
-A solution to the challenge should meet the goals of the preceding challenge, i.e., completeness
-(merging should be always defined), commutativity (order does not matter), conflict resolution
-(ask for guidance if needed), convergence (everyone eventually wants the same document) and
-structure editing (the system may capture high-level edits).
-
-\subsection*{Challenge Extensions: Liveness and divergence}
-So far, we assumed that the system follows the \emph{convergence} model, i.e., all variants
+So far, we also assumed that the system follows the \emph{convergence} model, i.e., all variants
 of the program eventually adopt all changes. A more difficult variant on the challenge is to also
 support the \emph{divergence} model. In this case, some of the users continue using their variant
-of the program without adopting all of the changes done by other users.
+of the program without adopting all of the changes done by other users. In this model, users
+may want to adopt all changes done at the \emph{data} layer, but they may selectively choose
+some of the changes at the \emph{code} and \emph{schema} layers. The challenge is maintaining the
+same data across multiple program variants and merging changes done to the data based on
+different document schema. This is the subject of the case studies discussed in the next two
+sections.
+
+\section{Divergence Control in Spreadsheets and Databases}
+Type evolution becomes more challenging when data, code, and types cannot all be updated
+together in an atomic way. In these situations, different versions must coexist and interoperate
+with one another. For example, edits done against data of one type must be applied to
+data of another type, or code written against one type must run against data stored in another.
+
+Such situations are common in software engineering. Web backend architectures often put data and
+code on separate machines, which makes it impossible to update both atomically. To perform
+upgrades, teams must manually perform multi-step zero-downtime deployment processes~\cite{planetscale}
+to step the database and the code servers forward gradually such that they are compatible with one
+another at any given step. One example would be deploying a change to add a database column
+before deploying the code that uses the column.
+
+In the simplest cases, divergence can last only for a brief moment in between zero-downtime
+deployment steps. But divergence can also occur across longer timescales, especially when
+the different parts of a system are not all centrally controlled. For example,
+a public web API may need to support applications using old versions of the API for months or
+years, since it is not realistic to force all consumers to upgrade immediately. Divergence can
+even be indefinite -- Cambria \cite{Cambria} addresses collaborative applications where different
+users may want to collaborate on shared data through different tools using different schemas,
+with no intention of ever converging.
 
 \frameworkbox{
-\frameworkboxtitle{Framework perspective}
-In the \emph{divergence} model, it may be expected that users will want to adopt all changes
-done at the \emph{data} pace layer. They may selectively choose some of the changes at the
-\emph{code} and \emph{schema} layers. The challenge is maintaining the same data across multiple
-program variants and merging changes done to the data based on different document schema.
-}
+\begin{wrapfigure}{r}{12em}
+\vspace{0.5em}
+\includegraphics[scale=0.25]{figures/diag-divergence.png}
+\end{wrapfigure}
+\frameworkboxtitle{Type Branching with Divergence}
+The divergence scenario adds another dimension to the problem. There are now multiple
+versions of the system with different \emph{types} that may co-exist as multiple branches.
+Edits to \emph{data} are done against a specific type, but they then need to be migrated
+to versions with different types. Consequently, any type evolution needs to be accompanied
+both with forward projection (transforming data to a new version) and backward projection
+(transforming new data to the old version).}
 
-The basic challenge outlined above focuses primarily on the local-first software scenario, but
-it can be extended to also apply to the live programming scenario. In particular, when the
-document contains computed values, those may be evaluated either explicitly by the user or
-automatically on-the-fly. An edit can then invalidate some of the values (either by changing
-the data that a computed value depends on, or by changing the equation used to compute the value).
-A live programming system should be able to detect which computed values are affected by an edit
-and, either invalidate those (requiring an explicit re-evaluation by the user) or automatically
-re-evaluate them (and possibly highlight the affected values to inform the user).
+Divergence does not just occur in software engineering; it also appears in end-user
+workflows. Users frequently make copies of structured documents like spreadsheets and then
+diverge them by altering both data content and schema. In the case of spreadsheets schema
+changes include rearrangements to the structure of rows and columns as well as changes to
+formulas. The problem is that the users want to transfer such data and schema changes between
+these divergent copies, and they want to pick and choose which of these changes to transfer.
+In practice such transfer is done manually through copy \& paste. \citet{Basman19} has
+documented an ecology of emailed spreadsheets. \citet{Burnett14} distilled field observations
+of these practices in the story of Frieda, which we quote here:
 
-\frameworkbox{
-\frameworkboxtitle{Framework perspective}
-In the live extension, we also consider the transient \emph{state} pace layer. A system should
-automatically detect when a change at the \emph{data} or \emph{code} layers affects the computed
-value and forces it to be recomputed. Interestingly, a change at the \emph{schema} layer may not
-always affect the \emph{state} layer, even if it schema change requires modifying formulas that
-compute the state.
-}
+\begin{quotation}
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0em}
+
+\noindent
+\emph{For example, consider ``Frieda'', an office manager in charge of her department's budget
+tracking. (\ldots) Every year, the company she works for produces an updated budget tracking
+spreadsheet with the newest reporting requirements embedded in its structure and formulas.
+But this spreadsheet is not a perfect fit to the kinds of projects and sub-budgets she manages,
+so every year Frieda needs to change it. She does this by working with four variants of the
+spreadsheet at once: the one the company sent out last year (we will call it Official-lastYear),
+the one she derived from that one to fit her department's needs (Dept-lastYear), the one the
+company sent out this year (Official-thisYear), and the one she is trying to put together
+for this year (Dept-thisYear).}
+
+\emph{Using these four variants, Frieda exploratively mixes reverse engineering, reuse,
+programming, testing, and debugging, mostly by trial-and-error. She begins this process by
+reminding herself of ways she changed last year's by reverse engineering a few of the
+differences between Official-lastYear and Dept-lastYear. She then looks at the same portions
+of Official-thisYear to see if those same changes can easily be made, given her department's
+current needs.
+(\ldots)
+She can reuse some of these same changes this year, but copying them into Dept-thisYear
+is troublesome, with some of the formulas automatically adjusting themselves to refer to
+Dept-lastYear. (\ldots) Frieda has learned over the years to
+save some of her spreadsheet variants along the way (using a different filename for each),
+because she might decide that the way she did some of her changes was a bad idea, and she
+wants to revert to try a different way she had started before.}
+\end{quotation}
+
+\challenge{Divergence Control for Extract Entity}
+
+As a concrete example, we combine the problem of divergence control with the example from the
+earlier Extract Entity challenge. Every month the orders department sends its spreadsheet to
+the accounting department, which adds the data to a version of the spreadsheet that it has
+customized for financial tracking. But when the orders department migrates its spreadsheet to
+extract out customers, the accounting department does not want to conform. They could manually
+convert incoming data in the new schema into their variant of the old schema. But they
+shouldn't have to. It should be possible to run new data through the schema change in reverse,
+converting it back into the format the accounting department is used to ingesting. Note that
+this is not a matter of synchronizing the divergent spreadsheets -- they maintain differently
+evolved schema.
+
+What is needed is a user-friendly mechanism for transferring data changes from one schema (type) to
+another bidirectionally. In one direction we want to transfer changes made in the new schema (type)
+into a variant of the old schema (type). The opposite direction might be needed, for example,
+if the accounting department makes corrections to customer addresses, which ought to be pushed
+through into the orders department's new schema.
+
+\subsection*{Remarks: Source Code Version Control}
+
+Bidirectional transfer of changes between divergent copies is similar to source code version
+control as in Git~\cite{ProGit}. There is \textit{forking} of long-lived divergent copies.
+We want to \textit{diff} these forks to see exactly how they have diverged. We want to
+partially \textit{merge} them by \textit{cherry picking} certain differences. Yet there are
+also many dissimilarities with Git: our data is more richly structured than lines of text; our
+schema changes are higher-level transformations on these structures than inserting and
+deleting characters; and we expect that end-users be able to understand it~\cite{gitless}.
+The Divergence Control challenge is in a sense to provide ``version control for schema
+change'' meeting these criteria, with the key technical challenge being the ability to
+transfer selected differences bidirectionally through schema changes as independently as possible.
+
+This challenge invites a change of perspective in both live programming and local-first software.
+Live programming must move from being a solitary activity to a collaborative workflow, and one
+where the collaboration is not just on editing source code but on live integrated code and data,
+as in the Smalltalk/Lisp images of old.
+%\footnote{If only we had this in the 90's when Smalltalk had a shot at the mainstream!}
+For its part, local-first software must move from automatically converging data replicas
+to also interactively managing long-term divergence. That implies either application state
+is being directly exposed to the user, or the application code is using an API to present
+version control affordances. We encourage both communities to think outside the box of Git,
+which has proven to baffle not only end-users but also a substantial fraction of developers.
+
+\section{Multiplicity Change in Data Formats}
+
+A common kind of schema change is \textit{multiplicity change}: when a field changes from storing
+a single value to storing multiple values. For example, we might start by storing a single
+address for each contact in an address book, before realizing that we need to store multiple
+addresses for a single contact; or we might assign each todo in a list to one person before
+realizing we want the ability to assign a todo to multiple people.
+
+In a relational schema, solving this problem might require extracting a normalized table for
+the linked entity; some of the challenges of this approach are covered in the Extract Entity
+challenge. In this section we will instead consider a document schema with support for arrays;
+in this context, we can have a multiplicity change by turning a scalar value into an array value.
+
+Multiplicity change clearly requires changing both the data and the code. It becomes particularly
+challenging to handle when there is ongoing divergence between multiple versions of the data.
+
+\challenge{Multiplicity Change}
+
+Consider the following schema for a todo list item, in which each item has a single assignee, represented by a user ID:
+
+\newpage
+\begin{lstlisting}[language=ml]
+type Item = { id : id; title : string; assignee : string }
+\end{lstlisting}
+
+Now, we change the schema so that each item has a list of assignees:
+
+\begin{lstlisting}[language=ml]
+type Item = { id : id; title : string; assignees : Array<string> }
+\end{lstlisting}
+
+Our goal is to preserve the ability for actors in the system to read and write to a shared todo list in either the old or new schema -- for example, they should be able to write to either the scalar assignee field or to the list of assignees.
+
+A natural invariant to preserve across these schemas is that the value of the scalar field should equal the first element of the list field (and if the list is empty, the scalar field should be null). If we were to write code for a one-time data migration from the scalar to list schema, we could easily satisfy this invariant:
+
+\begin{lstlisting}[language=ml]
+item.assignees = if (item.assignee == null) then [] else [item.assignee]
+\end{lstlisting}
+
+Ongoing edits to the array schema can also be handled in a straightforward way. After edits are made, the value of the scalar field should be set to the first element of the new array (or null if the new array is empty.)
+
+However, handling edits to the scalar schema presents more of a challenge. Consider the following todo with two assignees, presented in terms of the scalar and array schemas. A write is made in the scalar schema to set the new assignee to C.
+
+\begin{lstlisting}[language=ml]
+todoScalar = { id: 1, title: "Foo", assignee: A }
+todoArray = { id: 1, title: "Foo", assignees: [A, B] }
+
+todoScalar.assignee = C
+\end{lstlisting}
+
+What should the array value become after this edit to the scalar schema? To satisfy our invariant, we know that C must become the first element of the array, but this leaves open several options with different tradeoffs:
+
+\begin{enumerate}
+  \item \texttt{[C]}: "Only C should be assigned." This option produces an array that corresponds directly to the resulting scalar. But it has the downside of deleting data that wasn't even visible in the scalar schema.
+  \item \texttt{[C, B]}: "Replace A with C." If the writer wanted to remove A from the assignment and add C, this option performs that intent. However, there is data remaining in the list which was not visible to the scalar writer.
+  \item \texttt{[C, A, B]}: "Add C to the list." Perhaps the scalar writer wanted to add C to the assignment without removing anyone; this option satisfies that intent. But it preserves data not visible to the scalar schema.
+\end{enumerate}
+
+Because the intent of the writer to the scalar schema cannot be unambiguously interpreted from the write alone, it is impossible to make a perfect choice among these options.
+
+\subsection*{Remarks: Managing Design Tradeoffs}
+
+If schemas, code and data can all be updated atomically together, then multiplicity change is relatively straightforward  to handle. Existing scalar data can be trivially migrated to a list, and the code using the data will need to change to accommodate the list data.
+
+However, ongoing divergence makes multiplicity change much more difficult, and exposes some general challenges. Different schemas may expose partial information, and writers in those schemas have to operate without total knowledge of the information available in other schemas. As a result, synchronizing writes across the schemas requires making difficult tradeoffs, such as choosing to either preserve or destroy hidden data not visible to the writer.
+
+Although there is likely no silver bullet to navigate these tradeoffs, a good solution to this problem would give developers or users tools to manage these tradeoffs. For example, a system might allow developers to specify the desired behavior for a particular pair of schemas based on the requirements of the domain. Or a system might even allow users to manually disambiguate their intent for a given write.
 
 
 
 \newpage
 ~
 \newpage
-
-% elm
-% database
-% divergence
-% cambria
-% documents
-% state machine
-
-% DIVERGENCE IN TRANSITION (because you cannot do big bang update) c.f. Tijs' example
-
-% typically people just blow away the state but Elm actually has demos
-% of people doing hot reload without losing state.
-% (maybe they never change the type?)
-
-% ELM EXAMPLE
-% current example ("completes") is contrived - it is equivalent data
-% more interesting is when you lose / add data
-% add "completed" with default instead
-
-
-
-\section{Divergence Control}
-
-\textcolor{red}{This section was an extension of the Extract Entity challenge but should be lifted up to the top-level discussion of divergence}
-
-\subsection{Context}
-Schema evolution becomes more challenging when data, code, and schema cannot all be updated together in an atomic way. In these situations, different versions must coexist and interoperate with one another: for example, edits made in one schema must be applied in another, or code written against one schema must run against data stored in another.
-
-Such situations are common in software engineering. Web backend architectures often put data and code on separate machines, which makes it impossible to update both atomically. To perform upgrades, teams must manually perform multi-step [zero-downtime deployment processes](https://planetscale.com/blog/zero-downtime-rails-migrations-planetscale-rails-gem) to step the database and the code servers forward gradually such that they are compatible with one another at any given step. One example would be deploying a change to add a database column before deploying the code that uses the column.
-
-In the simplest cases, divergence can last only for a brief moments in between zero-downtime deployment steps. But divergence can also occur across longer timescales, especially in situations where the different parts of a system are not all centrally controlled. For example, a public web API may need to support applications using old versions of the API for months or years, since it is not realistic to force all consumers to upgrade immediately. Divergence can even be indefinite -- \citet{Cambria} addresses collaborative applications where different users may want to collaborate on shared data through different tools using different schemas, with no intention of ever converging.
-
-Divergence does not just occur in software engineering; it also appears in end-user workflows. Users frequently make copies of structured documents like spreadsheets and then diverge them by altering both data content and schema. In the case of spreadsheets schema changes include rearrangements to the structure of rows and columns as well as changes to formulas. The problem is that the users want to transfer such data and schema changes between these divergent copies, and they want to pick and choose which of these changes to transfer. In practice such transfer is done manually through copy \& paste. \citet{Basman19} has documented an ecology of emailed spreadsheets. \citet{Burnett14} distilled field observations of these practices in the story of Frieda, which we quote here:
-
-\begin{quotation}
-
-For example, consider ``Frieda'', an office manager in charge of her department's budget tracking. (Frieda was a participant in a set of interviews with spreadsheet users that the first author conducted. Frieda is not her real name.) Every year, the company she works for produces an updated budget tracking spreadsheet with the newest reporting requirements embedded in its structure and formulas. But this spreadsheet is not a perfect fit to the kinds of projects and sub-budgets she manages, so every year Frieda needs to change it. She does this by working with four variants of the spreadsheet at once: the one the company sent out last year (we will call it Official-lastYear), the one she derived from that one to fit her department's needs (Dept-lastYear), the one the company sent out this year (Official-thisYear), and the one she is trying to put together for this year (Dept-thisYear).
-
-Using these four variants, Frieda exploratively mixes reverse engineering, reuse, programming, testing, and debugging, mostly by trial-and-error. She begins this process by reminding herself of ways she changed last year's by reverse engineering a few of the differences between Official-lastYear and Dept-lastYear. She then looks at the same portions of Official-thisYear to see if those same changes can easily be made, given her department's current needs.
-
-She can reuse some of these same changes this year, but copying them into Dept-thisYear is troublesome, with some of the formulas automatically adjusting themselves to refer to Dept-lastYear. She patches these up (if she notices them), then tries out some new columns or sections of Dept-thisYear to reflect her new projects. She mixes in ``testing'' along the way by entering some of the budget values for this year and eyeballing the values that come out, then debugs if she notices something amiss. At some point, she moves on to another set of related columns, repeating the cycle for these. Frieda has learned over the years to save some of her spreadsheet variants along the way (using a different filename for each), because she might decide that the way she did some of her changes was a bad idea, and she wants to revert to try a different way she had started before.
-\end{quotation}
-
-\subsection{Example}
-The Divergence Control challenge instantiates the problem of divergent state with the example from the Extract Entity challenge. Every month the orders department sends its spreadsheet to the accounting department, which adds the data to a version of the spreadsheet that it has customized for financial tracking. But when the orders department migrates its spreadsheet to extract out customers the accounting department does not want to conform. They could manually convert incoming data in the new schema into their variant of the old schema. But they shouldn't have to. It should be possible to run new data through the schema change in reverse, converting it back into the format the accounting department is used to ingesting. Note that this is not a matter of synchronizing the divergent spreadsheets -- they maintain differently evolved schema.
-
-\subsection{Challenge}
-What is needed is a user-friendly mechanism for transferring data changes from one schema to another bidirectionally. In one direction we want to transfer changes made in the new schema into a variant of the old schema. The opposite direction might be needed, for example, if the accounting department makes corrections to customer addresses, which ought to be pushed through into the orders department's new schema.
-
-Bidirectional transfer of changes between divergent copies is similar in some ways to source code version control as in Git~\cite{ProGit}. There is \textit{forking} of long-lived divergent copies. We want to \textit{diff} these forks to see exactly how they have diverged. We want to partially \textit{merge} them by \textit{cherry picking} certain differences. Yet there are also many dissimilarities with Git: our data is more richly structured than lines of text; our schema changes are higher-level transformations on these structures than inserting and deleting characters; and we expect that end-users be able to understand it~\cite{gitless}. The Divergence Control challenge is in a sense to provide ``version control for schema change'' meeting these criteria, with the key technical challenge being the ability to transfer selected differences bidirectionally through schema changes as independently as possible.
-
-\subsection{Goals}
-This challenge invites a change of perspective in both live programming and local-first software. Live programming must move from being a solitary activity to a collaborative workflow, and one where the collaboration is not just on editing source code but on live integrated code and data, as in the Smalltalk/Lisp images of old.\footnote{If only we had this in the 90's when Smalltalk had a shot at the mainstream!} For its part, local-first software must move from automatically converging data replicas to also interactively managing long-term divergence. That implies either application state is being directly exposed to the user, or the application code is using an API to present version control affordances. We encourage both communities to think outside the box of Git, which has proven to baffle not only end-users but also a substantial fraction of developers.
-
-
+~
+\newpage
 
 \section{diagrams}
 
@@ -1254,67 +1326,6 @@ From the language engineering perspective the goal is to employ techniques, form
 While the above example is arguably simple, the problem becomes much more challenging when the programs themselves define data types, classes, records, structures etc. Since possibly many instances (values, objects) of such data types may exist at run-time, these all have to be migrated in such a way that programmer experience is minimally disrupted, and that the invariants of said data types is maintained.
 Another extension, tying in with the data-oriented examples above, involves refactorings of data types in a program. Typically a refactoring should be behavior preserving, but can it also preserve run-time data? The minimal example is the consistent variable rename rename in Table~\ref{tbl:smchanges}, which should not have any effect on run-time state.  A more complex refactoring is described in Section~\ref{sec:elm}.
 
-
-\section{Multiplicity change}
-
-\subsection{Context}
-
-A common kind of schema change is \textit{multiplicity change}: when a field changes from storing a single value to storing multiple values. For example, we might start by storing a single address for each contact in an address book, before realizing that we need to store multiple addresses for a single contact; or we might assign each todo in a list to one person before realizing we want the ability to assign a todo to multiple people.
-
-In a relational schema, solving this problem might require extracting a normalized table for the linked entity; some of the challenges of this approach are covered in the Extract Entity challenge. In this section we will instead consider a document schema with support for arrays; in this context, we can have a multiplicity change by turning a scalar value into an array value.
-
-Multiplicity change clearly requires changing both the data and the code. It becomes particularly challenging to handle when there is ongoing divergence between multiple versions of the data.
-
-\subsection{Example}
-
-Consider the following schema for a todo list item, in which each item has a single assignee, represented by a user ID:
-
-\begin{lstlisting}[language=ml]
-type Item = { id : id; title : string; assignee : string }
-\end{lstlisting}
-
-Now, we change the schema so that each item has a list of assignees:
-
-\begin{lstlisting}[language=ml]
-type Item = { id : id; title : string; assignees : Array<string> }
-\end{lstlisting}
-
-Our goal is to preserve the ability for actors in the system to read and write to a shared todo list in either the old or new schema -- for example, they should be able to write to either the scalar assignee field or to the list of assignees.
-
-A natural invariant to preserve across these schemas is that the value of the scalar field should equal the first element of the list field (and if the list is empty, the scalar field should be null). If we were to write code for a one-time data migration from the scalar to list schema, we could easily satisfy this invariant:
-
-\begin{lstlisting}[language=ml]
-item.assignees = if (item.assignee == null) then [] else [item.assignee]
-\end{lstlisting}
-
-Ongoing edits to the array schema can also be handled in a straightforward way. After edits are made, the value of the scalar field should be set to the first element of the new array (or null if the new array is empty.)
-
-However, handling edits to the scalar schema presents more of a challenge. Consider the following todo with two assignees, presented in terms of the scalar and array schemas. A write is made in the scalar schema to set the new assignee to C.
-
-\begin{lstlisting}[language=ml]
-todoScalar = { id: 1, title: "Foo", assignee: A }
-todoArray = { id: 1, title: "Foo", assignees: [A, B] }
-
-todoScalar.assignee = C
-\end{lstlisting}
-
-What should the array value become after this edit to the scalar schema? To satisfy our invariant, we know that C must become the first element of the array, but this leaves open several options with different tradeoffs:
-
-\begin{enumerate}
-  \item \texttt{[C]}: "Only C should be assigned." This option produces an array that corresponds directly to the resulting scalar. But it has the downside of deleting data that wasn't even visible in the scalar schema.
-  \item \texttt{[C, B]}: "Replace A with C." If the writer wanted to remove A from the assignment and add C, this option performs that intent. However, there is data remaining in the list which was not visible to the scalar writer.
-  \item \texttt{[C, A, B]}: "Add C to the list." Perhaps the scalar writer wanted to add C to the assignment without removing anyone; this option satisfies that intent. But it preserves data not visible to the scalar schema.
-\end{enumerate}
-
-Because the intent of the writer to the scalar schema cannot be unambiguously interpreted from the write alone, it is impossible to make a perfect choice among these options.
-
-\subsection{Remarks}
-
-If schemas, code and data can all be updated atomically together, then multiplicity change is relatively straightforward  to handle. Existing scalar data can be trivially migrated to a list, and the code using the data will need to change to accommodate the list data.
-
-However, ongoing divergence makes multiplicity change much more difficult, and exposes some general challenges. Different schemas may expose partial information, and writers in those schemas have to operate without total knowledge of the information available in other schemas. As a result, synchronizing writes across the schemas requires making difficult tradeoffs, such as choosing to either preserve or destroy hidden data not visible to the writer.
-
-Although there is likely no silver bullet to navigate these tradeoffs, a good solution to this problem would give developers or users tools to manage these tradeoffs. For example, a system might allow developers to specify the desired behavior for a particular pair of schemas based on the requirements of the domain. Or a system might even allow users to manually disambiguate their intent for a given write.
 
 
 
