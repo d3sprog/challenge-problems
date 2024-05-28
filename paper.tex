@@ -130,7 +130,7 @@ programming systems.
 
 Many past improvements in the practice of programming worked by speeding up feedback loops,
 both in collaboration with other programmers (through collaborative development tools
-\cite{goldman2011real,kurniawan2015coder,replit}) and in individual's interaction with the
+\cite{ProGit, goldman2011real,kurniawan2015coder,replit}) and in individual's interaction with the
 programming environment (through live programming \cite{rein2018exploratory}).
 
 To make programming more effective, future programming systems will need to further tighten
@@ -519,6 +519,14 @@ address to be fixed in one place. It also allow a customer name or address to ch
 breaking the connection from all associated orders. Unique identifiers are the essence of
 entities, whether they are uniquely generated primary keys in a database or an abstraction
 of a memory address in a programming language.
+
+\textcolor{red}{[JE. Found this snippet in the related work]
+Acme Corp has a problem, for spreadsheets don't naturally support relationships between entities.
+End-user databases like Airtable~\cite{airtable} and Notion~\cite{notion} support \textit{links}
+between tables but do not provide operations that can do an \textit{Extract Entity}. Neither do
+the established database products (see Related Work). Acme will need to write code or do a big manual conversion.
+}
+
 
 The \textit{Extract Entity} operation must 1) merge duplicates, 2) assign unique identifiers,
 and 3) reference these identifiers from the orders. Our example took the simple approach of
@@ -1321,15 +1329,8 @@ Although there is likely no silver bullet to navigate these tradeoffs, a good so
 \section{Related Work}
 \label{sec:related}
 
-Acme Corp has a problem, for spreadsheets don't naturally support relationships between entities.
-End-user databases like Airtable~\cite{airtable} and Notion~\cite{notion} support \textit{links}
-between tables but do not provide operations that can do an \textit{Extract Entity}. Neither do
-the established database products (see Related Work). Acme will need to write code or do a big manual conversion.
-
-
-
-TODO: Maybe insert something about methodology in general?
-(ref the table challenges paper? although this paper is no longer so much about challenges)
+\textcolor{red}{Maybe insert something about methodology in general?
+(ref the table challenges paper? although this paper is no longer so much about challenges)}
 
 There has been a lot of research on evolving interdependent layers of software, much of it guided by schema and types. But the vast majority of these techniques involve writing custom code in some specialized language, rather than through immediate action in an interactive programming system. Nevertheless it is important to understand these batch techniques to envision more interactive ones.
 
@@ -1370,7 +1371,7 @@ This work deals with the reality that schema live in the database and so example
 \paragraph{Live programming.}
 Live programming~\cite{tanimoto90, rein2018exploratory} seeks to speed up feedback in (mostly solo) programming.
 % \cite{mcdirmid13, Rauch_2019, beckmann2021shortening}
-% A special case of live programming is \emph{hot reloading} (also called \emph{hot swapping})~\cite{barenz2020essence, } that installs code changes into a running system preserving state but not attempting to migrate that state through type changes.
+% A special case of live programming is \emph{hot reloading} or \emph{hot swapping})~\cite{barenz2020essence, hicks2005dynamic} that installs code changes into a running system preserving state but not attempting to migrate that state through type changes.
 \citet{SemanticDeltas} proposes a research agenda for thoroughly live DSL programming focusing on \emph{Semantic Deltas} that unify edit-time and run-time change.
 \citet{RuntimeConstraint} study the live modeling problem in Section \ref{livemodeling}. They use constraints supplied by the developer to solve for the best new runtime state following a DSL language evolution. \citet{vanRozen19} take an alternative approach to the same problem using \emph{origin tracking} in textual editing.
 %\citet{vanRozen23} subsequently proposed a metaprogramming language for live DSL programming.
