@@ -215,10 +215,10 @@ of a program, namely data and code. As a result, a change of program types requi
 corresponding change in program data and code.
 
 The situation is illustrated in Figure~\ref{fig:change} using two variations of a diagram that
-we will return to repeatedly in this paper. When a type changes from $T_1$ to $T_2$,
+we will return to repeatedly in this paper. When a type changes from $\textsf{type}_1$ to $\textsf{type}_2$,
 we need to find and apply a corresponding change to other parts of the program whose shape
 is defined by the changed type. The problem of \emph{type evolution} is thus finding and
-applying changes that will update data $D_1$ and code $C_1$ into new versions $D_2$ and $C_2$
+applying changes that will update $\textsf{data}_1$ and $\textsf{code}_1$ into new versions $\textsf{data}_1$ and $\textsf{code}_2$
 that correspond to the new type.
 
 The complexity of the problem varies. The first dimension of challenges that we consider
@@ -237,9 +237,31 @@ may diverge.
 
 \begin{figure}[t]
 \centering
-\includegraphics[scale=0.175]{figures/diag-data-code.png}
-\caption{When a type changes from $T_1$ to $T_2$, a corresponding change needs to take place
-  in data and code whose shape is defined by type. The challenge is finding a suitable
+%\includegraphics[scale=0.175]{figures/diag-data-code.png}
+\begin{tikzcd}[sep = 6em]
+  \textsf{code}_1
+  \arrow[d, "\textsf{refactor}"{name=L, description}]
+  &
+  \textsf{type}_1
+  \arrow[l, "\textsf{constrains}"{above}]
+  \arrow[r, "\textsf{constrains}"{above}]
+  \arrow[d, red, "\textsf{change}"{name=C, description}]
+  &
+  \textsf{data}_1
+  \arrow[d, "\textsf{migrate}"{name=R, description}]
+  \\
+  \textsf{code}_2
+  &
+  \textsf{type}_2
+  \arrow[l, "\textsf{constrains}"{above}]
+  \arrow[r, "\textsf{constrains}"{above}]
+  &
+  \textsf{data}_2
+  \arrow[Rightarrow, from=C, to=L, "\textsf{propagate}"{above}]
+  \arrow[Rightarrow, from=C, to=R, "\textsf{propagate}"{above}]
+\end{tikzcd}
+\caption{When a type changes from $\textsf{type}_1$ to $\textsf{type}_2$, a corresponding change needs to take place
+  in data and code constrained by the type. The challenge is finding a suitable
   corresponding transformation (semi-)automatically.}
 \label{fig:change}
 \end{figure}
@@ -404,12 +426,12 @@ semantically equivalent type, the programming system should, in principle, be ab
 migrate both the original value and implementation of both functions to match the new type.
 
 \frameworkbox{
-\begin{wrapfigure}{r}{14em}
-\vspace{1em}
-\includegraphics[scale=0.175]{figures/diag-both.png}
-\end{wrapfigure}
+% \begin{wrapfigure}{r}{14em}
+% \vspace{1em}
+% \includegraphics[scale=0.175]{figures/diag-both.png}
+% \end{wrapfigure}
 \frameworkboxtitle{Code-data Co-evolution}
-In this case study, the evolving \emph{type} is the \texttt{State} type. When the type
+In this case study, the evolving type in Figure~\ref{fig:change} is the \texttt{State} type. When the type
 evolves, corresponding change needs to be applied to both \emph{code} and \emph{data}.
 The former is the program logic implemented in \texttt{update} and \texttt{render},
 while the latter is the current state (a live value of type \texttt{State}). The scenario
@@ -571,12 +593,40 @@ Split & multiple data items & Interactively, following user guidance\\
 \vspace{-1em}
 \end{table}
 
+\begin{figure}[H]
+\begin{tikzcd}[sep = 6em]
+  \textsf{type}_1
+  \arrow[r, "\textsf{constrains}"{above}]
+  \arrow[d, red, "\textsf{change}_1"{name=C, description}]
+  &
+  \textsf{data}_1
+  \arrow[d, "\textsf{migrate}_1"{name=R, description}]
+  \\
+  \textsf{type}_2
+  \arrow[r, "\textsf{constrains}"{above}]
+  \arrow[d, red, "\textsf{change}_2"{name=C2, description}]
+  &
+  \textsf{data}_2
+  \arrow[Rightarrow, from=C, to=R, "\textsf{propagate}"{above}]
+  \arrow[d, "\textsf{migrate}_2"{name=R2, description}]
+  \\
+  \textsf{type}_3
+  \arrow[r, "\textsf{constrains}"{above}]
+  &
+  \textsf{data}_3
+  \arrow[Rightarrow, from=C2, to=R2, "\textsf{propagate}"{above}]
+\end{tikzcd}
+\caption{Multiversion type evolution.}
+\label{fig:multiversion}
+\end{figure}
+
 \frameworkbox{
-\begin{wrapfigure}{r}{8em}
-\includegraphics[scale=0.175]{figures/diag-variants.png}
-\end{wrapfigure}
+% wrapfigure doesn't seem to work with tikz
+%\begin{wrapfigure}{r}{8em}
+% \includegraphics[scale=0.175]{figures/diag-variants.png}
+%\end{wrapfigure}
 \frameworkboxtitle{Primitive Type Transformations}
-In this example, \emph{type} refers to data tables, but the same scenario applies to
+In this example, \textsf{type} in Figure~\ref{fig:multiversion} refers to data tables, but the same scenario applies to
 objects or JSON values in other programming systems. Our example focuses on permanent \emph{data}
 that need to evolve alongside with the type and keep synchronized even in the non-local scenario.
 The evolution can be done through a small set of primitive type transformations (illustrated on the
@@ -937,9 +987,6 @@ compute the state.
 }
 
 
-
-\newpage
-~
 \newpage
 
 % elm
