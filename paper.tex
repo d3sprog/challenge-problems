@@ -130,7 +130,7 @@ programming systems.
 
 Many past improvements in the practice of programming worked by speeding up feedback loops,
 both in collaboration with other programmers (through collaborative development tools
-\cite{goldman2011real,kurniawan2015coder,replit}) and in individual's interaction with the
+\cite{ProGit, goldman2011real,kurniawan2015coder,replit}) and in individual's interaction with the
 programming environment (through live programming \cite{rein2018exploratory}).
 
 To make programming more effective, future programming systems will need to further tighten
@@ -215,10 +215,10 @@ of a program, namely data and code. As a result, a change of program types requi
 corresponding change in program data and code.
 
 The situation is illustrated in Figure~\ref{fig:change} using two variations of a diagram that
-we will return to repeatedly in this paper. When a type changes from $T_1$ to $T_2$,
+we will return to repeatedly in this paper. When a type changes from $\textsf{type}_1$ to $\textsf{type}_2$,
 we need to find and apply a corresponding change to other parts of the program whose shape
 is defined by the changed type. The problem of \emph{type evolution} is thus finding and
-applying changes that will update data $D_1$ and code $C_1$ into new versions $D_2$ and $C_2$
+applying changes that will update $\textsf{data}_1$ and $\textsf{code}_1$ into new versions $\textsf{data}_1$ and $\textsf{code}_2$
 that correspond to the new type.
 
 The complexity of the problem varies. The first dimension of challenges that we consider
@@ -237,9 +237,31 @@ may diverge.
 
 \begin{figure}[t]
 \centering
-\includegraphics[scale=0.175]{figures/diag-data-code.png}
-\caption{When a type changes from $T_1$ to $T_2$, a corresponding change needs to take place
-  in data and code whose shape is defined by type. The challenge is finding a suitable
+%\includegraphics[scale=0.175]{figures/diag-data-code.png}
+\begin{tikzcd}[sep = 6em]
+  \textsf{code}_1
+  \arrow[d, "\textsf{refactor}"{name=L, description}]
+  &
+  \textsf{type}_1
+  \arrow[l, "\textsf{constrains}"{above}]
+  \arrow[r, "\textsf{constrains}"{above}]
+  \arrow[d, red, "\textsf{change}"{name=C, description}]
+  &
+  \textsf{data}_1
+  \arrow[d, "\textsf{migrate}"{name=R, description}]
+  \\
+  \textsf{code}_2
+  &
+  \textsf{type}_2
+  \arrow[l, "\textsf{constrains}"{above}]
+  \arrow[r, "\textsf{constrains}"{above}]
+  &
+  \textsf{data}_2
+  \arrow[Rightarrow, from=C, to=L, "\textsf{propagate}"{above}]
+  \arrow[Rightarrow, from=C, to=R, "\textsf{propagate}"{above}]
+\end{tikzcd}
+\caption{When a type changes from $\textsf{type}_1$ to $\textsf{type}_2$, a corresponding change needs to take place
+  in data and code constrained by the type. The challenge is finding a suitable
   corresponding transformation (semi-)automatically.}
 \label{fig:change}
 \end{figure}
@@ -404,12 +426,12 @@ semantically equivalent type, the programming system should, in principle, be ab
 migrate both the original value and implementation of both functions to match the new type.
 
 \frameworkbox{
-\begin{wrapfigure}{r}{14em}
-\vspace{1em}
-\includegraphics[scale=0.175]{figures/diag-both.png}
-\end{wrapfigure}
+% \begin{wrapfigure}{r}{14em}
+% \vspace{1em}
+% \includegraphics[scale=0.175]{figures/diag-both.png}
+% \end{wrapfigure}
 \frameworkboxtitle{Code-data Co-evolution}
-In this case study, the evolving \emph{type} is the \texttt{State} type. When the type
+In this case study, the evolving type in Figure~\ref{fig:change} is the \texttt{State} type. When the type
 evolves, corresponding change needs to be applied to both \emph{code} and \emph{data}.
 The former is the program logic implemented in \texttt{update} and \texttt{render},
 while the latter is the current state (a live value of type \texttt{State}). The scenario
@@ -520,6 +542,14 @@ breaking the connection from all associated orders. Unique identifiers are the e
 entities, whether they are uniquely generated primary keys in a database or an abstraction
 of a memory address in a programming language.
 
+\textcolor{red}{[JE. Found this snippet in the related work]
+Acme Corp has a problem, for spreadsheets don't naturally support relationships between entities.
+End-user databases like Airtable~\cite{airtable} and Notion~\cite{notion} support \textit{links}
+between tables but do not provide operations that can do an \textit{Extract Entity}. Neither do
+the established database products (see Related Work). Acme will need to write code or do a big manual conversion.
+}
+
+
 The \textit{Extract Entity} operation must 1) merge duplicates, 2) assign unique identifiers,
 and 3) reference these identifiers from the orders. Our example took the simple approach of
 merging entities whose attributes are all equal. But that might not be correct in all cases.
@@ -563,12 +593,41 @@ Split & multiple data items & Interactively, following user guidance\\
 \vspace{-1em}
 \end{table}
 
+\begin{figure}[H]
+\begin{tikzcd}[sep = 6em]
+  \textsf{type}_1
+  \arrow[r, "\textsf{constrains}"{above}]
+  \arrow[d, red, "\textsf{change}_1"{name=C, description}]
+  &
+  \textsf{data}_1
+  \arrow[d, "\textsf{migrate}_1"{name=R, description}]
+  \\
+  \textsf{type}_2
+  \arrow[r, "\textsf{constrains}"{above}]
+  \arrow[d, red, "\textsf{change}_2"{name=C2, description}]
+  &
+  \textsf{data}_2
+  \arrow[Rightarrow, from=C, to=R, "\textsf{propagate}"{above}]
+  \arrow[d, "\textsf{migrate}_2"{name=R2, description}]
+  \\
+  \textsf{type}_3
+  \arrow[r, "\textsf{constrains}"{above}]
+  &
+  \textsf{data}_3
+  \arrow[Rightarrow, from=C2, to=R2, "\textsf{propagate}"{above}]
+\end{tikzcd}
+\caption{Multiversion type evolution.}
+\label{fig:multiversion}
+\end{figure}
+
 \frameworkbox{
-\begin{wrapfigure}{r}{9em}
-\includegraphics[scale=0.2]{figures/diag-variants.png}
-\end{wrapfigure}
+% wrapfigure doesn't seem to work with tikz
+% \begin{wrapfigure}{r}{9em}
+% \includegraphics[scale=0.2]{figures/diag-variants.png}
+% \end{wrapfigure}
+
 \frameworkboxtitle{Primitive Type Transformations}
-In this example, \emph{type} refers to data tables, but the same scenario applies to
+In this example, \textsf{type} in Figure~\ref{fig:multiversion} refers to data tables, but the same scenario applies to
 objects or JSON values in other programming systems. Our example focuses on permanent \emph{data}
 that need to evolve alongside with the type and keep synchronized even in the non-local scenario.
 The evolution can be done through a small set of primitive type transformations (illustrated on the
@@ -1054,9 +1113,6 @@ However, ongoing divergence makes multiplicity change much more difficult, and e
 Although there is likely no silver bullet to navigate these tradeoffs, a good solution to this problem would give developers or users tools to manage these tradeoffs. For example, a system might allow developers to specify the desired behavior for a particular pair of schemas based on the requirements of the domain. Or a system might even allow users to manually disambiguate their intent for a given write.
 
 
-
-\newpage
-~
 \newpage
 ~
 \newpage
@@ -1332,20 +1388,15 @@ Another extension, tying in with the data-oriented examples above, involves refa
 \section{Related Work}
 \label{sec:related}
 
-Acme Corp has a problem, for spreadsheets don't naturally support relationships between entities.
-End-user databases like Airtable~\cite{airtable} and Notion~\cite{notion} support \textit{links}
-between tables but do not provide operations that can do an \textit{Extract Entity}. Neither do
-the established database products (see Related Work). Acme will need to write code or do a big manual conversion.
+\textcolor{red}{Maybe insert something about methodology in general?
+(ref the table challenges paper? although this paper is no longer so much about challenges)}
 
-
-
-TODO: Maybe insert something about methodology in general?
-(ref the table challenges paper? although this paper is no longer so much about challenges)
+There has been a lot of research on evolving interdependent layers of software, much of it guided by schema and types. But the vast majority of these techniques involve writing custom code in some specialized language, rather than through immediate action in an interactive programming system. Nevertheless it is important to understand these batch techniques to envision more interactive ones.
 
 \paragraph{Schema evolution.}
-Schema evolution has long been a major problem for SQL databases, which provide surprisingly little help.
-SQLite \cite{sqliteDatatypes} uses dynamically typed values allowing them to be implicitly converted if the datatype of the column changes.
-MYSql \cite{mysqlAlterTable} can reorder columns without destroying their data. But apart from such special cases, SQL databases have no general purpose support for data migration. As a result in practice schema evolution is still mostly done by writing custom SQL code to alter the schema and migrate the data. Such custom code is greatly complicated if it needs to be done without taking the database offline or must be coordinated across multiple shards.
+Schema evolution has long been a major problem for SQL databases because
+the SQL Data Definition Language (DDL) has limited capabilties to redefine existing data. It can rename tables and columns. SQLite \cite{sqliteDatatypes} uses dynamically typed values allowing them to be implicitly converted if the datatype of the column changes.
+MYSql \cite{mysqlAlterTable} can reorder columns without destroying their data. But apart from such special cases, SQL databases have no general purpose support for data migration. As a result in practice schema evolution is mostly done by writing custom Data Manipulation Language (DML) code to migrate the data. Such custom code is greatly complicated if it needs to be done without taking the database offline or must be coordinated across multiple shards.
 In \emph{Refactoring Databases} \citet{ambler06} offer a comprehensive taxonomy of schema evolution patterns, including typical strategies for online migration and sample SQL implementations.
 
 \citet{bernstein07} observed in 2007 ``There are hardly any schema evolution tools today. This is rather surprising since there is a huge literature on schema evolution spanning more than two decades.'' There are now more tools available. Some tools such as Liquibase~\cite{liquibase} and PlanetScale\cite{planetscale} could be characterized as version control and continuous integration/deployment for schema. They track schema changes and can calculate diffs in the form of SQL DDL statements to convert one schema version to another, but do not help migrate data. Unfortunately comparing schemas can be ambiguous about the intention of changes. For example has a column been renamed or has it been deleted and a new one created? That distinction makes a big difference to the data in that column. EvolveDB\cite{evolvedb} addresses this ambiguity by reverse-engineering the schema into a richer data model and tracking the edits to that model within an IDE. This more precise edit history can be used to infer higher level intentions of a schema change, which then generate SQL scripts to evolve the database. EdgeDB~\cite{edgedb} resolves ambiguities by asking questions of the developer, with some answers supplying custom migration code in a proprietary query language.
@@ -1379,7 +1430,7 @@ This work deals with the reality that schema live in the database and so example
 \paragraph{Live programming.}
 Live programming~\cite{tanimoto90, rein2018exploratory} seeks to speed up feedback in (mostly solo) programming.
 % \cite{mcdirmid13, Rauch_2019, beckmann2021shortening}
-% A special case of live programming is \emph{hot reloading} (also called \emph{hot swapping})~\cite{barenz2020essence, } that installs code changes into a running system preserving state but not attempting to migrate that state through type changes.
+% A special case of live programming is \emph{hot reloading} or \emph{hot swapping})~\cite{barenz2020essence, hicks2005dynamic} that installs code changes into a running system preserving state but not attempting to migrate that state through type changes.
 \citet{SemanticDeltas} proposes a research agenda for thoroughly live DSL programming focusing on \emph{Semantic Deltas} that unify edit-time and run-time change.
 \citet{RuntimeConstraint} study the live modeling problem in Section \ref{livemodeling}. They use constraints supplied by the developer to solve for the best new runtime state following a DSL language evolution. \citet{vanRozen19} take an alternative approach to the same problem using \emph{origin tracking} in textual editing.
 %\citet{vanRozen23} subsequently proposed a metaprogramming language for live DSL programming.
