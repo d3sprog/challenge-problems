@@ -11,6 +11,7 @@
 \usepackage[many]{tcolorbox}
 \usepackage{tikz-cd}
 \usepackage{float}
+\usepackage{wrapfig}
 
 \lstdefinelanguage[programming]{TeX}[AlLaTeX]{TeX}{%
   deletetexcs={title,author,bibliography},%
@@ -44,8 +45,9 @@
 \DeclareRobustCommand{\frameworkbox}[2][gray!15]{
 \begin{tcolorbox}[breakable,left=3pt,right=3pt,top=3pt,bottom=3pt,colback=#1,colframe=#1,parbox=false,
   width=\dimexpr\textwidth\relax,enlarge left by=0mm,boxsep=5pt,arc=0pt,enlarge top by=0.5em,%enlarge bottom by=0.0em,
-  outer arc=0pt]\setlength{\parskip}{0.5em}\setlength{\parindent}{0em}{\firamedium Framework perspective.}\quad #2
+  outer arc=0pt]\setlength{\parskip}{0.5em}#2
 \end{tcolorbox}}
+\newcommand{\frameworkboxtitle}[1]{\setlength{\parindent}{0em}{\firamedium #1.}\quad}
 
 \paperdetails{
   perspective=engineering,
@@ -235,7 +237,7 @@ may diverge.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.6\textwidth]{figures/arrows.png}
+\includegraphics[scale=0.175]{figures/diag-data-code.png}
 \caption{When a type changes from $T_1$ to $T_2$, a corresponding change needs to take place
   in data and code whose shape is defined by type. The challenge is finding a suitable
   corresponding transformation (semi-)automatically.}
@@ -402,13 +404,16 @@ semantically equivalent type, the programming system should, in principle, be ab
 migrate both the original value and implementation of both functions to match the new type.
 
 \frameworkbox{
-The evolving \emph{type} in this case is the \texttt{State} type, \emph{code} is the
-program logic implemented in \texttt{update} and \texttt{render} and \emph{data} is the current
-state. To support live programming, a local type change requires synchronizing local data to
-match the new type, and also a change in code so that it continues working against the new type
-structure. In a non-local scenario, programmers would likely want to synchronize types and code,
-but not necessarily data. A collaborative programming system would need to support decentralized
-and possibly divergent type evolution, but without data synchronization.
+\begin{wrapfigure}{r}{14em}
+\vspace{1em}
+\includegraphics[scale=0.175]{figures/diag-both.png}
+\end{wrapfigure}
+\frameworkboxtitle{Code-data Co-evolution}
+In this case study, the evolving \emph{type} is the \texttt{State} type. When the type
+evolves, corresponding change needs to be applied to both \emph{code} and \emph{data}.
+The former is the program logic implemented in \texttt{update} and \texttt{render},
+while the latter is the current state (a live value of type \texttt{State}). The scenario
+illustrates that code and data need to co-evolve as illustrated by a revised diagram on the right.
 }
 
 \subsection{Remarks}
@@ -559,12 +564,17 @@ Split & multiple data items & Interactively, following user guidance\\
 \end{table}
 
 \frameworkbox{
-In a programming system, the \emph{types} to which entity evolution applies can be data tables,
-but also objects or JSON. When the type evolves, the system needs to update corresponding
-live \emph{data} and \emph{code}. In a non-local scenario, entity evolution
-typically concerns permanent data. As a result, the system needs to synchronize types,
-data and code across all replicas. Doing so in a way that allows divergence is discussed
-in the next section.
+\begin{wrapfigure}{r}{8em}
+\includegraphics[scale=0.175]{figures/diag-variants.png}
+\end{wrapfigure}
+\frameworkboxtitle{Primitive Type Transformations}
+In this example, \emph{type} refers to data tables, but the same scenario applies to
+objects or JSON values in other programming systems. Our example focuses on permanent \emph{data}
+that need to evolve alongside with the type and keep synchronized even in the non-local scenario.
+The evolution can be done through a small set of primitive type transformations (illustrated on the
+right) with corresponding data transformation for each. The system may either expose the
+primitive transformations through a user interface, or infer them from textual edits made by the
+programmer, e.g. to a database table schema definition.
 }
 
 \subsection{Remarks}
@@ -618,6 +628,306 @@ view and execute the original query over the view. When applying code migrations
 the system should minimize the need for users to manaually intervene. It should also
 minimize the possibilities that developer-written code is subtly incorrect in edge cases,
 preferably by reducing the need for developer-written code.
+
+% ==================================================================================================
+% DOCUMENTS
+% ==================================================================================================
+
+\section{Evolution of Computational Documents}
+A different kind of type evolution is present in programming systems based on documents.
+The idea, dating back to Boxer \cite{diSessa86}, is to represent programs as documents
+with embedded computed values. In our model, a computed value is a document node whose value is
+specified by a simple formula (akin to those in Potluck~\cite{Litt2023} or spreadsheets) that
+may refer to other nodes of the document. We assume that documents can be concurrently edited
+by multiple users in a local-first manner, i.e., local edits are later synchronized with peers.
+
+Our concrete example is collaborative conference planning, illustred in Figure~\ref{fig:conf}
+and inspired by a typical use of Notion~\cite{notion}. A number of co-organizers are planning
+a conference that will feature talks by several invited speakers. They need to agree on the
+speaker list, contact speakers and calculate the conference budget.
+%
+The ideas in this section also apply to work on computational scientific notebooks
+that combine code and data such as Jupyter \cite{Kluyver2016}. We hope to contribute to ongoinig
+work on advancing the format as done by Nextjournal \cite{Nextjournal21}, Nota~\cite{Crichton2021}
+and Living Papers~\cite{Heer2023}.
+
+\begin{figure}
+\begin{adjustwidth}{-2.5em}{-2.5em}
+\centering
+\begin{subfigure}[b]{18em}\vspace{0pt}
+   \fbox{\parbox{17.6em}{\small
+   \textbf{PROGRAMMING CONFERENCE 2023}\\
+   \textbf{Invited speakers}
+   \begin{itemize}
+    \item Ada Lovelace, ada@rsoc.ac.uk
+    \item Adele Goldberg, adele@xerox.com
+    \item Betty Jean Jennings, betty@rand.com
+    \item Margaret Hamilton, hamilton@mit.com
+   \end{itemize}
+   }}
+   \caption{Jonathan adds a new speaker and sorts the list.}
+   \label{fig:conf-add}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{22em}\vspace{0pt}
+   \fbox{\parbox{21.6em}{\small
+   \textbf{PROGRAMMING CONFERENCE 2023}\\
+   \textbf{Invited speakers}
+   \vspace{0.3em}
+
+   \begin{tabular}{| l | l | l |}
+     \hline
+     \textbf{Name} & \textbf{Email} & \textbf{Who} \\
+     \hline \hline
+     Adele Goldberg & adele@xerox.com & TP\\
+     \hline
+     Margaret Hamilton & hamilton@mit.com & JE\\
+     \hline
+     Betty Jean Jennings & betty@rand.com & JE\\
+     \hline
+   \end{tabular}
+   \\~
+   }}
+   \caption{Tomas refactors the list into a table.}
+   \label{fig:conf-tab}
+\end{subfigure}
+\\~\\
+\begin{subfigure}[b]{18em}\vspace{0pt}
+   \fbox{\parbox{17.6em}{\small
+   \textbf{PROGRAMMING CONFERENCE 2023}\\
+   ~\\[-0.15em]
+   \textbf{Invited speakers}
+   \begin{itemize}
+    \item Adele Goldberg, adele@xerox.com
+    \item Margaret Hamilton, hamilton@mit.com
+    \item Betty Jean Jennings, betty@rand.com
+   \end{itemize}
+   \vspace{1.5em}
+   \textbf{Conference budget}\\
+   Travel cost per speaker:\\
+   \hspace*{2em} \$1200 \\
+   Number of speakers: \\
+   \hspace*{2em} \texttt{=COUNT(/ul[id='speakers']/li)} \\
+   Travel expenses:\\
+   \hspace*{2em} \texttt{=/dl/dd[0] * /dl/dd[1]}
+   }}
+   \caption{Tijs adds formulas to compute the total cost.}
+   \label{fig:conf-budget}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{22em}\vspace{0pt}
+   \fbox{\parbox{21.6em}{\small
+   \textbf{PROGRAMMING CONFERENCE 2023}\\
+   \textbf{Invited speakers}
+
+   \begin{tabular}{| l | l | l |}
+     \hline
+     \textbf{Name} & \textbf{Email} & \textbf{Who} \\
+     \hline \hline
+     Ada Lovelace & ada@rsoc.ac.uk & \\
+     \hline
+     Adele Goldberg & adele@xerox.com & TP\\
+     \hline
+     Betty Jean Jennings & betty@rand.com & JE\\
+     \hline
+     Margaret Hamilton & hamilton@mit.com & JE\\
+     \hline
+   \end{tabular}
+
+   \vspace{0.5em}
+   \textbf{Conference budget}\\
+   Travel cost per speaker:\\
+   \hspace*{2em} \$1200 \\
+   Number of speakers: \\
+   \hspace*{2em} \texttt{=COUNT(/table[id='speakers']/tbody/tr)} \\
+   Travel expenses:\\
+   \hspace*{2em} \texttt{=/dl/dd[0] * /dl/dd[1]}
+   }}\caption{Geoffrey adopts changes from all three co-organizers.}
+   \label{fig:conf-finfin}
+\end{subfigure}
+\end{adjustwidth}
+\caption{
+Initial version of the document (not shown) contains a list of three speakers (Goldberg, Hamilton,
+Jennings). The first challenge involves merging two independent edits to the data
+(Fig.~\ref{fig:conf-add} and Fig.~\ref{fig:conf-tab}); the second merging structural change
+with code (Fig.~\ref{fig:conf-budget} and Fig.~\ref{fig:conf-tab}). Formulas in the final version
+(Fig.~\ref{fig:conf-finfin}) are updated to match the new document structure.}
+\label{fig:conf}
+\end{figure}
+
+\challenge{Merging Structured Document Edits}
+
+The conference organizers first need to agree on a list of speakers to invite, coordinate who
+contacts whom and track the acceptance of invitations. They start with a list of three
+speakers (not shown). The first challenge is to merge document edits done locally
+by Jonathan and Tomas and change the list and the structure of the document:
+
+\begin{enumerate}
+\item Jonathan adds an additional speaker to the list and sorts the list of speakers
+  alphabetically by their first name. (Figure~\ref{fig:conf-add})
+\item Tomas refactors the list into a table. He splits the single textual value
+  into a name and an email (using a comma as the separator) and adds an additional column for
+  tracking which of the organizers should contact the speaker.
+\end{enumerate}
+
+\noindent
+The system should be able to merge the changes and produce a table containing the new data
+in a tabular format (not shown). The result needs to include the additional speaker
+created by Jonathan, use the order specified by Jonathan, but use the format defined by
+Tomas. The newly added speaker should be reformatted into the new format. For the newly added
+``Organizer'' column, Tomas may specify default value or the newly added row may use an
+empty value.
+
+\frameworkbox{
+\frameworkboxtitle{Framework perspective}
+In this scenario, the only transient \emph{state} is the result of computed values. The content
+of the document corresponds to the \emph{data} pace layer. A change in the data layer may invalidate
+the computed value at the state layer. Formulas correspond to the \emph{code} layer and changing them,
+again, invalidates the state. The \emph{schema} pace layer is implicit. A change to the document that
+modifies content is a mere data change, but restructuring the document is an implicit schema
+change. Such schema change that may affect the code pace layer.
+
+The scenario assumes the \emph{decentralized} model. There are multiple program (document)
+variants and it should be possible to propagate a change at any pace layer to other program
+variants. The challenge may be solved using both the easier \emph{convergence} and the more
+challenging \emph{divergence} model.}
+
+\frameworkbox{
+\frameworkboxtitle{Framework perspective}
+In this challenge, the change done by the first organizer is at the \emph{data} layer,
+while the change done by the second organizer spans the \emph{schema} and \emph{data} layers.
+In implementing the schema change, the second organizer transforms the affected document data.
+The challenge is to apply the same transformation to the data independently added by the
+second organizer.
+}
+
+\paragraph{Requirements.}
+The challenge is concerned with merging two sequences edits to a base document.
+A solution to the challenge should strive to satisfy the following goals:
+
+\begin{itemize}
+\item \emph{Completeness.} It should be possible to semi-automatically merge any two sequences
+  of edits. In other words, the merging should always be defined, regardless of what edits the
+  users perform, although user input may sometimes be necessary.
+\item \emph{Commutativity.} The order of edits should not matter, regardless of their pace layer.
+  If users $A$ and $B$ perform edits independently starting from the same initial document, the
+  resulting document should be the same if the system treats edits from $A$ as occurring before
+  the edits of $B$ and vice versa.
+\item \emph{Conflict resolution.} It may not always be possible to merge conflicting edits.
+  In this case, the system should interactively ask the user for guidance or, possibly, use
+  default behavior specified by the user.
+\item \emph{Structure editing.} The system may use a structure editor that provides high-level
+  commands for operations such as reordering of elements or refactoring of a list into a table.
+  In other words, we recognise that the challenge may not be solvable in a system based on plain
+  text editing of document source code.
+\end{itemize}
+
+\paragraph{Remarks.}
+As discussed earlier, this challenge does not make an explicit distinction between the schema
+of the document and data. The implementing system may or may not maintain such distinction.
+In our example, adding a new speaker and sorting the list is a mere change of the data, but the
+refactoring of a list into a table is a schema change. The system may offer different user interface
+for changes at different layers and leverage knowledge about such distinction, for example,
+by handling the merging of schema-related and data-related changes differently.
+
+
+
+
+\challenge{Applying schema edits in presence of code}
+
+This challenge extends the previous problem. The conference organizers now also want to use
+the document to manage the conference budget. In a very simplified form, one aspect
+of this is calculating the estimated travel expenses for the speakers. For this,
+they add a computed value to the document that counts the number of speakers
+and multiplies the result by a fixed cost per speaker elsewhere in the document.
+
+The scenario is shown in Figure~\ref{fig:conf-budget}. Assume two co-organizers start with
+the same original document shown in Figure~\ref{fig:conf-orig}. One adds an additional
+section with computed values, while the other performs the edits discussed earlier.
+The challenge is, again, to merge the edits done independently by the co-organizers.
+
+\begin{enumerate}
+\item The first co-organizer adds the budget calculation as shown in Figure~\ref{fig:conf-budget}.
+  This includes two formulas. The first selects all \texttt{li} elements of a \texttt{ul} element
+  with ID \texttt{speakers} (not visible in the UI) and counts their number. The second formula
+  multiplies the constant travel cost per speaker by the number of speakers. Here, we assume the
+  new section uses the HTML definition list \texttt{dl} and the formula selects its first and
+  second \texttt{dd} item, respectively.
+
+\item The second co-organizer performs the refactoring and data edits discussed previously.
+  They edit the speakers and refactor the structure to use a table, resulting in the document
+  shown in Figure~\ref{fig:conf-fin}.
+\end{enumerate}
+
+\noindent
+As before, the system should be able to merge the edits made to the document.
+
+\frameworkbox{
+\frameworkboxtitle{Framework perspective}
+In this challenge, the change done by the first organizer is at the \emph{code} layer, while
+the change done by the second organizer is both at the \emph{data} layer and, implicitly,
+at the \emph{schema} layer. A change solely at the \emph{data} layer would not affect code,
+but a change at the \emph{schema} layer requires adapting some aspects of the code.
+}
+
+\paragraph{Remarks.}
+Addressing the challenge requires that the refactoring of the document structure done in (1),
+is also reflected in the code of the equations added in (2). As shown in
+Figure~\ref{fig:conf-finfin}, in this specific case, the system needs to change the equation
+\texttt{COUNT(/ul[id='speakers']/li)} to \texttt{COUNT(/table[id='speakers']/tbody/tr)}.
+This is the case because the refactoring consists of four steps that each transform the
+document and also need to update the code of the equation accordingly:
+
+\begin{itemize}
+    \item[--] Change the type of the \texttt{ul} element to \texttt{table}
+    \item[--] Wrap the body of the \texttt{table} element with \texttt{tbody}
+    \item[--] Change the type of all children of \texttt{tbody} from \texttt{li} to \texttt{tr}
+    \item[--] Further split the body into two \texttt{td} elements
+\end{itemize}
+
+\noindent
+It is expected that the system solving the challenge will need to be aware of those high-level
+edits. In particular, they may be explicitly specified by the user (through an interactive
+user interface for editing the document) or semi-automatically inferred.
+
+\paragraph{Requirements.}
+A solution to the challenge should meet the goals of the preceding challenge, i.e., completeness
+(merging should be always defined), commutativity (order does not matter), conflict resolution
+(ask for guidance if needed), convergence (everyone eventually wants the same document) and
+structure editing (the system may capture high-level edits).
+
+\subsection*{Challenge Extensions: Liveness and divergence}
+So far, we assumed that the system follows the \emph{convergence} model, i.e., all variants
+of the program eventually adopt all changes. A more difficult variant on the challenge is to also
+support the \emph{divergence} model. In this case, some of the users continue using their variant
+of the program without adopting all of the changes done by other users.
+
+\frameworkbox{
+\frameworkboxtitle{Framework perspective}
+In the \emph{divergence} model, it may be expected that users will want to adopt all changes
+done at the \emph{data} pace layer. They may selectively choose some of the changes at the
+\emph{code} and \emph{schema} layers. The challenge is maintaining the same data across multiple
+program variants and merging changes done to the data based on different document schema.
+}
+
+The basic challenge outlined above focuses primarily on the local-first software scenario, but
+it can be extended to also apply to the live programming scenario. In particular, when the
+document contains computed values, those may be evaluated either explicitly by the user or
+automatically on-the-fly. An edit can then invalidate some of the values (either by changing
+the data that a computed value depends on, or by changing the equation used to compute the value).
+A live programming system should be able to detect which computed values are affected by an edit
+and, either invalidate those (requiring an explicit re-evaluation by the user) or automatically
+re-evaluate them (and possibly highlight the affected values to inform the user).
+
+\frameworkbox{
+\frameworkboxtitle{Framework perspective}
+In the live extension, we also consider the transient \emph{state} pace layer. A system should
+automatically detect when a change at the \emph{data} or \emph{code} layers affects the computed
+value and forces it to be recomputed. Interestingly, a change at the \emph{schema} layer may not
+always affect the \emph{state} layer, even if it schema change requires modifying formulas that
+compute the state.
+}
+
 
 
 \newpage
@@ -814,360 +1124,6 @@ This challenge invites a change of perspective in both live programming and loca
 
 
 \newpage
-
-\begin{figure}
-\begin{adjustwidth}{-5.5em}{-5.5em}
-\centering
-\begin{subfigure}[b]{23em}\vspace{0pt}
-   \fbox{\parbox{22.6em}{
-   \textbf{PROGRAMMING CONFERENCE 2023}\\
-   \textbf{Invited speakers}
-   \begin{itemize}
-    \item Adele Goldberg, adele@xerox.com
-    \item Margaret Hamilton, hamilton@mit.com
-    \item Betty Jean Jennings, betty@rand.com
-   \end{itemize}
-   \vspace{1em}
-   }}
-   \caption{Initial state of the document.}
-   \label{fig:conf-orig}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{23em}\vspace{0pt}
-   \fbox{\parbox{22.6em}{
-   \textbf{PROGRAMMING CONFERENCE 2023}\\
-   \textbf{Invited speakers}
-   \begin{itemize}
-    \item Ada Lovelace, ada@rsoc.ac.uk
-    \item Adele Goldberg, adele@xerox.com
-    \item Betty Jean Jennings, betty@rand.com
-    \item Margaret Hamilton, hamilton@mit.com
-   \end{itemize}
-   }}
-   \caption{Added a speaker and sorted the list.}
-   \label{fig:conf-add}
-\end{subfigure}
-\\~\\
-\begin{subfigure}[b]{23em}\vspace{0pt}
-   \fbox{\parbox{22.6em}{
-   \textbf{PROGRAMMING CONFERENCE 2023}\\
-   \textbf{Invited speakers}
-
-   \begin{tabular}{| l | l | l |}
-     \hline
-     \textbf{Name} & \textbf{Email} & \textbf{Who} \\
-     \hline \hline
-     Adele Goldberg & adele@xerox.com & TP\\
-     \hline
-     Margaret Hamilton & hamilton@mit.com & JE\\
-     \hline
-     Betty Jean Jennings & betty@rand.com & JE\\
-     \hline
-   \end{tabular}
-   \\~
-   }}
-   \caption{Refactored list into a table.}
-   \label{fig:conf-tab}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{23em}\vspace{0pt}
-   \fbox{\parbox{22.6em}{
-   \textbf{PROGRAMMING CONFERENCE 2023}\\
-   \textbf{Invited speakers}
-
-   \begin{tabular}{| l | l | l |}
-     \hline
-     \textbf{Name} & \textbf{Email} & \textbf{Who} \\
-     \hline \hline
-     Ada Lovelace & ada@rsoc.ac.uk & \\
-     \hline
-     Adele Goldberg & adele@xerox.com & TP\\
-     \hline
-     Betty Jean Jennings & betty@rand.com & JE\\
-     \hline
-     Margaret Hamilton & hamilton@mit.com & JE\\
-     \hline
-   \end{tabular}
-   }}
-   \caption{Resulting document after change merging.}
-   \label{fig:conf-fin}
-\end{subfigure}
-\end{adjustwidth}
-\vspace{0.5em}
-\caption{Conference organizer. Initial version of the document with two independent changes
-and the final version of the document after the two changes are merged.}
-\label{fig:conf}
-\vspace{0.5em}
-\end{figure}
-
-
-\section{Conference Organizer: Merging edits in computational documents}
-In this section, we consider challenges related to working with a document-based format akin to HTML.
-We discuss two variants of the format. In the first format, a document
-contains only data. In the second variant, the format is extended with computed values.
-A computed value is a node in the document whose value is specified by a formula akin to those
-used in spreadsheets. The equations can refer to other nodes in the document, possibly using
-an absolute or a relative path and may involve a range of built-in functions, for example to
-count the number of elements or to sum a sequence of numerical values.
-
-We assume that the document can be
-concurrently edited by multiple users in the same fashion as in local-first software, i.e.,
-users may edit a local copy that then needs to be synchronized with changes made by other users.
-The edits to the document can be done in a rich-text editor, or by using a more structure-aware
-structure editor that can, for example, record changes as a sequence of high-level edit operations.
-
-The concrete challenges are centered around the problem of collaborative conference planning
-as illustrated in Figure~\ref{fig:conf}. A number of co-organizers are planning a conference
-that will feature talks by several invited speakers. They need to agree on the speaker list,
-contact speakers and calculate the conference budget.
-
-
-\frameworkbox{
-In this scenario, the only transient \emph{state} is the result of computed values. The content
-of the document corresponds to the \emph{data} pace layer. A change in the data layer may invalidate
-the computed value at the state layer. Formulas correspond to the \emph{code} layer and changing them,
-again, invalidates the state. The \emph{schema} pace layer is implicit. A change to the document that
-modifies content is a mere data change, but restructuring the document is an implicit schema
-change. Such schema change that may affect the code pace layer.
-
-The scenario assumes the \emph{decentralized} model. There are multiple program (document)
-variants and it should be possible to propagate a change at any pace layer to other program
-variants. The challenge may be solved using both the easier \emph{convergence} and the more
-challenging \emph{divergence} model.}
-
-\paragraph{Applications.}
-One of the earliest systems to combine documents with computational elements
-is Boxer \cite{diSessa86}. The challenges in this section apply to a wide range of
-systems that can be seen as its successors. The specific scenario discussed here is
-inspired by the use of Notion~\cite{notion}, which is a collaborative structured document
-editing system. Treating documents as end-user programs has recently
-been explored in Potluck~\cite{Litt2023}, which is local-only but includes formulas similar
-to those in our challenge.
-
-The challenges in this section are also relevant to work on computational scientific notebooks.
-Jupyter \cite{Kluyver2016} uses a simple representation as a sequence of cells and does not have
-a mechanism for embedding data in the document and referring to it, but numerous
-project such as Nextjournal \cite{Nextjournal21} advance the format. The idea of producing
-interactive, computational secientific documents is an active research area. Recent contributions
-include Nota~\cite{Crichton2021} and Living Papers \cite{Heer2023}.
-
-\challenge{Merging structured document edits}
-
-First, the organizers need to agree on a list of speakers to invite, coordinate who contacts
-whom and track the acceptance of invitations. They start with a document shown in
-Figure~\ref{fig:conf-orig}. The challenge is to merge document edits that are done locally
-and independently by two co-organizers. Specifically, consider the following two edits:
-
-\begin{enumerate}
-\item The first organizer adds an additional speaker to the list and sorts the list of speakers
-  alphabetically by their first name. (Figure~\ref{fig:conf-add})
-\item The second organizer refactors the list into a table. They split the single textual value
-  into a name and an email (using a comma as the separator) and add an additional column for
-  tracking which of the organizers should contact the speaker.
-\end{enumerate}
-
-\noindent
-The system should be able to merge the changes and produce a final table shown in
-Figure~\ref{fig:conf-fin}. The resulting table needs to include the additional speaker
-created by the first organizer, use the order specified by the first organizer and use
-the format defined by the second organizer. The newly added speaker should be reformatted
-into the new format. For the newly added ``Organizer'' column, the second user may
-specify default value or the newly added row may use an empty value.
-
-\frameworkbox{
-In this challenge, the change done by the first organizer is at the \emph{data} layer,
-while the change done by the second organizer spans the \emph{schema} and \emph{data} layers.
-In implementing the schema change, the second organizer transforms the affected document data.
-The challenge is to apply the same transformation to the data independently added by the
-second organizer.
-}
-
-\paragraph{Requirements.}
-The challenge is concerned with merging two sequences edits to a base document.
-A solution to the challenge should strive to satisfy the following goals:
-
-\begin{itemize}
-\item \emph{Completeness.} It should be possible to semi-automatically merge any two sequences
-  of edits. In other words, the merging should always be defined, regardless of what edits the
-  users perform, although user input may sometimes be necessary.
-\item \emph{Commutativity.} The order of edits should not matter, regardless of their pace layer.
-  If users $A$ and $B$ perform edits independently starting from the same initial document, the
-  resulting document should be the same if the system treats edits from $A$ as occurring before
-  the edits of $B$ and vice versa.
-\item \emph{Conflict resolution.} It may not always be possible to merge conflicting edits.
-  In this case, the system should interactively ask the user for guidance or, possibly, use
-  default behavior specified by the user.
-\item \emph{Structure editing.} The system may use a structure editor that provides high-level
-  commands for operations such as reordering of elements or refactoring of a list into a table.
-  In other words, we recognise that the challenge may not be solvable in a system based on plain
-  text editing of document source code.
-\end{itemize}
-
-\paragraph{Remarks.}
-As discussed earlier, this challenge does not make an explicit distinction between the schema
-of the document and data. The implementing system may or may not maintain such distinction.
-In our example, adding a new speaker and sorting the list is a mere change of the data, but the
-refactoring of a list into a table is a schema change. The system may offer different user interface
-for changes at different layers and leverage knowledge about such distinction, for example,
-by handling the merging of schema-related and data-related changes differently.
-
-
-\begin{figure}
-\begin{adjustwidth}{-5.5em}{-5.5em}
-\centering
-\begin{subfigure}[b]{23em}\vspace{0pt}
-   \fbox{\parbox{22.6em}{
-   \textbf{PROGRAMMING CONFERENCE 2023}\\
-   \textbf{Invited speakers}
-   \begin{itemize}
-    \item Adele Goldberg, adele@xerox.com
-    \item Margaret Hamilton, hamilton@mit.com
-    \item Betty Jean Jennings, betty@rand.com
-   \end{itemize}
-   \vspace{1.5em}
-   \textbf{Conference budget}\\
-   Travel cost per speaker:\\
-   \hspace*{2em} \$1200 \\
-   Number of speakers: \\
-   \hspace*{2em} \texttt{=COUNT(/ul[id='speakers']/li)} \\
-   Travel expenses:\\
-   \hspace*{2em} \texttt{=/dl/dd[0] * /dl/dd[1]}
-   }}
-   \caption{Initial state of the document with formulas.}
-   \label{fig:conf-budget}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{23em}\vspace{0pt}
-   \fbox{\parbox{22.6em}{
-   \textbf{PROGRAMMING CONFERENCE 2023}\\
-   \textbf{Invited speakers}
-
-   \begin{tabular}{| l | l | l |}
-     \hline
-     \textbf{Name} & \textbf{Email} & \textbf{Who} \\
-     \hline \hline
-     Ada Lovelace & ada@rsoc.ac.uk & \\
-     \hline
-     Adele Goldberg & adele@xerox.com & TP\\
-     \hline
-     Betty Jean Jennings & betty@rand.com & JE\\
-     \hline
-     Margaret Hamilton & hamilton@mit.com & JE\\
-     \hline
-   \end{tabular}
-
-   \vspace{0.5em}
-   \textbf{Conference budget}\\
-   Travel cost per speaker:\\
-   \hspace*{2em} \$1200 \\
-   Number of speakers: \\
-   \hspace*{2em} \texttt{=COUNT(/table[id='speakers']/tbody/tr)} \\
-   Travel expenses:\\
-   \hspace*{2em} \texttt{=/dl/dd[0] * /dl/dd[1]}
-   }}\caption{Resulting document after schema change merging.}
-   \label{fig:conf-finfin}
-\end{subfigure}
-\caption{Conference organizer. Formulas to calculate the budget have been added to the
-original document (Figure~\ref{fig:conf-orig}) and those have to be merged with the
-refactoring of a list into a table (Fig~\ref{fig:conf-tab}). Formulas in the final version
-are updated to match with the new document structure.}
-\label{fig:conf-calc}
-\end{adjustwidth}
-\end{figure}
-
-
-\challenge{Applying schema edits in presence of code}
-
-This challenge extends the previous problem. The conference organizers now also want to use
-the document to manage the conference budget. In a very simplified form, one aspect
-of this is calculating the estimated travel expenses for the speakers. For this,
-they add a computed value to the document that counts the number of speakers
-and multiplies the result by a fixed cost per speaker elsewhere in the document.
-
-The scenario is shown in Figure~\ref{fig:conf-budget}. Assume two co-organizers start with
-the same original document shown in Figure~\ref{fig:conf-orig}. One adds an additional
-section with computed values, while the other performs the edits discussed earlier.
-The challenge is, again, to merge the edits done independently by the co-organizers.
-
-\begin{enumerate}
-\item The first co-organizer adds the budget calculation as shown in Figure~\ref{fig:conf-budget}.
-  This includes two formulas. The first selects all \texttt{li} elements of a \texttt{ul} element
-  with ID \texttt{speakers} (not visible in the UI) and counts their number. The second formula
-  multiplies the constant travel cost per speaker by the number of speakers. Here, we assume the
-  new section uses the HTML definition list \texttt{dl} and the formula selects its first and
-  second \texttt{dd} item, respectively.
-
-\item The second co-organizer performs the refactoring and data edits discussed previously.
-  They edit the speakers and refactor the structure to use a table, resulting in the document
-  shown in Figure~\ref{fig:conf-fin}.
-\end{enumerate}
-
-\noindent
-As before, the system should be able to merge the edits made to the document.
-
-\frameworkbox{
-In this challenge, the change done by the first organizer is at the \emph{code} layer, while
-the change done by the second organizer is both at the \emph{data} layer and, implicitly,
-at the \emph{schema} layer. A change solely at the \emph{data} layer would not affect code,
-but a change at the \emph{schema} layer requires adapting some aspects of the code.
-}
-
-\paragraph{Remarks.}
-Addressing the challenge requires that the refactoring of the document structure done in (1),
-is also reflected in the code of the equations added in (2). As shown in
-Figure~\ref{fig:conf-finfin}, in this specific case, the system needs to change the equation
-\texttt{COUNT(/ul[id='speakers']/li)} to \texttt{COUNT(/table[id='speakers']/tbody/tr)}.
-This is the case because the refactoring consists of four steps that each transform the
-document and also need to update the code of the equation accordingly:
-
-\begin{itemize}
-    \item[--] Change the type of the \texttt{ul} element to \texttt{table}
-    \item[--] Wrap the body of the \texttt{table} element with \texttt{tbody}
-    \item[--] Change the type of all children of \texttt{tbody} from \texttt{li} to \texttt{tr}
-    \item[--] Further split the body into two \texttt{td} elements
-\end{itemize}
-
-\noindent
-It is expected that the system solving the challenge will need to be aware of those high-level
-edits. In particular, they may be explicitly specified by the user (through an interactive
-user interface for editing the document) or semi-automatically inferred.
-
-\paragraph{Requirements.}
-A solution to the challenge should meet the goals of the preceding challenge, i.e., completeness
-(merging should be always defined), commutativity (order does not matter), conflict resolution
-(ask for guidance if needed), convergence (everyone eventually wants the same document) and
-structure editing (the system may capture high-level edits).
-
-\subsection*{Challenge Extensions: Liveness and divergence}
-So far, we assumed that the system follows the \emph{convergence} model, i.e., all variants
-of the program eventually adopt all changes. A more difficult variant on the challenge is to also
-support the \emph{divergence} model. In this case, some of the users continue using their variant
-of the program without adopting all of the changes done by other users.
-
-\frameworkbox{
-In the \emph{divergence} model, it may be expected that users will want to adopt all changes
-done at the \emph{data} pace layer. They may selectively choose some of the changes at the
-\emph{code} and \emph{schema} layers. The challenge is maintaining the same data across multiple
-program variants and merging changes done to the data based on different document schema.
-}
-
-The basic challenge outlined above focuses primarily on the local-first software scenario, but
-it can be extended to also apply to the live programming scenario. In particular, when the
-document contains computed values, those may be evaluated either explicitly by the user or
-automatically on-the-fly. An edit can then invalidate some of the values (either by changing
-the data that a computed value depends on, or by changing the equation used to compute the value).
-A live programming system should be able to detect which computed values are affected by an edit
-and, either invalidate those (requiring an explicit re-evaluation by the user) or automatically
-re-evaluate them (and possibly highlight the affected values to inform the user).
-
-\frameworkbox{
-In the live extension, we also consider the transient \emph{state} pace layer. A system should
-automatically detect when a change at the \emph{data} or \emph{code} layers affects the computed
-value and forces it to be recomputed. Interestingly, a change at the \emph{schema} layer may not
-always affect the \emph{state} layer, even if it schema change requires modifying formulas that
-compute the state.
-}
-
 
 \newpage
 
