@@ -48,15 +48,6 @@
   outer arc=0pt]\setlength{\parskip}{0.5em}#2
 \end{tcolorbox}}
 \newcommand{\frameworkboxtitle}[1]{\setlength{\parindent}{0em}{\firamedium #1.}\quad}
-\newcommand{\openframeworkbox}{
-\begin{tcolorbox}[breakable,left=3pt,right=3pt,top=3pt,bottom=3pt,colback=gray!15,colframe=gray!15,parbox=false,
-  width=\dimexpr\textwidth\relax,enlarge left by=0mm,boxsep=5pt,arc=0pt,enlarge top by=0.5em,%enlarge bottom by=0.0em,
-  outer arc=0pt]\setlength{\parskip}{0.5em}
-}
-\newcommand{\closeframeworkbox}{
-\end{tcolorbox}
-}
-
 
 \paperdetails{
   perspective=engineering,
@@ -551,13 +542,6 @@ breaking the connection from all associated orders. Unique identifiers are the e
 entities, whether they are uniquely generated primary keys in a database or an abstraction
 of a memory address in a programming language.
 
-\textcolor{red}{[JE. Found this snippet in the related work]
-Acme Corp has a problem, for spreadsheets don't naturally support relationships between entities.
-End-user databases like Airtable~\cite{airtable} and Notion~\cite{notion} support \textit{links}
-between tables but do not provide operations that can do an \textit{Extract Entity}. Neither do
-the established database products (see Related Work). Acme will need to write code or do a big manual conversion.
-}
-
 
 The \textit{Extract Entity} operation must 1) merge duplicates, 2) assign unique identifiers,
 and 3) reference these identifiers from the orders. Our example took the simple approach of
@@ -603,31 +587,12 @@ Split & multiple data items & Interactively, following user guidance\\
 \end{table}
 
 
-\openframeworkbox
-  \begin{tikzcd}[sep = 6em]
-    \textsf{type}_1
-    \arrow[r, "\textsf{constrains}"{above}]
-    \arrow[d, red, "\textsf{change}_1"{name=C, description}]
-    &
-    \textsf{data}_1
-    \arrow[d, "\textsf{migrate}_1"{name=R, description}]
-    \\
-    \textsf{type}_2
-    \arrow[r, "\textsf{constrains}"{above}]
-    \arrow[d, red, "\textsf{change}_2"{name=C2, description}]
-    &
-    \textsf{data}_2
-    \arrow[Rightarrow, from=C, to=R, "\textsf{propagate}"{above}]
-    \arrow[d, "\textsf{migrate}_2"{name=R2, description}]
-    \\
-    \textsf{type}_3
-    \arrow[r, "\textsf{constrains}"{above}]
-    &
-    \textsf{data}_3
-    \arrow[Rightarrow, from=C2, to=R2, "\textsf{propagate}"{above}]
-  \end{tikzcd}
+\frameworkbox{
+\begin{wrapfigure}{r}{9em}
+\includegraphics[scale=0.2]{figures/diag-variants.png}
+\end{wrapfigure}
 
-  \frameworkboxtitle{Primitive Type Transformations}
+\frameworkboxtitle{Primitive Type Transformations}
 In this example, \textsf{type} refers to data tables, but the same scenario applies to
 objects or JSON values in other programming systems. Our example focuses on permanent \emph{data}
 that need to evolve alongside with the type and keep synchronized even in the non-local scenario.
@@ -635,7 +600,7 @@ The evolution can be done through a small set of primitive type transformations 
 right) with corresponding data transformation for each. The system may either expose the
 primitive transformations through a user interface, or infer them from textual edits made by the
 programmer, e.g. to a database table schema definition.
-\closeframeworkbox
+}
 
 
 \subsection*{Remarks: Representation and Replication}
@@ -1390,10 +1355,7 @@ Another extension, tying in with the data-oriented examples above, involves refa
 \section{Related Work}
 \label{sec:related}
 
-\textcolor{red}{Maybe insert something about methodology in general?
-(ref the table challenges paper? although this paper is no longer so much about challenges)}
-
-There has been a lot of research on evolving interdependent layers of software, much of it guided by schema and types. But the vast majority of these techniques involve writing custom code in some specialized language, rather than through immediate action in an interactive programming system. Nevertheless it is important to understand these batch techniques to envision more interactive ones.
+There has been a lot of research on coordinating the evolution of interdependent layers of software, much of it guided by schema and types. But the vast majority of these techniques involve writing custom code in some specialized language, rather than through immediate action in an interactive programming system. Nevertheless it is important to understand these batch techniques to envision more interactive ones.
 
 \paragraph{Schema evolution.}
 Schema evolution has long been a major problem for SQL databases because
