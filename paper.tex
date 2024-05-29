@@ -934,7 +934,7 @@ data of another type, or code written against one type must run against data sto
 
 Such situations are common in software engineering. Web backend architectures often put data and
 code on separate machines, which makes it impossible to update both atomically. To perform
-upgrades, teams must manually perform multi-step zero-downtime deployment processes~\cite{planetscale}
+upgrades, teams must manually perform multi-step zero-downtime deployment processes~\cite{planetscalerails}
 to step the database and the code servers forward gradually such that they are compatible with one
 another at any given step. One example would be deploying a change to add a database column
 before deploying the code that uses the column.
