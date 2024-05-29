@@ -48,6 +48,15 @@
   outer arc=0pt]\setlength{\parskip}{0.5em}#2
 \end{tcolorbox}}
 \newcommand{\frameworkboxtitle}[1]{\setlength{\parindent}{0em}{\firamedium #1.}\quad}
+\newcommand{\openframeworkbox}{
+\begin{tcolorbox}[breakable,left=3pt,right=3pt,top=3pt,bottom=3pt,colback=gray!15,colframe=gray!15,parbox=false,
+  width=\dimexpr\textwidth\relax,enlarge left by=0mm,boxsep=5pt,arc=0pt,enlarge top by=0.5em,%enlarge bottom by=0.0em,
+  outer arc=0pt]\setlength{\parskip}{0.5em}
+}
+\newcommand{\closeframeworkbox}{
+\end{tcolorbox}
+}
+
 
 \paperdetails{
   perspective=engineering,
@@ -593,48 +602,41 @@ Split & multiple data items & Interactively, following user guidance\\
 \vspace{-1em}
 \end{table}
 
-\begin{figure}[H]
-\begin{tikzcd}[sep = 6em]
-  \textsf{type}_1
-  \arrow[r, "\textsf{constrains}"{above}]
-  \arrow[d, red, "\textsf{change}_1"{name=C, description}]
-  &
-  \textsf{data}_1
-  \arrow[d, "\textsf{migrate}_1"{name=R, description}]
-  \\
-  \textsf{type}_2
-  \arrow[r, "\textsf{constrains}"{above}]
-  \arrow[d, red, "\textsf{change}_2"{name=C2, description}]
-  &
-  \textsf{data}_2
-  \arrow[Rightarrow, from=C, to=R, "\textsf{propagate}"{above}]
-  \arrow[d, "\textsf{migrate}_2"{name=R2, description}]
-  \\
-  \textsf{type}_3
-  \arrow[r, "\textsf{constrains}"{above}]
-  &
-  \textsf{data}_3
-  \arrow[Rightarrow, from=C2, to=R2, "\textsf{propagate}"{above}]
-\end{tikzcd}
-\caption{Multiversion type evolution.}
-\label{fig:multiversion}
-\end{figure}
 
-\frameworkbox{
-% wrapfigure doesn't seem to work with tikz
-% \begin{wrapfigure}{r}{9em}
-% \includegraphics[scale=0.2]{figures/diag-variants.png}
-% \end{wrapfigure}
+\openframeworkbox
+  \begin{tikzcd}[sep = 6em]
+    \textsf{type}_1
+    \arrow[r, "\textsf{constrains}"{above}]
+    \arrow[d, red, "\textsf{change}_1"{name=C, description}]
+    &
+    \textsf{data}_1
+    \arrow[d, "\textsf{migrate}_1"{name=R, description}]
+    \\
+    \textsf{type}_2
+    \arrow[r, "\textsf{constrains}"{above}]
+    \arrow[d, red, "\textsf{change}_2"{name=C2, description}]
+    &
+    \textsf{data}_2
+    \arrow[Rightarrow, from=C, to=R, "\textsf{propagate}"{above}]
+    \arrow[d, "\textsf{migrate}_2"{name=R2, description}]
+    \\
+    \textsf{type}_3
+    \arrow[r, "\textsf{constrains}"{above}]
+    &
+    \textsf{data}_3
+    \arrow[Rightarrow, from=C2, to=R2, "\textsf{propagate}"{above}]
+  \end{tikzcd}
 
-\frameworkboxtitle{Primitive Type Transformations}
-In this example, \textsf{type} in Figure~\ref{fig:multiversion} refers to data tables, but the same scenario applies to
+  \frameworkboxtitle{Primitive Type Transformations}
+In this example, \textsf{type} refers to data tables, but the same scenario applies to
 objects or JSON values in other programming systems. Our example focuses on permanent \emph{data}
 that need to evolve alongside with the type and keep synchronized even in the non-local scenario.
 The evolution can be done through a small set of primitive type transformations (illustrated on the
 right) with corresponding data transformation for each. The system may either expose the
 primitive transformations through a user interface, or infer them from textual edits made by the
 programmer, e.g. to a database table schema definition.
-}
+\closeframeworkbox
+
 
 \subsection*{Remarks: Representation and Replication}
 The central problem is to coordinate the type evolution with code edits to keep the system
