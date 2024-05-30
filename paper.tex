@@ -513,7 +513,7 @@ when the customer's address changes they have to go back and edit all of their o
 
 \challenge{Extract Entity}
 Acme needs to evolve the above schema and data into two tables (Figure~\ref{fig:db-customers}, \ref{fig:db-orders-link}),
-one with orders that links to one with customers.  We refer to this as \emph{Extract Entity}
+one with orders that links to one with customers.  We refer to this as the \emph{Extract Entity}
 operation, because it introduces a new \emph{entity}, a referenceable holder of mutable attributes.
 The operation is needed when we realize that some attributes of one type of entity should belong to
 a  distinct type of entity that will be associated with the first one.
@@ -527,26 +527,26 @@ of a memory address in a programming language. As spreadsheets do not support re
 between entities, Acme will need to migrate their data to a database and restructure the original
 flat table.
 
-The \textit{Extract Entity} operation must 1) merge duplicates, 2) assign unique identifiers,
+The \emph{Extract Entity} operation must 1) merge duplicates, 2) assign unique identifiers,
 and 3) reference these identifiers from the orders. Our example took the simple approach of
 merging entities whose attributes are all equal. But that might not be correct in all cases.
 What if there was a typo in one of the addresses that made it look different from other instances
 of the customer? To repair that error we need to merge the falsely distinct customers into one
-and fix any references from orders. We call this operation \textit{Merge Entities} -- note that
+and fix any references from orders. We call this operation \emph{Merge Entities} -- note that
 it is not a schema change but a data change, yet nevertheless not commonly supported in data APIs.
 
 Entity evolution can happen through operations such as those listed in
 Table~\ref{tbl:dbchanges}. Every schema operation should have an inverse as the
-change in requirements that triggered an evolution might change back again. Inverse
-is also required in research on \emph{divergence control}~\cite{Foster2007, herrmann17, chillon22}.
-The inverse of \textit{Extract Entity} is \textit{Absorb Entity}. It raises the question of how
-to handle \textit{one-to-many} relationships. For example should absorbing orders into customers
+change in requirements that triggered an evolution might change back again.
+Invertibility features in other work on schema evolution and \emph{bidirectional transformations}~\cite{Foster2007, herrmann17, chillon22}.
+The inverse of \emph{Extract Entity} is \emph{Absorb Entity}. It raises the question of how
+to handle \emph{one-to-many} relationships. For example should absorbing orders into customers
 do a relational join, returning us back to the starting point, or should it nest orders within
 customers, as a NoSQL database might do?
 
-The inverse of \textit{Merge Entities} is \textit{Split Entity}, but that can be awkward.
+The inverse of \emph{Merge Entities} is \emph{Split Entity}, but that can be awkward.
 Imagine that we didn't have addresses for customers to disambiguate them with and only knew
-their non-unique names. Then \textit{Extract Entity} will conflate them and discard the
+their non-unique names. Then \emph{Extract Entity} will conflate them and discard the
 information needed to properly invert the operation. Should this information be retained?
 One could object that we shouldn't have taken orders for people we can't uniquely identify
 yet. And even if that was necessary it means the customers really aren't distinct entities
@@ -604,7 +604,7 @@ FROM Orders WHERE ship_date IS NULL;
 \end{lstlisting}
 
 \noindent
-After applying the \textit{Extract Entity} operation as described earlier, the code should
+After applying the \emph{Extract Entity} operation as described earlier, the code should
 be rewritten into the following query that joins the two linked tables:
 
 \begin{lstlisting}[language=SQL]
@@ -1212,14 +1212,14 @@ In \emph{Refactoring Databases} \citet{ambler06} offer a comprehensive taxonomy 
 
 \citet{bernstein07} observed in 2007 ``There are hardly any schema evolution tools today. This is rather surprising since there is a huge literature on schema evolution spanning more than two decades.'' There are now more tools available. Some tools such as Liquibase~\cite{liquibase} and PlanetScale\cite{planetscale} could be characterized as version control and continuous integration/deployment for schema. They track schema changes and can calculate diffs in the form of SQL DDL statements to convert one schema version to another, but do not help migrate data. Unfortunately comparing schemas can be ambiguous about the intention of changes. For example has a column been renamed or has it been deleted and a new one created? That distinction makes a big difference to the data in that column. EvolveDB\cite{evolvedb} addresses this ambiguity by reverse-engineering the schema into a richer data model and tracking the edits to that model within an IDE. This more precise edit history can be used to infer higher level intentions of a schema change, which then generate SQL scripts to evolve the database. EdgeDB~\cite{edgedb} resolves ambiguities by asking questions of the developer, with some answers supplying custom migration code in a proprietary query language.
 
-Some tools provide a Domain Specific Language (DSL) to describe schema evolution. Rails Migrations~\cite{RailsMigrations} embeds a DSL in Ruby to manage schema migration but is comparable to the capabilities of SQL DDL, often requiring the addition of custom Ruby or SQL code. \citet{curino08} spawned a stream of research on Database Evolution Languages (DEL) by defining a Schema Modification Operator (SMO) as ``a function that receives as input a relational schema and the underlying database, and produces as output a (modified) version of the input schema and a migrated version of the database''. SMOs can also rewrite queries to accomodate schema changes. \citet{herrmann15} defined a relationally complete DEL and then extended it into a Bidirectional Database Evolution Language (BiDEL)~\cite{herrmann17}. BiDEL appears capable of handling the basic requirements of our \textit{Extract/Absorb Entity} and \textit{Multiplicity Change} challenges, though \textit{Split/Merge Entity} is less clear. It provides schema divergence by supporting multiple schema within one database, but would need some extension to handle data divergence.
+Some tools provide a Domain Specific Language (DSL) to describe schema evolution. Rails Migrations~\cite{RailsMigrations} embeds a DSL in Ruby to manage schema migration but is comparable to the capabilities of SQL DDL, often requiring the addition of custom Ruby or SQL code. \citet{curino08} spawned a stream of research on Database Evolution Languages (DEL) by defining a Schema Modification Operator (SMO) as ``a function that receives as input a relational schema and the underlying database, and produces as output a (modified) version of the input schema and a migrated version of the database''. SMOs can also rewrite queries to accomodate schema changes. \citet{herrmann15} defined a relationally complete DEL and then extended it into a Bidirectional Database Evolution Language (BiDEL)~\cite{herrmann17}. BiDEL appears capable of handling the basic requirements of our \emph{Extract/Absorb Entity} and \emph{Multiplicity Change} challenges, though \emph{Split/Merge Entity} is less clear. It provides schema divergence by supporting multiple schema within one database, but would need some extension to handle data divergence.
 
 \citet{wang19} use program synthesis to rewrite SQL programs to adapt to a schema change. This process is driven by finding possible correspondences between columns in the old and new schema guided by heuristics on textual similarity and confirmed by the existence of a synthesized equivalent program.
 \begin{comment}
   I hate this paper - incredibly sophisticated techniques applied to an over-idealized problem. It is assumed the migration does not change datatypes or lose any information visible to the programs. It assumes the database has full code coverage. It ignores without explanation ambiguous schema changes (for example renaming equityped columns).
 \end{comment}
 
-Schema evolution is also a problem for NoSQL~\cite{sadalage12} databases. While such databases are sometimes called ``schemaless'' in effect that means the schema is left implicit and tools must try to infer it~\cite{storl20, storl22}. \citet{Cambria} uses lenses~\cite{Foster2007} for bidirectional transformation of JSON. \citet{scherzinger13} define a set of operators like the relational SMOs discussed above. \citeauthor*{chillon21}~\cite{chillon21, chillon22} offer a more comprehensive set of SMOs that may be capable of handling \textit{Extract/Absorb Entity} and \textit{Multiplicity Change} but not \textit{Split/Merge Entity} nor divergence. None of the above approaches to NoSQL evolution have yet extended into updating code or rewriting queries like their SQL cousins.
+Schema evolution is also a problem for NoSQL~\cite{sadalage12} databases. While such databases are sometimes called ``schemaless'' in effect that means the schema is left implicit and tools must try to infer it~\cite{storl20, storl22}. \citet{Cambria} uses lenses~\cite{Foster2007} for bidirectional transformation of JSON. \citet{scherzinger13} define a set of operators like the relational SMOs discussed above. \citeauthor*{chillon21}~\cite{chillon21, chillon22} offer a more comprehensive set of SMOs that may be capable of handling \textit{Extract/Absorb Entity} and \emph{Multiplicity Change} but not \emph{Split/Merge Entity} nor divergence. None of the above approaches to NoSQL evolution have yet extended into updating code or rewriting queries like their SQL cousins.
 
 \emph{Local-first software}~\cite{localfirst} adds the divergence dimension to NoSQL evolution, because the code running on different replicas can evolve at different paces. \citet{Cambria} applies lenses~\cite{Foster2007} to this problem, specifically discussing the \emph{Multiplicity Change} problem.
 
@@ -1232,7 +1232,7 @@ Coupled Transformations~\cite{Berdaguer07, alcino06, Cleve2006} express transfor
 \paragraph{Model Driven Engineering.}
 Model Driven Engineering must also handle evolution. Unlike the textual artifacts involved in other domains, models typically assign unique indentifiers enabling more precise differencing and mergeing~\cite{alanen2003}.
 Models are often themselves modeled by a metamodel, which lifts the evolution problem to the metalevel: models must be migrated through the evolution of their metamodel, analogously to changing the grammar of a programming language.~\cite{Herrmannsdoerfer11}. \citet{Cicchetti11} study metamodel evolution in the context of divergent changes.
-\citet{vermolen11} define a DSL for evolving a data model by generating SQL migrations on the backing database. They consider the evolution of OO-style subclass hierarchies which goes beyond most other work. Their running example includes both our Extract Entity and Multiplicty Change examples, and would make for a good follow-on problem. However they do not address code/query rewriting.
+\citet{vermolen11} define a DSL for evolving a data model by generating SQL migrations on the backing database. They consider the evolution of OO-style subclass hierarchies which goes beyond most other work. Their running example includes both our \emph{Extract Entity} and \emph{Multiplicty Change} examples, and would make for a good follow-on problem. However they do not address code/query rewriting.
 
 \paragraph{Migration by example.}
 Programming by example has been used to infer schema migration programs from examples specified by the developer~\cite{wang20, Alexe11}.
