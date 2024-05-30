@@ -889,7 +889,7 @@ data of another type, or code written against one type must run against data sto
 
 Such situations are common in software engineering. Web backend architectures often put data and
 code on separate machines, which makes it impossible to update both atomically. To perform
-upgrades, teams must manually perform multi-step zero-downtime deployment processes~\cite{planetscale}
+upgrades, teams must manually perform multi-step zero-downtime deployment processes~\cite{planetscalerails}
 to step the database and the code servers forward gradually such that they are compatible with one
 another at any given step. One example would be deploying a change to add a database column
 before deploying the code that uses the column.
@@ -1343,11 +1343,7 @@ Another extension, tying in with the data-oriented examples above, involves refa
 \section{Related Work}
 \label{sec:related}
 
-
-\textcolor{red}{Maybe insert something about methodology in general?
-(ref the table challenges paper? although this paper is no longer so much about challenges)}
-
-There has been a lot of research on evolving interdependent layers of software, much of it guided by schema and types. But the vast majority of these techniques involve writing custom code in some specialized language, rather than through immediate action in an interactive programming system. Nevertheless it is important to understand these batch techniques to envision more interactive ones.
+There has been a lot of research on coordinating the evolution of interdependent layers of software, much of it guided by schema and types. But the vast majority of these techniques involve writing custom code in some specialized language, rather than through immediate action in an interactive programming system. Nevertheless it is important to understand these batch techniques to envision more interactive ones.
 
 \paragraph{Schema evolution.}
 Schema evolution has long been a major problem for SQL databases because
@@ -1383,10 +1379,14 @@ Models are often themselves modeled by a metamodel, which lifts the evolution pr
 Programming by example has been used to infer schema migration programs from examples specified by the developer~\cite{wang20, Alexe11}.
 This work deals with the reality that schema live in the database and so examples must be supplied separately, but we wonder why not incorporate examples into a schema definition language? Textual edits to schema in this language would also adapt the examples, which then could be used to infer an abstract migration, thus avoiding the ambiguities of textually comparing pure schema.
 
+\paragraph{Data wrangling.} The evolution of data formats is a concern in Data Science. Data~Diff~\cite{sutton18} compares two versions of tabular data and finds a minimal matching transformation.
+Wrangler~\cite{kandel11} observes interactive manipulation of sampled data to write data transformation programs.
+\citet{petersohn20} present an algebra of operations on Python dataframes that include shape transformations.
+
 \paragraph{Live programming.}
-Live programming~\cite{tanimoto90, rein2018exploratory} seeks to speed up feedback in (mostly solo) programming.
+Live programming~\cite{tanimoto90, rein2018exploratory} seeks to speed up feedback in (primarily solo) programming.
 % \cite{mcdirmid13, Rauch_2019, beckmann2021shortening}
-% A special case of live programming is \emph{hot reloading} or \emph{hot swapping})~\cite{barenz2020essence, hicks2005dynamic} that installs code changes into a running system preserving state but not attempting to migrate that state through type changes.
+\emph{Hot reloading/swapping}~\cite{barenz2020essence, hicks2005dynamic} installs code changes into a running system preserving some runtime state but not attempting to migrate that state through type changes.
 \citet{SemanticDeltas} proposes a research agenda for thoroughly live DSL programming focusing on \emph{Semantic Deltas} that unify edit-time and run-time change.
 \citet{RuntimeConstraint} study the live modeling problem in Section \ref{livemodeling}. They use constraints supplied by the developer to solve for the best new runtime state following a DSL language evolution. \citet{vanRozen19} take an alternative approach to the same problem using \emph{origin tracking} in textual editing.
 %\citet{vanRozen23} subsequently proposed a metaprogramming language for live DSL programming.

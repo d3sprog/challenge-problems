@@ -26,14 +26,6 @@ year = {2023}
 }
 
 
-@online{planetscale,
-title = {Zero downtime Rails migrations with the PlanetScale Rails gem},
-author = {Countermarsh, Mike},
-url = {https://planetscale.com/blog/zero-downtime-rails-migrations-planetscale-rails-gem},
-urldate = {2024-05-29},
-year = {2023}
-}
-
 @online{AlterTable,
 title={ALTER TABLE, SQL Language Reference},
 url={https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlrf/ALTER-TABLE.html#GUID-552E7373-BF93-477D-9DA3-B2C9386F2877},
@@ -1064,6 +1056,14 @@ keywords = {Distributed objects, components, Application-aware adaptation, conta
   eprint   = {https://academic.oup.com/comjnl/article-pdf/34/2/153/1400604/340153.pdf}
 }
 
+@online{planetscalerails,
+  title   = {Zero downtime Rails migrations with the PlanetScale Rails gem},
+  author  = {Countermarsh, Mike},
+  url     = {https://planetscale.com/blog/zero-downtime-rails-migrations-planetscale-rails-gem},
+  urldate = {2024-05-29},
+  year    = {2023}
+}
+
 @online{planetscale,
 title = {Database branching: three-way merge for schema changes},
 author = {PlanetScale Inc},
@@ -1694,4 +1694,47 @@ year = 2024
   keywords  = {live programming, debugging},
   location  = {Indianapolis, Indiana, USA},
   series    = {Onward! 2013}
+}
+
+@inproceedings{kandel11,
+  title     = {Wrangler: Interactive Visual Specification of Data Transformation Scripts},
+  author    = {Sean Kandel AND Andreas Paepcke AND Joseph Hellerstein AND Jeffrey Heer},
+  booktitle = {ACM Human Factors in Computing Systems (CHI)},
+  year      = {2011},
+  url       = {http://vis.stanford.edu/papers/wrangler}
+}
+
+@article{petersohn20,
+  author     = {Petersohn, Devin and Macke, Stephen and Xin, Doris and Ma, William and Lee, Doris and Mo, Xiangxi and Gonzalez, Joseph E. and Hellerstein, Joseph M. and Joseph, Anthony D. and Parameswaran, Aditya},
+  title      = {Towards scalable dataframe systems},
+  year       = {2020},
+  issue_date = {August 2020},
+  publisher  = {VLDB Endowment},
+  volume     = {13},
+  number     = {12},
+  issn       = {2150-8097},
+  url        = {https://doi.org/10.14778/3407790.3407807},
+  doi        = {10.14778/3407790.3407807},
+  abstract   = {Dataframes are a popular abstraction to represent, prepare, and analyze data. Despite the remarkable success of dataframe libraries in R and Python, dataframes face performance issues even on moderately large datasets. Moreover, there is significant ambiguity regarding dataframe semantics. In this paper we lay out a vision and roadmap for scalable dataframe systems. To demonstrate the potential in this area, we report on our experience building Modin, a scaled-up implementation of the most widely-used and complex dataframe API today, Python's pandas. With pandas as a reference, we propose a simple data model and algebra for dataframes to ground discussion in the field. Given this foundation, we lay out an agenda of open research opportunities where the distinct features of dataframes will require extending the state of the art in many dimensions of data management. We discuss the implications of signature dataframe features including flexible schemas, ordering, row/column equivalence, and data/metadata fluidity, as well as the piecemeal, trial-and-error-based approach to interacting with dataframes.},
+  journal    = {Proc. VLDB Endow.},
+  month      = {jul},
+  pages      = {2033–2046},
+  numpages   = {14}
+}
+
+@inproceedings{sutton18,
+  author    = {Sutton, Charles and Hobson, Timothy and Geddes, James and Caruana, Rich},
+  title     = {Data Diff: Interpretable, Executable Summaries of Changes in Distributions for Data Wrangling},
+  year      = {2018},
+  isbn      = {9781450355520},
+  publisher = {Association for Computing Machinery},
+  url       = {https://doi.org/10.1145/3219819.3220057},
+  doi       = {10.1145/3219819.3220057},
+  abstract  = {Many analyses in data science are not one-off projects, but are repeated over multiple data samples, such as once per month, once per quarter, and so on. For example, if a data scientist performs an analysis in 2017 that saves a significant amount of money, then she will likely to be asked to perform the same analysis on data from 2018. But more data analyses means more effort spent in data wrangling. We introduce the data diff problem, which attempts to turn this problem into an opportunity. Comparing the repeated data samples against each other, inconsistencies may be indicative of underlying issues in data quality. By analogy to text textttdiff, the data diff problem is to find a "patch", that is, transformation in a specified domain-specific language, that transforms the data samples so that they are identically distributed. We present a prototype tool for data diff that formalizes the problem as a bipartite matching problem, calibrating its parameters using a bootstrap procedure. The tool is evaluated quantitatively and through a case study on an open government data set.},
+  booktitle = {Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining},
+  pages     = {2279–2288},
+  numpages  = {10},
+  keywords  = {automl, data mining, data wrangling, sequential analysis},
+  location  = {London, United Kingdom},
+  series    = {KDD '18}
 }
