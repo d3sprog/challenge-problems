@@ -220,7 +220,7 @@ corresponding change in program data and code.
 The situation is illustrated on the right. We start with code $C_1$ and
 data $D_1$ that have a shape corresponding to type $T_1$. When the type changes from $T_1$ to $T_2$ ($\rightarrow$),
 a corresponding change needs to take place in data $D_1$ and code $C_1$. The problem
-of \emph{type evolution} is synthetising ($\Rightarrow$) suitable corresponding transformations
+of \emph{type evolution} is synthesising ($\Rightarrow$) suitable corresponding transformations
 that will update data $D_1$ and code $C_1$ into new versions $D_2$ and $C_2$ that correspond
 to the new type $T_2$.
 %
@@ -381,10 +381,10 @@ restarting the application and losing the data. For example, they may want to ch
 \texttt{completed} field of \texttt{Item} to instead store optional completion time:
 
 \begin{lstlisting}[language=ml]
-type Item = { id : id; title : string; completed : Maybe DateTime }
+type Item = { id : id; title : string; completed : Maybe<DateTime> }
 type State = { items : Item list }
 type Event =
-  | .. | SetCompleted of id * Maybe DateTime | ..
+  | .. | SetCompleted of id * Maybe<DateTime> | ..
 \end{lstlisting}
 
 \noindent
@@ -512,7 +512,7 @@ when the customer's address changes they have to go back and edit all of their o
 \end{figure}
 
 \challenge{Extract Entity}
-Acme needs to evolve the above schema and data into two tables (Figure~\ref{fig:db-customers}, \ref{fig:db-orders-link}),
+Acme needs to evolve the above schema and data into two tables (Fig.~\ref{fig:db-customers}, \ref{fig:db-orders-link}),
 one with orders that links to one with customers.  We refer to this as the \emph{Extract Entity}
 operation, because it introduces a new \emph{entity}, a referenceable holder of mutable attributes.
 The operation is needed when we realize that some attributes of one type of entity should belong to
@@ -880,16 +880,20 @@ same data across multiple program variants and merging changes done to the data 
 different document schema. This is the subject of the case studies discussed in the next two
 sections.
 
+% ==================================================================================================
+% DIVERGENCE
+% ==================================================================================================
+
 \section{Divergence Control in Spreadsheets and Databases}
 Type evolution becomes more challenging when data, code, and types cannot all be updated
 together in an atomic way. In these situations, different versions must coexist and interoperate
-with one another. For example, edits done against data of one type must be applied to
-data of another type, or code written against one type must run against data stored in another.
+with one another. For example, edits done to data of a new type must be applied to
+data of an older type, or code written against older type must run against data of a newer type.
 
 Such situations are common in software engineering. Web backend architectures often put data and
 code on separate machines, which makes it impossible to update both atomically. To perform
 upgrades, teams must manually perform multi-step zero-downtime deployment processes~\cite{planetscalerails}
-to step the database and the code servers forward gradually such that they are compatible with one
+to migrate the database and the code servers forward gradually such that they are compatible with one
 another at any given step. One example would be deploying a change to add a database column
 before deploying the code that uses the column.
 
@@ -898,39 +902,67 @@ deployment steps. But divergence can also occur across longer timescales, especi
 the different parts of a system are not all centrally controlled. For example,
 a public web API may need to support applications using old versions of the API for months or
 years, since it is not realistic to force all consumers to upgrade immediately. Divergence can
-even be indefinite -- Cambria \cite{Cambria} addresses collaborative applications where different
+even be indefinite. Cambria \cite{Cambria} addresses collaborative applications where different
 users may want to collaborate on shared data through different tools using different schemas,
 with no intention of ever converging.
 
+\challenge{Divergence Control for Extract Entity}
+
+As a concrete example, we add the problem of divergence control to the
+earlier Extract Entity challenge. Every month the orders department sends its spreadsheet to
+the accounting department, which copies the data to its own version of the spreadsheet.
+This version uses the same structure (type), but includes additional code for financial tracking.
+When the orders department migrates its spreadsheet to a database and extracts out customers,
+the accounting department does not want to conform. They want to continue using their old
+spreadsheet with their additional code.
+
+The accounting department could manually convert incoming data in the new schema into the old schema. But they
+shouldn't have to. It should be possible to run new data through the schema change in reverse,
+converting it back into the format the accounting department is used to ingesting. Note that
+this is not a matter of synchronizing the divergent spreadsheets -- they maintain differently
+evolved schema.
+
 \frameworkbox{
-\begin{wrapfigure}{r}{12em}
-\vspace{0.5em}
-\includegraphics[scale=0.25]{figures/old/diag-divergence.png}
+\begin{wrapfigure}{r}{14em}
+\vspace{-1.5em}
+\includegraphics[width=14em]{figures/arr-backport.png}
+\vspace{-2.5em}
 \end{wrapfigure}
-\frameworkboxtitle{Type Branching with Divergence}
-The divergence scenario adds another dimension to the problem. There are now multiple
-versions of the system with different \emph{types} that may co-exist as multiple branches.
-Edits to \emph{data} are done against a specific type, but they then need to be migrated
-to versions with different types. Consequently, any type evolution needs to be accompanied
-both with forward projection (transforming data to a new version) and backward projection
-(transforming new data to the old version).}
+\frameworkboxtitle{Bidirectional Data Migration}
+The scenario adds the need for transferring data changes from a new type to an older type.
+In the diagram on the right, we only show data and type, ignoring the code added by the
+accounting department. We start with data $D_1$ of type~$T_1$. The accounting deparment
+evolves the type (via Extract Entity), obtaining data $D_2$ of type $T_2$ using an automatically
+generated forward transformation. It further modifies the data, obtiaing $D_3$. When the
+accounting department receives data $D_3$, it needs to migrate it back from type $T_2$ to
+$T_1$ using an automatically generated backward transformation. In other words,
+type evolution needs to be accompanied with both forward and backward projection for data
+(and code) migration.}
+
+What is needed is a user-friendly mechanism for transferring data changes from one schema to
+another bidirectionally. In one direction we want to transfer changes made in the new schema
+into a variant of the old schema. The opposite direction might be needed, for example,
+if the accounting department corrects customer addresses, which ought to be pushed
+through into the orders department's new schema.
+
+\subsection*{Remarks: Divergence in End-User Workflows}
 
 Divergence does not just occur in software engineering; it also appears in end-user
-workflows. Users frequently make copies of structured documents like spreadsheets and then
+workflows. Users frequently make copies of documents like spreadsheets and then
 diverge them by altering both data content and schema. In the case of spreadsheets schema
-changes include rearrangements to the structure of rows and columns as well as changes to
-formulas. The problem is that the users want to transfer such data and schema changes between
-these divergent copies, and they want to pick and choose which of these changes to transfer.
+changes include rearrangements to the structure of rows and columns, while code changes affect
+formulas. The users then want to transfer such schema, code and data changes between
+divergent copies, and they want to pick and choose which of the changes to transfer.
 In practice such transfer is done manually through copy \& paste. \citet{Basman19} has
 documented an ecology of emailed spreadsheets. \citet{Burnett14} distilled field observations
-of these practices in the story of Frieda, which we quote here:
+of these practices in the story of Frieda:
 
 \begin{quotation}
 \setlength{\parskip}{0.5em}
 \setlength{\parindent}{0em}
 
 \noindent
-\emph{For example, consider ``Frieda'', an office manager in charge of her department's budget
+\emph{[Frieda is] an office manager in charge of her department's budget
 tracking. (\ldots) Every year, the company she works for produces an updated budget tracking
 spreadsheet with the newest reporting requirements embedded in its structure and formulas.
 But this spreadsheet is not a perfect fit to the kinds of projects and sub-budgets she manages,
@@ -948,31 +980,27 @@ of Official-thisYear to see if those same changes can easily be made, given her 
 current needs.
 (\ldots)
 She can reuse some of these same changes this year, but copying them into Dept-thisYear
-is troublesome, with some of the formulas automatically adjusting themselves to refer to
-Dept-lastYear. (\ldots) Frieda has learned over the years to
-save some of her spreadsheet variants along the way (using a different filename for each),
+is troublesome (\ldots). Frieda has learned over the years to
+save some of her spreadsheet variants along the way (\ldots),
 because she might decide that the way she did some of her changes was a bad idea, and she
 wants to revert to try a different way she had started before.}
 \end{quotation}
 
-\challenge{Divergence Control for Extract Entity}
+\frameworkbox{
+\begin{wrapfigure}{r}{14.5em}
+\vspace{-0.5em}
+\includegraphics[width=14.5em]{figures/arr-divergence.png}
+\vspace{-1.5em}
+\end{wrapfigure}
+\frameworkboxtitle{Maintaining Divergent Variants}
+The extra complexity in the above scenario arises from the fact that both types and
+code are forked and evolve independently. In one branch, original types $T_1$ evolve
+into $T_2$ and original code $C_1$ into $C_3$. In another branch, original types $T_1$
+evolve into $T'_2$ and original code $C_1$ into $C'_3$. The user then wants to merge
+the independently done changes into a new version of types and code, written as
+$T_2 \diamond T'_2$ and $C_3 \diamond C'_3$. The diverging transformations may make
+conflicting changes that would need to be resolved with assistance from the user.}
 
-As a concrete example, we combine the problem of divergence control with the example from the
-earlier Extract Entity challenge. Every month the orders department sends its spreadsheet to
-the accounting department, which adds the data to a version of the spreadsheet that it has
-customized for financial tracking. But when the orders department migrates its spreadsheet to
-extract out customers, the accounting department does not want to conform. They could manually
-convert incoming data in the new schema into their variant of the old schema. But they
-shouldn't have to. It should be possible to run new data through the schema change in reverse,
-converting it back into the format the accounting department is used to ingesting. Note that
-this is not a matter of synchronizing the divergent spreadsheets -- they maintain differently
-evolved schema.
-
-What is needed is a user-friendly mechanism for transferring data changes from one schema (type) to
-another bidirectionally. In one direction we want to transfer changes made in the new schema (type)
-into a variant of the old schema (type). The opposite direction might be needed, for example,
-if the accounting department makes corrections to customer addresses, which ought to be pushed
-through into the orders department's new schema.
 
 \subsection*{Remarks: Source Code Version Control}
 
@@ -992,54 +1020,74 @@ Live programming must move from being a solitary activity to a collaborative wor
 where the collaboration is not just on editing source code but on live integrated code and data,
 as in the Smalltalk/Lisp images of old.
 %\footnote{If only we had this in the 90's when Smalltalk had a shot at the mainstream!}
-For its part, local-first software must move from automatically converging data replicas
+Local-first software must move from automatically converging data replicas
 to also interactively managing long-term divergence. That implies either application state
 is being directly exposed to the user, or the application code is using an API to present
 version control affordances. We encourage both communities to think outside the box of Git,
 which has proven to baffle not only end-users but also a substantial fraction of developers.
 
+% ==================================================================================================
+% MULTIPLICITY
+% ==================================================================================================
+
 \section{Multiplicity Change in Data Formats}
 
-A common kind of schema change is \textit{multiplicity change}: when a field changes from storing
+The challenge of maintaining multiple divergent types in programming systems can
+be well illustrated using \emph{multiplicity change}, which is a common kind of schema change.
+In this case a field changes from storing
 a single value to storing multiple values. For example, we might start by storing a single
 address for each contact in an address book, before realizing that we need to store multiple
-addresses for a single contact; or we might assign each todo in a list to one person before
+addresses for a single contact. Alternatively, we might assign each todo in a list to one person before
 realizing we want the ability to assign a todo to multiple people.
 
 In a relational schema, solving this problem might require extracting a normalized table for
 the linked entity; some of the challenges of this approach are covered in the Extract Entity
-challenge. In this section we will instead consider a document schema with support for arrays;
+challenge. In this section we will instead consider a type structure with support for arrays;
 in this context, we can have a multiplicity change by turning a scalar value into an array value.
+%
+A change of multiplicity in the type requires producing a transformation for both the corresponding
+data and the corresponding code. The challenge becomes particularly difficult to handle when there
+is ongoing divergence between multiple versions of the types and data.
 
-Multiplicity change clearly requires changing both the data and the code. It becomes particularly
-challenging to handle when there is ongoing divergence between multiple versions of the data.
+\challenge{Multiplicity Change in Types}
 
-\challenge{Multiplicity Change}
+Consider the following schema for a todo list item, in which each item has a single assignee,
+represented by a user ID:
 
-Consider the following schema for a todo list item, in which each item has a single assignee, represented by a user ID:
-
-\newpage
 \begin{lstlisting}[language=ml]
 type Item = { id : id; title : string; assignee : string }
 \end{lstlisting}
 
+\noindent
 Now, we change the schema so that each item has a list of assignees:
 
 \begin{lstlisting}[language=ml]
 type Item = { id : id; title : string; assignees : Array<string> }
 \end{lstlisting}
 
-Our goal is to preserve the ability for actors in the system to read and write to a shared todo list in either the old or new schema -- for example, they should be able to write to either the scalar assignee field or to the list of assignees.
+\noindent
+Our goal is to preserve the ability for actors in the system to read and write to a shared todo
+list in either the old or the new schema. For example, an actor should be able to write to either
+the scalar assignee field when using the original version or to the list of assignees when using
+the new version.
 
-A natural invariant to preserve across these schemas is that the value of the scalar field should equal the first element of the list field (and if the list is empty, the scalar field should be null). If we were to write code for a one-time data migration from the scalar to list schema, we could easily satisfy this invariant:
+A natural invariant to preserve across these schemas is that the value of the scalar field should
+equal the first element of the list field (and if the list is empty, the scalar field should be
+\texttt{null}). If we were to write code for a one-time data migration from the scalar to list
+schema, we could easily satisfy this invariant:
 
 \begin{lstlisting}[language=ml]
 item.assignees = if (item.assignee == null) then [] else [item.assignee]
 \end{lstlisting}
 
-Ongoing edits to the array schema can also be handled in a straightforward way. After edits are made, the value of the scalar field should be set to the first element of the new array (or null if the new array is empty.)
+\noindent
+Ongoing edits to the array schema can also be handled in a straightforward way. After edits are
+made, the value of the scalar field should be set to the first element of the new array (or \texttt{null}
+if the new array is empty.)
 
-However, handling edits to the scalar schema presents more of a challenge. Consider the following todo with two assignees, presented in terms of the scalar and array schemas. A write is made in the scalar schema to set the new assignee to C.
+However, handling edits to the scalar schema presents more of a challenge. Consider the following
+todo with two assignees, presented in terms of the scalar and array schemas. A write is made in
+the scalar schema to set the new assignee to C.
 
 \begin{lstlisting}[language=ml]
 todoScalar = { id: 1, title: "Foo", assignee: A }
@@ -1048,23 +1096,51 @@ todoArray = { id: 1, title: "Foo", assignees: [A, B] }
 todoScalar.assignee = C
 \end{lstlisting}
 
-What should the array value become after this edit to the scalar schema? To satisfy our invariant, we know that C must become the first element of the array, but this leaves open several options with different tradeoffs:
+What should the array value become after this edit to the scalar schema? To satisfy our invariant,
+we know that C must become the first element of the array, but this leaves open several options
+with different tradeoffs:
 
 \begin{enumerate}
-  \item \texttt{[C]}: "Only C should be assigned." This option produces an array that corresponds directly to the resulting scalar. But it has the downside of deleting data that wasn't even visible in the scalar schema.
-  \item \texttt{[C, B]}: "Replace A with C." If the writer wanted to remove A from the assignment and add C, this option performs that intent. However, there is data remaining in the list which was not visible to the scalar writer.
-  \item \texttt{[C, A, B]}: "Add C to the list." Perhaps the scalar writer wanted to add C to the assignment without removing anyone; this option satisfies that intent. But it preserves data not visible to the scalar schema.
+  \item \texttt{[C]}: \emph{Only C should be assigned.} This option produces an array that corresponds directly to the resulting scalar. But it has the downside of deleting data that wasn't even visible in the scalar schema.
+  \item \texttt{[C, B]}: \emph{Replace A with C.} If the writer wanted to remove A from the assignment and add C, this option performs that intent. However, there is data remaining in the list which was not visible to the scalar writer.
+  \item \texttt{[C, A, B]}: \emph{Add C to the list.} Perhaps the scalar writer wanted to add C to the assignment without removing anyone; this option satisfies that intent. But it preserves data not visible to the scalar schema.
 \end{enumerate}
 
-Because the intent of the writer to the scalar schema cannot be unambiguously interpreted from the write alone, it is impossible to make a perfect choice among these options.
+Because the intent of the writer to the scalar schema cannot be unambiguously interpreted from the
+write alone, it is impossible to make a perfect choice among these options. The programming system
+thus needs to consult the user.
+
+\frameworkbox{
+\begin{wrapfigure}{r}{13em}
+\vspace{-1em}
+\includegraphics[width=13em]{figures/arr-backport.png}
+\vspace{-2em}
+\end{wrapfigure}
+\frameworkboxtitle{Bidirectional Data Migration (Revisited)}
+The diagram illustrating the scenario remains the same as in the case of divergence control
+for Extract Entity. The initial data and type $D_1, T_1$ co-evolve into $D_2, T_2$ (adding
+multiplicity) and a new value is then assigned to the array of assignees, resulting in $D_3$.
+The difference from the earlier case is that the backward migration (from $D_3$ to $D'_3$)
+generated for the type evolution (from $T_1$ to $T_2$) cannot be generated fully automatically.
+In case of Extract Entity this was in principle possible.}
 
 \subsection*{Remarks: Managing Design Tradeoffs}
 
-If schemas, code and data can all be updated atomically together, then multiplicity change is relatively straightforward  to handle. Existing scalar data can be trivially migrated to a list, and the code using the data will need to change to accommodate the list data.
+If types, code and data can all be updated atomically together, then multiplicity change is
+relatively straightforward  to handle. Existing scalar data can be trivially migrated to a
+list, and the code using the data will need to change to accommodate the list data.
+%
+However, ongoing divergence makes multiplicity change much more difficult, and exposes
+some general challenges. Different types may expose partial information, and writers using
+those types have to operate without total knowledge of the information available in other types.
+As a result, synchronizing writes across the types requires making difficult tradeoffs, such as
+choosing to either preserve or destroy hidden data not visible to the writer.
 
-However, ongoing divergence makes multiplicity change much more difficult, and exposes some general challenges. Different schemas may expose partial information, and writers in those schemas have to operate without total knowledge of the information available in other schemas. As a result, synchronizing writes across the schemas requires making difficult tradeoffs, such as choosing to either preserve or destroy hidden data not visible to the writer.
-
-Although there is likely no silver bullet to navigate these tradeoffs, a good solution to this problem would give developers or users tools to manage these tradeoffs. For example, a system might allow developers to specify the desired behavior for a particular pair of schemas based on the requirements of the domain. Or a system might even allow users to manually disambiguate their intent for a given write.
+Although there is likely no silver bullet to navigate these tradeoffs, a good solution to this
+problem would give developers or users tools to manage these tradeoffs. For example, a system
+might allow developers to specify the desired behavior for a particular pair of schemas based
+on the requirements of the domain. Or a system might even allow users to manually
+disambiguate their intent for a given write.
 
 
 \newpage
