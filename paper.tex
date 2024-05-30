@@ -59,8 +59,7 @@
 % define natbib citet
 \newcommand{\citet}[1]{\citeauthor*{#1}~\cite{#1}}
 
-
-\title{Type Evolution in Programming Systems}
+\title{Type Evolution in Interactive Programming Systems}
 
 \author[a]{Jonathan Edwards}%[0000-0003-1958-7967]
 \authorinfo{is TBD. Contact him at \email{jonathanmedwards@gmail.com}.}
@@ -203,68 +202,52 @@ in response to new needs. As with buildings, different aspects of program evolve
 a program is always tearing itself apart.''
 
 \subsection{Types, Data and Code}
-
-As is the case for buildings, making a change at surface layers (skin or stuff) is relatively easy,
+In both buildings and programs, making a change at surface layers (skin or stuff) is relatively easy,
 but a change at a more fundamental layer (structure) has cascading effects on layers that depend on it.
-In the case of programs, a more fundamental layer defines the shape of data and code.
-We refer to this structure as \emph{types}, although we do not use the term in a precise technical
-sense. In our conceptual framework, types may be data types that define the shape of data, they
-may be explicitly declared in code and checked statically, as well as dynamically checked or
-even implicit. The key property of types for us is that they constrain the shape of other layers
+In the case of programs, we refer to the more fundamental layer as \emph{types}, although we do not
+use the term in a precise technical sense. Types is what defines the shape of data and code.
+Types may be database schema, data types that define the shape of data, they may be explicitly
+declared in code and checked statically, as well as dynamically checked or even implicit.
+The key property of types for us is that they constrain the shape of other layers
 of a program, namely data and code. As a result, a change of program types requires a
 corresponding change in program data and code.
 
-The situation is illustrated in Figure~\ref{fig:change} using two variations of a diagram that
-we will return to repeatedly in this paper. When a type changes from $\textsf{type}_1$ to $\textsf{type}_2$,
-we need to find and apply a corresponding change to other parts of the program whose shape
-is defined by the changed type. The problem of \emph{type evolution} is thus finding and
-applying changes that will update $\textsf{data}_1$ and $\textsf{code}_1$ into new versions $\textsf{data}_1$ and $\textsf{code}_2$
-that correspond to the new type.
+\begin{wrapfigure}{r}{12em}
+\vspace{-1.5em}
+\includegraphics[width=12em]{figures/arr-basic.png}
+\vspace{-1.5em}
+\end{wrapfigure}
 
-The complexity of the problem varies. The first dimension of challenges that we consider
-is local. The complexity of the challenge depends on how many other parts of the program
-depend on the modified type. If both code and data depend on the type, the complexity of the
-program is greater. If there is no associated code or the existing data can be safely discarded,
-the complexity is lesser.
+The situation is illustrated on the right. We start with code $C_1$ and
+data $D_1$ that have a shape corresponding to type $T_1$. When the type changes from $T_1$ to $T_2$ ($\rightarrow$),
+a corresponding change needs to take place in data $D_1$ and code $C_1$. The problem
+of \emph{type evolution} is synthetising ($\Rightarrow$) suitable corresponding transformations
+that will update data $D_1$ and code $C_1$ into new versions $D_2$ and $C_2$ that correspond
+to the new type $T_2$.
+%
+The complexity of the problem varies and finding a suitable transformation may require user
+input. If there is code, it typically needs to be transformed, but data can sometimes be
+discarded. We refer to such transformations done by a single user as \emph{local} and draw
+them inside a box.
 
-The second dimension of challenges that we consider is non-local. A program may have multiple
-variants that exist independently and need to be synchronized. The difficulty of the problem
-depends on what kind of synchronization we want to support. If all variants of the program should
-eventually adopt all changes (converge), the complexity is lesser. If we allow user to apply
-only certain changes from other users (divergence), the complexity is greater. A typical case
-may be a combination of the two where types and schema of a program should converge, but data
-may diverge.
+\begin{wrapfigure}{r}{12em}
+\vspace{-1.5em}
+\includegraphics[width=12em]{figures/arr-forkjoin.png}
+\vspace{-1.5em}
+\end{wrapfigure}
 
-\begin{figure}[t]
-\centering
-%\includegraphics[scale=0.175]{figures/diag-data-code.png}
-\begin{tikzcd}[sep = 6em]
-  \textsf{code}_1
-  \arrow[d, "\textsf{refactor}"{name=L, description}]
-  &
-  \textsf{type}_1
-  \arrow[l, "\textsf{constrains}"{above}]
-  \arrow[r, "\textsf{constrains}"{above}]
-  \arrow[d, red, "\textsf{change}"{name=C, description}]
-  &
-  \textsf{data}_1
-  \arrow[d, "\textsf{migrate}"{name=R, description}]
-  \\
-  \textsf{code}_2
-  &
-  \textsf{type}_2
-  \arrow[l, "\textsf{constrains}"{above}]
-  \arrow[r, "\textsf{constrains}"{above}]
-  &
-  \textsf{data}_2
-  \arrow[Rightarrow, from=C, to=L, "\textsf{propagate}"{above}]
-  \arrow[Rightarrow, from=C, to=R, "\textsf{propagate}"{above}]
-\end{tikzcd}
-\caption{When a type changes from $\textsf{type}_1$ to $\textsf{type}_2$, a corresponding change needs to take place
-  in data and code constrained by the type. The challenge is finding a suitable
-  corresponding transformation (semi-)automatically.}
-\label{fig:change}
-\end{figure}
+Collaboration adds the \emph{non-local} dimension to the problem. A program may have multiple
+variants that exist independently and changes made to them may need to be synchronized. The
+situation is illustrated on the right. Here, the initial type $T_1$ is transformed by two
+users independently into types $T_2$ and $T_3$. The corresponding data is transformed accordingly,
+producing $D_2$ and $D_3$. The challenge is now merging these two diverging transformation and
+obtaining a type $T_4$ and data $D_4$ that adopt both of the changes.
+
+The difficulty of the problem depends on what kind of synchronization we want to support.
+If all variants of the program should eventually adopt all changes (converge), the complexity
+is lesser. If we allow user to apply only certain changes from other users (divergence), the
+complexity is greater. A common case may be a combination of the two where types and schema
+of a program should converge, but data may diverge.
 
 \subsection{Conceptual Framework}
 
@@ -361,11 +344,10 @@ type Event =
 \end{lstlisting}
 
 \noindent
-Some programming systems that use the Elm architecture support hot reloading when the
+Some systems that use the Elm architecture support hot reloading when the
 implementation of the \texttt{render} or \texttt{update} function changes, but they typically
 discard state and restart the application when the \texttt{State} type changes. A more effective
-programming system based on live programming would allow updates to both the code of the two
-functions and the structure of the two types.
+live programming system would allow live updates to the structure of the two types too.
 
 \begin{table}[t]
 \begin{tabular}{lll}\toprule
@@ -400,17 +382,17 @@ restarting the application and losing the data. For example, they may want to ch
 \texttt{completed} field of \texttt{Item} to instead store optional completion time:
 
 \begin{lstlisting}[language=ml]
-type Item = { id : id; title : string; completed : DateTime option }
+type Item = { id : id; title : string; completed : Maybe DateTime }
 type State = { items : Item list }
 type Event =
-  | .. | SetCompleted of id * DateTime option | ..
+  | .. | SetCompleted of id * Maybe DateTime | ..
 \end{lstlisting}
 
 \noindent
 To apply the change without restarting the application, the existing data need to be migrated
 to match the new type definition. In this case, this likely cannot be done fully automatically
-and the programmer may need to provide mapping (\texttt{false} to \texttt{None}, \texttt{true}
-to \texttt{Some(DateTime(2024,5,1))}). If the programmer changes \texttt{Item} and \texttt{SetCompleted}
+and the programmer may need to provide mapping (\texttt{false} to \texttt{Nothing}, \texttt{true}
+to \texttt{Just(DateTime(2024,5,1))}). If the programmer changes \texttt{Item} and \texttt{SetCompleted}
 at the same time, the \texttt{update} function likely does not need to change, but the rendering
 code needs to be modified (the programmer needs to specify how to map \texttt{DateTime option}
 back to a Boolean for a checkbox).
@@ -426,23 +408,25 @@ semantically equivalent type, the programming system should, in principle, be ab
 migrate both the original value and implementation of both functions to match the new type.
 
 \frameworkbox{
-% \begin{wrapfigure}{r}{14em}
-% \vspace{1em}
-% \includegraphics[scale=0.175]{figures/diag-both.png}
-% \end{wrapfigure}
-\frameworkboxtitle{Code-data Co-evolution}
-In this case study, the evolving type in Figure~\ref{fig:change} is the \texttt{State} type. When the type
-evolves, corresponding change needs to be applied to both \emph{code} and \emph{data}.
-The former is the program logic implemented in \texttt{update} and \texttt{render},
-while the latter is the current state (a live value of type \texttt{State}). The scenario
-illustrates that code and data need to co-evolve as illustrated by a revised diagram on the right.
+\begin{wrapfigure}{r}{12em}
+\vspace{0em}
+\includegraphics[width=12em]{figures/arr-steps.png}
+\vspace{0em}
+\end{wrapfigure}
+\frameworkboxtitle{Primitive Type Transformations}
+In this case study, the evolving type is the \texttt{State} type. When the type evolves,
+the program logic (code) and the current live value of the type (data) needs to evolve
+correspondingly. The challenge is easier if we see the evolution as a sequence of more primitive
+transformations, such as those in Table~\ref{tbl:elmchanges}, that each has a corresponding
+primitive code and data transformation. The primitive transformations may either be invoked
+through a user interface, or inferred from textual code edits made by the programmer.
 }
 
 \subsection*{Remarks: Requirements and Implementation}
 The key requirement from the live programming perspective is to ``do minimal harm''.
 The migration of \emph{data} needs to be done automatically and the system should strive
 to produce a new state that is as near as possible to the previous state. Migrating
-\emph{code} can be done in various ways (transform code, trigger error condition, etc.),
+\emph{code} can be done in various ways,
 but it is desirable to avoid breaking the \texttt{render} function as this would make the
 new application state impossible to visualize.
 
@@ -456,8 +440,8 @@ description of the edits performed by the user.
 % ==================================================================================================
 
 \section{Entity Evolution in Data-Centric Systems}
-Many problems studied in the context of database systems equally apply to programming systems
-if we think of them as stateful environments where programs co-exist with their persistent data.
+If we see programming systems as stateful environments where programs co-exist with their persistent
+data, we can gain valuable insights from research on database systems.
 Although schema evolution is well-studied in databses (Section~\ref{sec:related}), past work
 does not resolve all problems in our second challenge.
 
@@ -529,7 +513,7 @@ when the customer's address changes they have to go back and edit all of their o
 \end{figure}
 
 \challenge{Extract Entity}
-Acme needs to evolve the above type and data into two tables (Figure~\ref{fig:db-customers}, \ref{fig:db-orders-link}),
+Acme needs to evolve the above schema and data into two tables (Figure~\ref{fig:db-customers}, \ref{fig:db-orders-link}),
 one with orders that links to one with customers.  We refer to this as \emph{Extract Entity}
 operation, because it introduces a new \emph{entity}, a referenceable holder of mutable attributes.
 The operation is needed when we realize that some attributes of one type of entity should belong to
@@ -540,15 +524,9 @@ identifiers (here consecutive numbers). This allows, for example, a spelling err
 address to be fixed in one place. It also allow a customer name or address to change without
 breaking the connection from all associated orders. Unique identifiers are the essence of
 entities, whether they are uniquely generated primary keys in a database or an abstraction
-of a memory address in a programming language.
-
-\textcolor{red}{[JE. Found this snippet in the related work]
-Acme Corp has a problem, for spreadsheets don't naturally support relationships between entities.
-End-user databases like Airtable~\cite{airtable} and Notion~\cite{notion} support \textit{links}
-between tables but do not provide operations that can do an \textit{Extract Entity}. Neither do
-the established database products (see Related Work). Acme will need to write code or do a big manual conversion.
-}
-
+of a memory address in a programming language. As spreadsheets do not support relationships
+between entities, Acme will need to migrate their data to a database and restructure the original
+flat table.
 
 The \textit{Extract Entity} operation must 1) merge duplicates, 2) assign unique identifiers,
 and 3) reference these identifiers from the orders. Our example took the simple approach of
@@ -558,7 +536,7 @@ of the customer? To repair that error we need to merge the falsely distinct cust
 and fix any references from orders. We call this operation \textit{Merge Entities} -- note that
 it is not a schema change but a data change, yet nevertheless not commonly supported in data APIs.
 
-More generally, entity evolution can happen through operations such as those listed in
+Entity evolution can happen through operations such as those listed in
 Table~\ref{tbl:dbchanges}. Every schema operation should have an inverse as the
 change in requirements that triggered an evolution might change back again. Inverse
 is also required in research on \emph{divergence control}~\cite{Foster2007, herrmann17, chillon22}.
@@ -593,52 +571,9 @@ Split & multiple data items & Interactively, following user guidance\\
 \vspace{-1em}
 \end{table}
 
-\begin{figure}[H]
-\begin{tikzcd}[sep = 6em]
-  \textsf{type}_1
-  \arrow[r, "\textsf{constrains}"{above}]
-  \arrow[d, red, "\textsf{change}_1"{name=C, description}]
-  &
-  \textsf{data}_1
-  \arrow[d, "\textsf{migrate}_1"{name=R, description}]
-  \\
-  \textsf{type}_2
-  \arrow[r, "\textsf{constrains}"{above}]
-  \arrow[d, red, "\textsf{change}_2"{name=C2, description}]
-  &
-  \textsf{data}_2
-  \arrow[Rightarrow, from=C, to=R, "\textsf{propagate}"{above}]
-  \arrow[d, "\textsf{migrate}_2"{name=R2, description}]
-  \\
-  \textsf{type}_3
-  \arrow[r, "\textsf{constrains}"{above}]
-  &
-  \textsf{data}_3
-  \arrow[Rightarrow, from=C2, to=R2, "\textsf{propagate}"{above}]
-\end{tikzcd}
-\caption{Multiversion type evolution.}
-\label{fig:multiversion}
-\end{figure}
-
-\frameworkbox{
-% wrapfigure doesn't seem to work with tikz
-% \begin{wrapfigure}{r}{9em}
-% \includegraphics[scale=0.2]{figures/diag-variants.png}
-% \end{wrapfigure}
-
-\frameworkboxtitle{Primitive Type Transformations}
-In this example, \textsf{type} in Figure~\ref{fig:multiversion} refers to data tables, but the same scenario applies to
-objects or JSON values in other programming systems. Our example focuses on permanent \emph{data}
-that need to evolve alongside with the type and keep synchronized even in the non-local scenario.
-The evolution can be done through a small set of primitive type transformations (illustrated on the
-right) with corresponding data transformation for each. The system may either expose the
-primitive transformations through a user interface, or infer them from textual edits made by the
-programmer, e.g. to a database table schema definition.
-}
-
 \subsection*{Remarks: Representation and Replication}
-The central problem is to coordinate the type evolution with code edits to keep the system
-executing live and correctly. Solutions may infer the desired type evolution by analysing
+The central problem is to coordinate the schema evolution with code edits to keep the system
+executing live and correctly. Solutions may infer the desired schema evolution by analysing
 source code edits, but would typically offer UI affordances for the commands. They should
 try to minimize the number and complexity of commands that must be introduced and also the
 interruption to live execution of the code.
@@ -681,12 +616,28 @@ WHERE ship_date IS NULL;
 \end{lstlisting}
 
 \noindent
-The same code transformation would need to be applied to queries written over other
-data representations such as JSON. The system can also use mechanism such as a database
+In database systems, the system can use a mechanism such as a
 view and execute the original query over the view. When applying code migrations,
 the system should minimize the need for users to manaually intervene. It should also
 minimize the possibilities that developer-written code is subtly incorrect in edge cases,
 preferably by reducing the need for developer-written code.
+
+
+\frameworkbox{
+\begin{wrapfigure}{r}{12em}
+\vspace{-0.5em}
+\includegraphics[width=12em]{figures/arr-db.png}
+\vspace{-1em}
+\end{wrapfigure}
+\frameworkboxtitle{Equivalence in Schema Evolution}
+We described our conceptual framework in terms of types, code and data, but this case
+study shows that the same patterns appear elsewhere. In database systems, the schema
+$S_1$ changes into $S_2$ and the data $D_1$ need to transform to corresponding $D_2$.
+Our framing shows that queries $Q_1$ also need to transform, which is not always addressed
+in work on schema evolution. Extract/Absorb Entity operations are also interesting because
+they transform an equivalent pair of schemas and so it should be possible to apply them
+(and the corresponding data and query transformations) automatically.
+}
 
 % ==================================================================================================
 % DOCUMENTS
@@ -807,10 +758,10 @@ and Living Papers~\cite{Heer2023}.
 \end{adjustwidth}
 \caption{
 Initial version of the document (not shown) contains a list of three speakers (Goldberg, Hamilton,
-Jennings). The first challenge involves merging two independent edits to the data
-(Fig.~\ref{fig:conf-add} and Fig.~\ref{fig:conf-tab}); the second merging structural change
-with code (Fig.~\ref{fig:conf-budget} and Fig.~\ref{fig:conf-tab}). Formulas in the final version
-(Fig.~\ref{fig:conf-finfin}) are updated to match the new document structure.}
+Jennings). The first challenge involves merging a data edit
+(Fig.~\ref{fig:conf-add}) with a type and data edit (Fig.~\ref{fig:conf-tab}); the second involves
+merging a type and data edit (Fig.~\ref{fig:conf-tab}) with edit adding code (Fig.~\ref{fig:conf-budget}).
+Formulas in the final version (Fig.~\ref{fig:conf-finfin}) are updated to match the new document structure.}
 \label{fig:conf}
 \end{figure}
 
@@ -827,7 +778,7 @@ by Jonathan and Tomas and change the list and the structure of the document:
 \item Tomas refactors the list into a table. He splits the single textual value
   into a name and an email (using a comma as the separator) and adds an additional column for
   tracking which of the organizers should contact the speaker (Figure~\ref{fig:conf-tab}).
-  This changes the document structure (type).
+  This changes the document structure (implicit type).
 \end{enumerate}
 
 \noindent
@@ -835,20 +786,24 @@ The system should be able to merge the changes and produce a table containing th
 in a tabular format (not shown). The result needs to include the additional speaker
 created by Jonathan, use the order specified by Jonathan, but use the format defined by
 Tomas. The newly added speaker should be reformatted into the new format; for the
-``Organizer'' column, the system may use a suitable default value or ask the user interactively.
+``Organizer'' column of the newly created table, the system may use a suitable default value
+or ask the user interactively.
 
 \frameworkbox{
-\begin{wrapfigure}{r}{8em}
-\includegraphics[scale=0.25]{figures/diag-data-change.png}
+\begin{wrapfigure}{r}{13em}
+\vspace{-0.5em}
+\includegraphics[width=13em]{figures/arr-datafork.png}
+\vspace{-1em}
 \end{wrapfigure}
-\frameworkboxtitle{Independent Data and Code Edits}
+\frameworkboxtitle{Merging Data and Code Edits}
 In this example, the \emph{type} is implicit and represents the structure of the document.
-A change to the \emph{type} done by one organizer needs to be applied to \emph{data} that
-has been modified by the other organizer in the meantime, as illustrated on the right.
-In the next section, we will see similar pattern, but with formulas, or \emph{code}.
-We assume the \emph{decentralized} scenario where \emph{type} evolution can occur in any variant
-and \emph{covergence} model where all variants eventually adopt all changes. As discussed
-later, the system could also operate in the more challenging \emph{divergence} model.}
+It involves two independent edits. In one (top right), the data $D_1$ is
+changed to $D_2'$, but the type $T_1$ remains unchanged. In the other (bottom left), the
+type $T_1$ and data $D_1$ co-evolve into $T_2$ and $D_2$ and the data is further changed
+to $D_3$. The challenge is to merge the two edits and obtain jointly modified data $D_3'$
+of type $T_2$. In the next section, we will see the same pattern, but also involving
+code edits. We assume the \emph{convergence} model in this section, but will discuss
+the more challenging \emph{divergence} model later in the paper.}
 
 \subsection*{Remarks: Requirements and Representation}
 It should be possible to automatically merge any two sequences of edits (changing both
@@ -1387,6 +1342,7 @@ Another extension, tying in with the data-oriented examples above, involves refa
 
 \section{Related Work}
 \label{sec:related}
+
 
 \textcolor{red}{Maybe insert something about methodology in general?
 (ref the table challenges paper? although this paper is no longer so much about challenges)}
