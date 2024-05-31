@@ -42,12 +42,17 @@
 \newcounter{challengen}
 \newcommand{\challenge}[1]{\subsection*{\addtocounter{challengen}{1}Challenge \#\thechallengen: #1}}
 
+\DeclareRobustCommand{\frameworkbox}[1]{\leftbar#1\endleftbar}
+\newcommand{\frameworkboxtitle}[1]{\noindent{\firamedium #1.}\quad}
+
+\begin{comment}
 \DeclareRobustCommand{\frameworkbox}[2][gray!15]{
 \begin{tcolorbox}[breakable,left=3pt,right=3pt,top=3pt,bottom=3pt,colback=#1,colframe=#1,parbox=false,
   width=\dimexpr\textwidth\relax,enlarge left by=0mm,boxsep=5pt,arc=0pt,enlarge top by=0.5em,%enlarge bottom by=0.0em,
   outer arc=0pt]\setlength{\parskip}{0.5em}#2
 \end{tcolorbox}}
 \newcommand{\frameworkboxtitle}[1]{\setlength{\parindent}{0em}{\firamedium #1.}\quad}
+\end{comment}
 
 \paperdetails{
   perspective=engineering,
@@ -407,23 +412,6 @@ default value) to challenging case. In particular, if the programer refactors \t
 semantically equivalent type, the programming system should, in principle, be able to automatically
 migrate both the original value and implementation of both functions to match the new type.
 
-\leftbar
-\begin{wrapfigure}{r}{12em}
-  \vspace{0em}
-  \includegraphics[width=12em]{figures/arr-steps.png}
-  \vspace{0em}
-\end{wrapfigure}
-\noindent\textbf{Primitive Type Transformations.}\quad
-In this case study, the evolving type is the \texttt{State} type. When the type evolves,
-the program logic (code) and the current live value of the type (data) needs to evolve
-correspondingly. The challenge is easier if we see the evolution as a sequence of more primitive
-transformations, such as those in Table~\ref{tbl:elmchanges}, that each has a corresponding
-primitive code and data transformation. The primitive transformations may either be invoked
-through a user interface, or inferred from textual code edits made by the programmer.
-
-\endleftbar
-
-\begin{comment}
 \frameworkbox{
 \begin{wrapfigure}{r}{12em}
 \vspace{0em}
@@ -438,7 +426,6 @@ transformations, such as those in Table~\ref{tbl:elmchanges}, that each has a co
 primitive code and data transformation. The primitive transformations may either be invoked
 through a user interface, or inferred from textual code edits made by the programmer.
 }
-\end{comment}
 
 \subsection*{Remarks: Requirements and Implementation}
 The key requirement from the live programming perspective is to ``do minimal harm''.
