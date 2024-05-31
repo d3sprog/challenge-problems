@@ -423,8 +423,7 @@ through a user interface, or inferred from textual code edits made by the progra
 
 \endleftbar
 
-
-
+\begin{comment}
 \frameworkbox{
 \begin{wrapfigure}{r}{12em}
 \vspace{0em}
@@ -439,6 +438,7 @@ transformations, such as those in Table~\ref{tbl:elmchanges}, that each has a co
 primitive code and data transformation. The primitive transformations may either be invoked
 through a user interface, or inferred from textual code edits made by the programmer.
 }
+\end{comment}
 
 \subsection*{Remarks: Requirements and Implementation}
 The key requirement from the live programming perspective is to ``do minimal harm''.
@@ -460,7 +460,7 @@ description of the edits performed by the user.
 \section{Entity Evolution in Data-Centric Systems}
 If we see programming systems as stateful environments where programs co-exist with their persistent
 data, we can gain valuable insights from research on database systems.
-Although schema evolution is well-studied in databses (Section~\ref{sec:related}), past work
+Although schema evolution is well-studied in databases (Section~\ref{sec:related}), past work
 does not resolve all problems in our second challenge.
 
 As an example, consider the Acme Corporation that records orders from various customers for
@@ -1162,7 +1162,7 @@ on the requirements of the domain. Or a system might even allow users to manuall
 disambiguate their intent for a given write.
 
 
-\newpage
+%\newpage
 
 \section{Live Modeling Languages Require Run-Time State Migration}
 \label{livemodeling}
@@ -1292,12 +1292,13 @@ While the above example is arguably simple, the problem becomes much more challe
 Another extension, tying in with the data-oriented examples above, involves refactorings of data types in a program. Typically a refactoring should be behavior preserving, but can it also preserve run-time data? The minimal example is the consistent variable rename rename in Table~\ref{tbl:smchanges}, which should not have any effect on run-time state.  A more complex refactoring is described in Section~\ref{sec:elm}.
 
 
+\newpage
+\appendix
 
-
-\section{Related Work}
+\section{Literature Review}
 \label{sec:related}
 
-There has been a lot of research on coordinating the evolution of interdependent layers of software, much of it guided by schema and types. But the vast majority of these techniques involve writing custom code in some specialized language, rather than through immediate action in an interactive programming system. Nevertheless it is important to understand these batch techniques to envision more interactive ones.
+There has been estensive research on coordinating the evolution of interdependent layers of software, much of it guided by schema and types. But the vast majority of these techniques involve writing custom code in some specialized language, rather than through immediate action in an interactive programming system. Nevertheless it is important to understand these batch techniques to envision more interactive ones.
 
 \paragraph{Schema evolution.}
 Schema evolution has long been a major problem for SQL databases because
@@ -1354,7 +1355,7 @@ Live programming~\cite{tanimoto90, rein2018exploratory} seeks to speed up feedba
 \printbibliography
 
 
-\appendix
+%\appendix
 
 \section{\textcolor{red}{[TVDS] Super rough attempt at the paragraph}}
 
