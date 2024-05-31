@@ -1351,7 +1351,7 @@ add & state & simple  \\
 remove & state & structurally simple, but heuristic if state is current \\
 rename & state & simple\\
 add & variable & add entry to map and initialize \\
-remove & variable & migrate class (NB: assumes variable is unused)\\
+remove & variable & remove from the variable map (NB: assumes variable is unused)\\
 rename & variable & rename in class, preserving value\\
 type change & variable & migrate value in map \\
 add & transition & simple \\
@@ -1369,7 +1369,7 @@ The first column indicates the change category, the second the affected kind of 
 \begin{itemize}
 \item all rows with ``simple'' in the third column only require a quiescent~\cite{Tranquility} point in the interpreter loop to update the run-time structure (e.g., as shown in Figure~\ref{FIG:doorsRuntime}).
 \item removing a state, however, is only \textit{structurally} simple, since removal is easy, but special care is required if the subject of removal is the current state. In this case, some heuristic is needed, such as: reject the edit, point the current state to the initial state, or some other strategy (e.g., the nearest state, previous state etc.)
-\item everywhere a row mentions ``migrate class'' in the third column, data migration is needed: the run-time objects conforming to the old class must be transformed to instances of the updated class, similar to how Smalltalk migrates objects using \lstinline{become:}.
+% \item everywhere a row mentions ``migrate class'' in the third column, data migration is needed: the run-time objects conforming to the old class must be transformed to instances of the updated class, similar to how Smalltalk migrates objects using \lstinline{become:}.
 \item removing a transition or changing the event of a transition potentially has to deal with pending events (e.g., in an event queue) expecting such transitions, since such events are now potentially stale. Strategies to deal with this situation include: simply dropping the events, or requiring that such edits cannot be patched at run time when there are pending events.
 \item the type change edit of variable requires a strategy for the current value: either discard and reinitialize, or perform value conversion. For instance, if the type change is from boolean to integer, then true could become 1, and false could become 0.
 \item note finally that rename variable is mentioned explicitly as a change: this makes it possible to preserve the run-time value of the variable.
