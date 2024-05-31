@@ -1288,7 +1288,7 @@ omits the details for the on-entry actions (\lstinline{Stmt}) and variable types
 %\label{LST:statemachines}
 %\end{figure}
 
-In the following we assume that the state machine is executed by an interpreter that processes incoming events, and traverses run-time pointers representing the transitions accordingly, executing on-entry actions, where the notion of the current state and the values of the global variables are the collective run-time state of the program. The structure that the interpreter operates on can be described as a schema as well, but derived from the abstract syntax scheme shown on the left of Figure~\ref{FIG:statemachineUML}, but decorated with additional properties and associations modeling the run-time state required for execution. This is illustrated in Figure~\ref{FIG:doorsRuntime}. The left shows an augmented metamodel adding properties \lstinline{vars} (to model variable assigments) and \lstinline{visited}, to the classes \lstinline{Machine} and \lstinline{State}, respectively. 
+In the following we assume that the state machine is executed by an interpreter that processes incoming events, and traverses run-time pointers representing the transitions accordingly, executing on-entry actions, where the notion of the current state and the values of the global variables are the collective run-time state of the program. The structure that the interpreter operates on can be described as a schema as well, but derived from the abstract syntax scheme shown on the left of Figure~\ref{FIG:statemachineUML}, but decorated with additional properties and associations modeling the run-time state required for execution. This is illustrated in Figure~\ref{FIG:doorsRuntime}. The left shows an augmented metamodel adding properties \lstinline{vars} (to model variable assigments) and \lstinline{visited} (counting number of state visits) to the classes \lstinline{Machine} and \lstinline{State}, respectively. 
 
 % For the \lstinline{Doors} statemachine, this means adding the current state to the \lstinline{Machine} type (required for any machine) and the machine specific data fields, namely \lstinline{isClosed}. The run-time schema for \lstinline{Doors} is then the following\footnote{It is possible to represent the global variables at run-time using an untyped table or hashmap, but for the sake of schema migration complexity, the encoding as fields in classes is more instructive.}:
 
@@ -1311,13 +1311,13 @@ In the following we assume that the state machine is executed by an interpreter 
 \frameworkboxtitle{TODO}
 Here, data $D_0$ now represent the state machine definition.
 Live data that we obtain by instantiating the state machine still contain this state machine
-definition, but also the necessary live state defined by the definition.
+definition, but also the necessary run-time state required for execution.
 
 This is used to synthesize live machine state $+D_0$ conforming to live machine type $+T_0$.
 This then runs producing $+T'_0$ and so on...
 
 If the state machine definition changes from $D_0$ to $D_1$,
-we can synthesize new live machine state $+D_1$ conforming to new live machine type $+T_1$.
+we can synthesize a new live machine state $+D_1$ conforming to new live machine type $+T_1$.
 
 The challenge is to merge these changes with the currently running state machine $+T'_0$.
 We have to produce merged live machine type $+T_0 \diamond +T_1$ and also merge the
@@ -1339,7 +1339,7 @@ live state changes to obtain $+D'_0 \diamond +D_1$ of the new merged live machin
 \end{figure}
 
 
-An instance of a running state machine consists of an object graph conforming to the run-time schema of state machines, updating the \lstinline{current} state pointer in response to events. This object graph is graphically depicted in Figure~\ref{FIG:doorsRuntime} as a UML object diagram, excluding the statement objects representing on-entry actions. As the diagram shows, the running machine has a current state (\lstinline{closed}) and the \lstinline{isClosed} field has an actual value (\lstinline{true}). It is instructive to note that the diagram encode both static and dynamic aspects of the state machine language. Live editing the state machine then requires to \textit{patch}~\cite{SemanticDeltas} this run-time structure without shutting it down, possibly requiring migration of run-time state.
+An instance of a running state machine consists of an object graph conforming to the run-time schema of state machines, updating the \lstinline{current} state pointer in response to events. This object graph is graphically depicted in Figure~\ref{FIG:doorsRuntime} as a UML object diagram, excluding the statement objects representing on-entry actions. As the diagram shows, the running machine has a current state (\lstinline{closed}) and the \lstinline{isClosed} field has an actual value (\lstinline{true}) in the \lstinline{vars} map. It is instructive to note that the diagram encodes both static and dynamic aspects of the state machine language. Live editing the state machine then requires to \textit{patch}~\cite{SemanticDeltas} this run-time structure without shutting it down, possibly requiring migration of run-time state.
 
 \subsection{Challenge}
 
@@ -1350,10 +1350,10 @@ An instance of a running state machine consists of an object graph conforming to
 add & state & simple  \\
 remove & state & structurally simple, but heuristic if state is current \\
 rename & state & simple\\
-add & variable & migrate class and initialize field \\
+add & variable & add entry to map and initialize \\
 remove & variable & migrate class (NB: assumes variable is unused)\\
 rename & variable & rename in class, preserving value\\
-type change & variable & migrate class and convert or reinitialize value \\
+type change & variable & migrate value in map \\
 add & transition & simple \\
 remove & transition & structurally simple, but heuristic for pending events\\
 event change & transition & structurally simple, but heuristic for pending events\\
@@ -1364,7 +1364,7 @@ add/remove & statement & hotswap code at quiescent point of interpreter\\
 \label{tbl:smchanges}
 \end{table}
 
-The space of possible (well-formed\footnote{The abstract syntax schema is not expressive enough to define all static invariants of the language, such as: states must by unique by name, references variables in actions must be declared, etc.}) changes to a state machine are summarized in Table~\ref{tbl:smchanges}.
+The space of possible (well-formed\footnote{The abstract syntax schema is not expressive enough to define all static invariants of the language, such as: states must by unique by name, references to variables in actions must be declared, etc.}) changes to a state machine are summarized in Table~\ref{tbl:smchanges}.
 The first column indicates the change category, the second the affected kind of object, and third a short description of how to deal with the respective change category. Some notes about this table:
 \begin{itemize}
 \item all rows with ``simple'' in the third column only require a quiescent~\cite{Tranquility} point in the interpreter loop to update the run-time structure (e.g., as shown in Figure~\ref{FIG:doorsRuntime}).
