@@ -1156,45 +1156,72 @@ disambiguate their intent for a given write.
 % MODELING
 % ==================================================================================================
 
+% \begin{figure}[t]
+% \begin{adjustwidth}{-1.5em}{-1.5em}
+% \begin{minipage}[t]{0.26\textwidth}
+% \begin{lstlisting}[language=java,morekeywords={on},mathescape,numbers=none]
+% class Machine
+%   name: string
+%   states: State*
+%   vars: Decl*
+% \end{lstlisting}
+% \end{minipage}
+% \begin{minipage}[t]{0.28\textwidth}
+% \begin{lstlisting}[language=java,morekeywords={on},mathescape,numbers=none]
+% class State
+%   name: string
+%   onEntry: Stmt*
+%   transitions: Trans*
+% \end{lstlisting}
+% \end{minipage}
+% \begin{minipage}[t]{0.24\textwidth}
+% \begin{lstlisting}[language=java,morekeywords={on},mathescape,numbers=none]
+% class Trans
+%   event: string
+%   target: State
+% $~$
+% \end{lstlisting}
+% \end{minipage}
+% \begin{minipage}[t]{0.24\textwidth}
+% \begin{lstlisting}[language=java,morekeywords={on},mathescape,numbers=none]
+% class Decl
+%   name: string
+%   type: Type
+% $~$
+% \end{lstlisting}
+% \end{minipage}
+% \end{adjustwidth}
+% \vspace{-1em}
+% \caption{A statemachine and its abstract syntax schema (omitting \lstinline{Stmt} and \lstinline{Type})}
+% \label{lst:machinedef}
+% \vspace{0.5em}
+% \end{figure}
+
 \begin{figure}[t]
-\begin{adjustwidth}{-1.5em}{-1.5em}
-\begin{minipage}[t]{0.26\textwidth}
-\begin{lstlisting}[language=java,morekeywords={on},mathescape,numbers=none]
-class Machine
-  name: string
-  states: State*
-  vars: Decl*
+\centering
+\begin{minipage}{0.3\textwidth}
+\includegraphics[width=\textwidth]{figures/metamodel.pdf}
+\end{minipage}
+\hspace*{2pt}
+\vline
+\begin{minipage}{0.3\textwidth}
+  \includegraphics[width=\textwidth]{figures/doors-ast.pdf}
+  \end{minipage}
+\hspace*{2pt}
+\vline
+\begin{minipage}{0.3\textwidth}
+  \begin{lstlisting}[language=java,morekeywords={machine,on,state,var},basicstyle=\footnotesize,numbers=none]
+machine Doors
+var isClosed: bool = true
+state closed
+  isClosed := true
+  on open => opened
+state opened
+  on close => closed
 \end{lstlisting}
 \end{minipage}
-\begin{minipage}[t]{0.28\textwidth}
-\begin{lstlisting}[language=java,morekeywords={on},mathescape,numbers=none]
-class State
-  name: string
-  onEntry: Stmt*
-  transitions: Trans*
-\end{lstlisting}
-\end{minipage}
-\begin{minipage}[t]{0.24\textwidth}
-\begin{lstlisting}[language=java,morekeywords={on},mathescape,numbers=none]
-class Trans
-  event: string
-  target: State
-$~$
-\end{lstlisting}
-\end{minipage}
-\begin{minipage}[t]{0.24\textwidth}
-\begin{lstlisting}[language=java,morekeywords={on},mathescape,numbers=none]
-class Decl
-  name: string
-  type: Type
-$~$
-\end{lstlisting}
-\end{minipage}
-\end{adjustwidth}
-\vspace{-1em}
-\caption{A statemachine and its abstract syntax schema (omitting \lstinline{Stmt} and \lstinline{Type})}
-\label{lst:machinedef}
-\vspace{0.5em}
+\caption{Definition of the abstract syntax state machine language as a UML metamodel and an example instance, as object diagram and as source code}
+\label{FIG:statemachineUML}
 \end{figure}
 
 ~
@@ -1206,56 +1233,54 @@ $~$
 
 We considered live programming in the context of the Elm architecture in Section~\ref{sec:elm},
 where the challenge was to migrate run-time state (data) to a new type to keep the program running.
-Work on language modeling offers a new perspective on the problem. In systems such as Rascal
-\cite{klint2011easy}, one can see a program in a domain-specific language not just as \emph{types}
-and \emph{code}, but also as \emph{data}, or an instance of a metamodel (a static type) that
-defines the AST of the domain-specific language. The program in a domain-specific language
-that in turn determines (defines/implies/induces) a run-time schema: the run-time structures
-of code (e.g., classes, inheritance links, declarations, method definitions etc.), as well as
-the structure of the run-time state.
+Work on language modeling offers a new perspective on the problem. In the context of executable domain-specific modeling languages~\cite{}, one can see a program in a domain-specific language as an instance of a metamodel (a static type) that
+defines the AST structure of the domain-specific language. The program in a domain-specific language
+then in turn determines (defines/implies/induces) a run-time schema: the run-time structures
+of code (e.g., classes, inheritance links, declarations, method definitions etc.), as well as the structure of the run-time state (the heap, slots for user data, etc.).
+Whereas the example discussed in this section is framed in terms of metamodels and models, this should be seen as an expository device: the principles and challenges apply, e.g., in more grammar-oriented settings.
 
 In the absence of live programming, the run-time \emph{code} structures do not typically
 change while using an application and the run-time \emph{state} changes constantly.
-
-
-Live programming, however, requires reconciling changes to the program with the run-time structures
+Live programming, however, requires reconciling changes to the program with the induced run-time structures
 of both the code and the state. This typically means that at a certain point (a quiescent point)
 during execution, the code structures need to be updated (hot swapped), and the state needs to be \textit{migrated}.
 
 \subsection{Example}
 Consider the example of a simple state machine language with on-entry actions, and typed global
-variables (loosely inspired by the SML language of \citet{vanRozen19}). An example state machine
-and an excerpt of its abstract syntax schema is shown in Figure~\ref{LST:statemachines}. Depicted
-on the left, an actual statemachine modeling the opening and closing of a door, with one global
+variables (loosely inspired by the SML language of \citet{vanRozen19}). 
+The abstract syntax (as UML class diagram) is shown on the left of Figure~\ref{FIG:statemachineUML}. 
+The middle of the figure shows an instance: a state machine modeling the opening and closing of a door (in UML object notation). 
+The right shows a possible textual concrete syntax modeling the same state machine. 
+The state machine has one global
 boolean variable, \lstinline{isClosed}, which is flipped according to transitioning between the
 \lstinline{closed} and \lstinline{opened} states. For the sake of brevity, the abstract syntax
-schema (similar, to e.g., and Ecore metamodel~\cite{EMF}) shown on the right of the figure
-omits classes for the on-entry actions (\lstinline{Stmt}) and variable types (\lstinline{Type}).
+model  shown on the left of the figure
+omits the details for the on-entry actions (\lstinline{Stmt}) and variable types (\lstinline{Type}).
 
-\noindent
-\begin{adjustwidth}{-0.5em}{0em}
-\begin{minipage}[t]{0.32\textwidth}
-\begin{lstlisting}[language=java,morekeywords={machine,on,state,var},numbers=none]
-machine Doors
+% \noindent
+% \begin{adjustwidth}{-0.5em}{0em}
+% \begin{minipage}[t]{0.32\textwidth}
+% \begin{lstlisting}[language=java,morekeywords={machine,on,state,var},numbers=none]
+% machine Doors
 
-var isClosed: bool = true
-\end{lstlisting}
-\end{minipage}
-\begin{minipage}[t]{0.32\textwidth}
-\begin{lstlisting}[language=java,morekeywords={machine,on,state,var},numbers=none]
-state closed
-  isClosed := true
-  on open => opened
-\end{lstlisting}
-\end{minipage}
-\begin{minipage}[t]{0.32\textwidth}
-\begin{lstlisting}[language=java,morekeywords={machine,on,state,var},numbers=none]
-state opened
-  isClosed := false
-  on close => closed
-\end{lstlisting}
-\end{minipage}
-\end{adjustwidth}
+% var isClosed: bool = true
+% \end{lstlisting}
+% \end{minipage}
+% \begin{minipage}[t]{0.32\textwidth}
+% \begin{lstlisting}[language=java,morekeywords={machine,on,state,var},numbers=none]
+% state closed
+%   isClosed := true
+%   on open => opened
+% \end{lstlisting}
+% \end{minipage}
+% \begin{minipage}[t]{0.32\textwidth}
+% \begin{lstlisting}[language=java,morekeywords={machine,on,state,var},numbers=none]
+% state opened
+%   isClosed := false
+%   on close => closed
+% \end{lstlisting}
+% \end{minipage}
+% \end{adjustwidth}
 
 %\begin{figure}[t]
 %\centering
@@ -1263,17 +1288,18 @@ state opened
 %\label{LST:statemachines}
 %\end{figure}
 
-In the following we assume that the state machine is executed by an interpreter that process an incoming stream of events, and traversing run-time pointers representing transitions accordingly, executing on-entry actions, where the notion of the current state and the values of the global variables are the collective run-time state of the program. The structure that the interpreter operates on can be described as derived  schema from the abstract syntax scheme shown on the right of Figure~\ref{LST:statemachines}, but specialized for a particular machine, e.g., \lstinline{Doors}.
-This schema will have additional fields and associations modeling the run-time data required for execution. For the \lstinline{Doors} statemachine, this means adding the current state to the \lstinline{Machine} type (required for any machine) and the machine specific data fields, namely \lstinline{isClosed}. The run-time schema for \lstinline{Doors} is then the following\footnote{It is possible to represent the global variables at run-time using an untyped table or hashmap, but for the sake of schema migration complexity, the encoding as fields in classes is more instructive.}:
+In the following we assume that the state machine is executed by an interpreter that processes incoming events, and traverses run-time pointers representing the transitions accordingly, executing on-entry actions, where the notion of the current state and the values of the global variables are the collective run-time state of the program. The structure that the interpreter operates on can be described as a schema as well, but derived from the abstract syntax scheme shown on the left of Figure~\ref{FIG:statemachineUML}, but decorated with additional properties and associations modeling the run-time state required for execution. This is illustrated in Figure~\ref{FIG:doorsRuntime}. The left shows an augmented metamodel adding properties \lstinline{vars} (to model variable assigments) and \lstinline{visited}, to the classes \lstinline{Machine} and \lstinline{State}, respectively. 
 
-\begin{lstlisting}[language=java,morekeywords={on},mathescape=true]
-class Machine$^{++}$
-  states: State*
-  current: State
-  isClosed: bool
-\end{lstlisting}
+% For the \lstinline{Doors} statemachine, this means adding the current state to the \lstinline{Machine} type (required for any machine) and the machine specific data fields, namely \lstinline{isClosed}. The run-time schema for \lstinline{Doors} is then the following\footnote{It is possible to represent the global variables at run-time using an untyped table or hashmap, but for the sake of schema migration complexity, the encoding as fields in classes is more instructive.}:
 
-This \textit{extended} class $\text{\lstinline{Machine}}^{++}$ also represents state machines, but this time at run time.
+% \begin{lstlisting}[language=java,morekeywords={on},mathescape=true]
+% class Machine$^{++}$
+%   states: State*
+%   current: State
+%   isClosed: bool
+% \end{lstlisting}
+
+% This \textit{extended} class $\text{\lstinline{Machine}}^{++}$ also represents state machines, but this time at run time.
 
 
 \frameworkbox{
@@ -1300,8 +1326,15 @@ live state changes to obtain $+D'_0 \diamond +D_1$ of the new merged live machin
 
 \begin{figure}[t]
   \centering
-\includegraphics[width=0.5\textwidth]{figures/doorsmachine.pdf}
-\caption{UML object diagram of the run-time structures of the Doors statemachine (excluding code objects)}
+\begin{minipage}{0.5\textwidth}
+\includegraphics[width=\textwidth]{figures/runtime-model.pdf}
+\end{minipage}
+\hspace*{2pt}
+\vline
+\begin{minipage}{0.4\textwidth}  
+\includegraphics[width=\textwidth]{figures/doorsmachine.pdf}
+\end{minipage}
+\caption{Augmented run-time metamodel for state machines and a run-time instance of the Doors state machine during execution.}
 \label{FIG:doorsRuntime}
 \end{figure}
 
