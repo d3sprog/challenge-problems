@@ -1276,6 +1276,27 @@ class Machine$^{++}$
 This \textit{extended} class $\text{\lstinline{Machine}}^{++}$ also represents state machines, but this time at run time.
 
 
+\frameworkbox{
+\begin{wrapfigure}{r}{14.5em}
+\vspace{-0.5em}
+\includegraphics[width=14.5em]{figures/arr-model.png}
+\vspace{-1.5em}
+\end{wrapfigure}
+\frameworkboxtitle{TODO}
+Here, data $D_0$ now represent the state machine definition.
+Live data that we obtain by instantiating the state machine still contain this state machine
+definition, but also the necessary live state defined by the definition.
+
+This is used to synthesize live machine state $+D_0$ conforming to live machine type $+T_0$.
+This then runs producing $+T'_0$ and so on...
+
+If the state machine definition changes from $D_0$ to $D_1$,
+we can synthesize new live machine state $+D_1$ conforming to new live machine type $+T_1$.
+
+The challenge is to merge these changes with the currently running state machine $+T'_0$.
+We have to produce merged live machine type $+T_0 \diamond +T_1$ and also merge the
+live state changes to obtain $+D'_0 \diamond +D_1$ of the new merged live machine type.
+}
 
 \begin{figure}[t]
   \centering
