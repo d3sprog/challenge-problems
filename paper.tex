@@ -98,7 +98,7 @@ This problem has been studied in isolation as schema evolution in databases, hot
 in live programming and dynamic software updating, but we lack a unified comprehensive perspective.
 
 % Approach: What was done that unveiled new knowledge?
-In this paper, we develop a unfied conceptual framework for analysing the problem of type evolution.
+In this paper, we develop a unified conceptual framework for analysing the problem of type evolution.
 We use the framework to study type evolution in five diverse case studies.
 %
 % Knowledge: What new facts were uncovered? What new capabilities are enabled by the work?
@@ -159,7 +159,7 @@ community \cite{czarnecki2009bidirectional}, in work on model-driven development
 \cite{hicks2005dynamic}. We draw on extensive literature review, included in Appendix~\ref{sec:related}.
 
 Looking at type evolution from the perspective of programming systems can offer a new perspective that
-unfies the many different aspects of the problem partially explored in other sub-fields. A programming
+unifies the many different aspects of the problem partially explored in other sub-fields. A programming
 system may have permanent data (as in a database) whose structure can change, requiring
 corresponding change to data and code. A programming system may have a transient state conforming
 to a type structure that may change during live programming. A programming system may also need
@@ -399,7 +399,7 @@ system are summarized in Table~\ref{tbl:elmchanges}. Modifying the \texttt{Event
 require data migration (assuming that the change does not happen when there are unprocessed
 events). It may result in unused code or missing cases in \texttt{update} that need to be addressed.
 Modifying \texttt{State} ranges from relatively simple problems (e.g., adding a new field with a
-default value) to challenging case. In particular, if the programer refactors \texttt{State} to a
+default value) to challenging case. In particular, if the programmer refactors \texttt{State} to a
 semantically equivalent type, the programming system should, in principle, be able to automatically
 migrate both the original value and implementation of both functions to match the new type.
 
@@ -511,7 +511,7 @@ when the customer's address changes they have to go back and edit all of their o
 \challenge{Extract Entity}
 Acme needs to evolve the above schema and data into two tables (Fig.~\ref{fig:db-customers}, \ref{fig:db-orders-link}),
 one with orders that links to one with customers.  We refer to this as the \emph{Extract Entity}
-operation, because it introduces a new \emph{entity}, a referenceable holder of mutable attributes.
+operation, because it introduces a new \emph{entity}, a referencable holder of mutable attributes.
 The operation is needed when we realize that some attributes of one type of entity should belong to
 a  distinct type of entity that will be associated with the first one.
 
@@ -535,7 +535,7 @@ it is not a schema change but a data change, yet nevertheless not commonly suppo
 Entity evolution can happen through operations such as those listed in
 Table~\ref{tbl:dbchanges}. Every schema operation should have an inverse as the
 change in requirements that triggered an evolution might change back again.
-Invertibility features in other work on schema evolution and \emph{bidirectional transformations}~\cite{Foster2007, herrmann17, chillon22}.
+Invertability features in other work on schema evolution and \emph{bidirectional transformations}~\cite{Foster2007, herrmann17, chillon22}.
 The inverse of \emph{Extract Entity} is \emph{Absorb Entity}. It raises the question of how
 to handle \emph{one-to-many} relationships. For example should absorbing orders into customers
 do a relational join, returning us back to the starting point, or should it nest orders within
@@ -647,13 +647,13 @@ in Potluck~\cite{Litt2023} or spreadsheets) that may refer to other nodes of the
 We assume that documents can be concurrently edited by multiple users in a local-first manner,
 i.e., local edits are later synchronized with peers.
 
-The challenge focuses on collaborative conference planning, illustred in Figure~\ref{fig:conf}
+The challenge focuses on collaborative conference planning, illustrated in Figure~\ref{fig:conf}
 and inspired by a typical use of Notion~\cite{notion}. A number of co-organizers are planning
 a conference that will feature talks by several invited speakers. They need to agree on the
 speaker list, contact speakers and calculate the conference budget.
 %
 The ideas in this section also apply to work on computational scientific notebooks
-that combine code and data such as Jupyter \cite{Kluyver2016}. We hope to contribute to ongoinig
+that combine code and data such as Jupyter \cite{Kluyver2016}. We hope to contribute to ongoing
 work on advancing the format as done by Nextjournal \cite{Nextjournal21}, Nota~\cite{Crichton2021}
 and Living Papers~\cite{Heer2023}.
 
@@ -860,7 +860,7 @@ Reorder & List items & Reorder data without affecting document structure (type)\
 \subsection*{Remarks: Liveness and Divergence}
 The above challenge focuses on the local-first software scenario, but it can be extended to also
 apply to live programming. If formulas in the document are evaluated on-the-fly, the system
-needs to identify edits that invalide some of the values (by changing the data that a formula
+needs to identify edits that invalidate some of the values (by changing the data that a formula
 depends on, or by changing the equation). It should then automatically re-evaluate or invalidate
 the computed results (requiring explicit re-evaluation). In this scenario, we distinguish between
 \emph{permanent data} (information in the document) and transient \emph{data} (computed by code).
@@ -928,9 +928,9 @@ evolved schema.
 \frameworkboxtitle{Bidirectional Data Migration}
 The scenario adds the need for transferring data changes from a new type to an older type.
 In the diagram on the right, we only show data and type, ignoring the code added by the
-accounting department. We start with data $D_1$ of type~$T_1$. The accounting deparment
+accounting department. We start with data $D_1$ of type~$T_1$. The accounting department
 evolves the type (via Extract Entity), obtaining data $D_2$ of type $T_2$ using an automatically
-generated forward transformation. It further modifies the data, obtiaing $D_3$. When the
+generated forward transformation. It further modifies the data, obtaining $D_3$. When the
 accounting department receives data $D_3$, it needs to migrate it back from type $T_2$ to
 $T_1$ using an automatically generated backward transformation. That is,
 type evolution needs to be accompanied with both forward and backward projection for data
