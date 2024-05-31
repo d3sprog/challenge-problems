@@ -42,19 +42,6 @@
 \newcounter{challengen}
 \newcommand{\challenge}[1]{\subsection*{\addtocounter{challengen}{1}Challenge \#\thechallengen: #1}}
 
-% \definecolor{progblue}{RGB}{64,104,224}
-% \renewenvironment{leftbar}[1][\hsize]
-% {%
-%     \def\FrameCommand
-%     {%
-%         {\color{progblue}\vrule width 3pt}%
-%         \hspace{0pt}%must no space.
-%         \fboxsep=\FrameSep\colorbox{white}%
-%     }%
-%     \MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
-% }
-% {\endMakeFramed}
-
 \DeclareRobustCommand{\frameworkbox}[1]{\leftbar#1\endleftbar}
 \newcommand{\frameworkboxtitle}[1]{\noindent{\firamedium #1.}\quad}
 
@@ -71,20 +58,20 @@
 \title{Type Evolution in Interactive Programming Systems}
 
 \author[a]{Jonathan Edwards}%[0000-0003-1958-7967]
-\authorinfo{is TBD. Contact him at \email{jonathanmedwards@gmail.com}.}
+\authorinfo{is an independent researcher. Contact him at \email{jonathanmedwards@gmail.com}.}
 \affiliation[a]{Independent, Boston, MA, USA}
 
 \author[b]{Tomas Petricek}%[0000-0002-7242-2208]
-\authorinfo{is TBD. Contact him at \email{tomas@tomasp.net}.}
+\authorinfo{is an Associate Professor at Charles University. Contact him at \email{tomas@tomasp.net}.}
 \affiliation[b]{Charles University, Prague, Czechia}
 
 \author[c,d]{Tijs van der Storm}%[0000-0001-8853-7934]
-\authorinfo{is TBD. Contact him at \email{storm@cwi.nl}.}
+\authorinfo{is a Senior Researcher at Centrum Wiskunde \&\ Informatica (CWI) and a Professor at the University of Groningen. Contact him at \email{storm@cwi.nl}.}
 \affiliation[c]{Centrum Wiskunde \&\ Informatica (CWI), Amsterdam, Netherlands}
 \affiliation[d]{University of Groningen, Groningen, Netherlands}
 
 \author[e]{Geoffrey Litt}%[0000-0003-0858-5165]
-\authorinfo{is TBD. Contact him at \email{gklitt@gmail.com}.}
+\authorinfo{is a Senior Researcher at the independent research lab Ink \& Switch. Contact him at \email{gklitt@gmail.com}.}
 \affiliation[e]{Ink \& Switch, Planet Earth}
 
 \authorrunning{J. Edwards, T. Petricek, T. van der Storm, G. Litt}
@@ -137,10 +124,10 @@ programming systems.
 \section{Introduction}
 
 Many past improvements in the practice of programming worked by speeding up feedback loops,
-both in collaboration with other programmers (through collaborative development tools
+both in collaboration with other programmers (via collaborative development tools
 \cite{ProGit, goldman2011real,kurniawan2015coder,replit}) and in individual's interaction with the
 programming environment (through live programming \cite{rein2018exploratory}).
-
+%
 To make programming more effective, future programming systems will need to further tighten
 the feedback loop. They will need to enable programmers to collaborate at a fine-grained level,
 letting them adopt individual changes created by their collaborators (as in local-first software
@@ -149,14 +136,14 @@ transcend treating state as ephemeral and reset when the
 program is edited and rerun.
 
 To conceive of such systems, we need to shift our focus to \emph{programming systems} \cite{techdims}
-where program state is persistent and co-evolves with the behavior and data of the system. This is
-already the case in collaborative applications with state persistent in a database, image-based
+where program state is persistent and co-evolves with the behavior and data of the system. This view
+is already used in collaborative applications with state persistent in a database, image-based
 systems like Smalltalk and live programming environments with hot-reloading where the program can
 be edited without resetting all state.
 
 While we are firmly convinced that more collaborative and live programming systems are the
 future of programming, there are a number of problems that need to be resolved in order for
-such systems to become a reality. A key problem is \emph{type evolution}, i.e., how to
+such systems to become a reality. A key problem is \emph{type evolution}: how to
 gracefully adapt the shape of data used in a program while preserving integrity
 constraints, existing data and the logic of code.
 
@@ -169,10 +156,10 @@ although it typically focuses on updating transient state and ignores the proble
 data migrations. The problem is also studied in the bidirectional transformation (BX)
 community \cite{czarnecki2009bidirectional}, in work on model-driven development
 \cite{Cicchetti11,alanen2003} and in more low-level work on dynamic software updating
-\cite{hicks2005dynamic}.
+\cite{hicks2005dynamic}. We draw on extensive literature review, included in Appendix~\ref{sec:related}.
 
 Looking at type evolution from the perspective of programming systems can offer a new perspective that
-unfies the many different aspects of the problem partially explored in other areas. A programming
+unfies the many different aspects of the problem partially explored in other sub-fields. A programming
 system may have permanent data (as in a database) whose structure can change, requiring
 corresponding change to data and code. A programming system may have a transient state conforming
 to a type structure that may change during live programming. A programming system may also need
@@ -181,7 +168,7 @@ to allow programmers to independently work on different versions of a program.
 In this paper, we draw connections between these different kinds of type evolution, pointing out
 an essential shared structure. First, we present a shared conceptual
 framework for thinking about the relationship between schema, code, and data in a programming
-system. Second, we present five case studies that use the framework to study type evolution in a
+system. Second, we present six case studies that use the framework to study type evolution in a
 highly diverse set of real-world programming scenarios. We hope this will encourage knowledge
 sharing across different subfields, motivate further research on this important problem and
 offer inspiring challenges that developers of future live and collaborative programming systems
@@ -451,7 +438,7 @@ description of the edits performed by the user.
 \section{Entity Evolution in Data-Centric Systems}
 If we see programming systems as stateful environments where programs co-exist with their persistent
 data, we can gain valuable insights from research on database systems.
-Although schema evolution is well-studied in databases (Section~\ref{sec:related}), past work
+Although schema evolution is well-studied in databases (Appendix~\ref{sec:related}), past work
 does not resolve all problems in our second challenge.
 
 As an example, consider the Acme Corporation that records orders from various customers for
@@ -945,7 +932,7 @@ accounting department. We start with data $D_1$ of type~$T_1$. The accounting de
 evolves the type (via Extract Entity), obtaining data $D_2$ of type $T_2$ using an automatically
 generated forward transformation. It further modifies the data, obtiaing $D_3$. When the
 accounting department receives data $D_3$, it needs to migrate it back from type $T_2$ to
-$T_1$ using an automatically generated backward transformation. In other words,
+$T_1$ using an automatically generated backward transformation. That is,
 type evolution needs to be accompanied with both forward and backward projection for data
 (and code) migration.}
 
@@ -1198,13 +1185,13 @@ disambiguate their intent for a given write.
 % \end{figure}
 
 \begin{figure}[t]
-\centering
-\begin{minipage}{0.3\textwidth}
+\begin{adjustwidth}{-3em}{-3em}
+\begin{minipage}{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/metamodel.pdf}
 \end{minipage}
 \hspace*{2pt}
 \vline
-\begin{minipage}{0.3\textwidth}
+\begin{minipage}{0.4\textwidth}
   \includegraphics[width=\textwidth]{figures/doors-ast.pdf}
   \end{minipage}
 \hspace*{2pt}
@@ -1213,14 +1200,19 @@ disambiguate their intent for a given write.
   \begin{lstlisting}[language=java,morekeywords={machine,on,state,var},basicstyle=\footnotesize,numbers=none]
 machine Doors
 var isClosed: bool = true
+
 state closed
   isClosed := true
   on open => opened
+
 state opened
+  isClosed := false
   on close => closed
 \end{lstlisting}
 \end{minipage}
-\caption{Definition of the abstract syntax state machine language as a UML metamodel and an example instance, as object diagram and as source code}
+\end{adjustwidth}
+\caption{Definition of the abstract syntax state machine language as a UML metamodel (left) and
+an example instance, as object diagram (middle) and as code (right).}
 \label{FIG:statemachineUML}
 \end{figure}
 
@@ -1233,29 +1225,35 @@ state opened
 
 We considered live programming in the context of the Elm architecture in Section~\ref{sec:elm},
 where the challenge was to migrate run-time state (data) to a new type to keep the program running.
-Work on language modeling offers a new perspective on the problem. In the context of executable domain-specific modeling languages~\cite{}, one can see a program in a domain-specific language as an instance of a metamodel (a static type) that
-defines the AST structure of the domain-specific language. The program in a domain-specific language
-then in turn determines (defines/implies/induces) a run-time schema: the run-time structures
-of code (e.g., classes, inheritance links, declarations, method definitions etc.), as well as the structure of the run-time state (the heap, slots for user data, etc.).
-Whereas the example discussed in this section is framed in terms of metamodels and models, this should be seen as an expository device: the principles and challenges apply, e.g., in more grammar-oriented settings.
+Work on language modeling offers a new perspective on the problem.
+In the context of executable domain-specific modeling languages~\cite{klint2011easy}, one can see a
+program in a domain-specific language as an instance of a metamodel (a static type) that
+defines the AST structure of the domain-specific language.
 
-In the absence of live programming, the run-time \emph{code} structures do not typically
-change while using an application and the run-time \emph{state} changes constantly.
+A program in a domain-specific language in turn determines (defines/implies/induces) a run-time
+schema: the run-time structures of code (e.g., classes, inheritance links, declarations, method
+definitions etc.), as well as the structure of the run-time state (the heap, slots for user data, etc.).
+Whereas the example discussed in this section is framed in terms of metamodels and models, this can
+be seen as an expository device: the principles and challenges apply in more grammar-oriented settings.
+However, the framing also suggests interesting additional challenges.
+
+In the absence of live programming, the run-time \emph{types} and \emph{code} do not change while
+running a program in a given domain-specific language and the run-time \emph{state} changes constantly.
 Live programming, however, requires reconciling changes to the program with the induced run-time structures
 of both the code and the state. This typically means that at a certain point (a quiescent point)
-during execution, the code structures need to be updated (hot swapped), and the state needs to be \textit{migrated}.
+during execution, the code structures need to be updated (hot swapped), and the state needs to be
+\textit{migrated}.
 
-\subsection{Example}
-Consider the example of a simple state machine language with on-entry actions, and typed global
-variables (loosely inspired by the SML language of \citet{vanRozen19}). 
-The abstract syntax (as UML class diagram) is shown on the left of Figure~\ref{FIG:statemachineUML}. 
-The middle of the figure shows an instance: a state machine modeling the opening and closing of a door (in UML object notation). 
-The right shows a possible textual concrete syntax modeling the same state machine. 
-The state machine has one global
-boolean variable, \lstinline{isClosed}, which is flipped according to transitioning between the
-\lstinline{closed} and \lstinline{opened} states. For the sake of brevity, the abstract syntax
-model  shown on the left of the figure
-omits the details for the on-entry actions (\lstinline{Stmt}) and variable types (\lstinline{Type}).
+Figure~\ref{FIG:statemachineUML} defines a simple state machine domain-specific language with
+on-entry actions, and typed global variables (loosely inspired by SML \cite{vanRozen19}).
+The figure shows the abstract syntax as UML class diagram (left); an instance modelling the
+opening and closing of a door in UML object notation (middle) and a possible textual concrete
+syntax modeling the same state machine (right).
+%
+The state machine has one global Boolean variable, \lstinline{isClosed}, which is flipped when
+transitioning between the \lstinline{closed} and \lstinline{opened} states. For the sake of brevity,
+the abstract syntax model shown on the left omits the details for the on-entry
+actions (\lstinline{Stmt}) and variable types (\lstinline{Type}).
 
 % \noindent
 % \begin{adjustwidth}{-0.5em}{0em}
@@ -1288,7 +1286,15 @@ omits the details for the on-entry actions (\lstinline{Stmt}) and variable types
 %\label{LST:statemachines}
 %\end{figure}
 
-In the following we assume that the state machine is executed by an interpreter that processes incoming events, and traverses run-time pointers representing the transitions accordingly, executing on-entry actions, where the notion of the current state and the values of the global variables are the collective run-time state of the program. The structure that the interpreter operates on can be described as a schema as well, but derived from the abstract syntax scheme shown on the left of Figure~\ref{FIG:statemachineUML}, but decorated with additional properties and associations modeling the run-time state required for execution. This is illustrated in Figure~\ref{FIG:doorsRuntime}. The left shows an augmented metamodel adding properties \lstinline{vars} (to model variable assigments) and \lstinline{visited} (counting number of state visits) to the classes \lstinline{Machine} and \lstinline{State}, respectively. 
+In the following we assume that the state machine is executed by an interpreter that processes
+incoming events, traverses the transitions accordingly, and executes on-entry actions. The notion
+of the current state and the values of the global variables are the collective run-time state of
+the program. The structure that the interpreter operates on can be described by a run-time schema.
+This schema (Figure~\ref{FIG:doorsRuntime}, left) is derived from the abstract syntax
+schema (Figure~\ref{FIG:statemachineUML}, left), but is decorated with additional properties and
+associations modeling the run-time state required for execution. The augmented metamodel includes
+properties \lstinline{vars} (to model variable assigments) and \lstinline{visited} (counting
+number of state visits) to the classes \lstinline{Machine} and \lstinline{State}, respectively.
 
 % For the \lstinline{Doors} statemachine, this means adding the current state to the \lstinline{Machine} type (required for any machine) and the machine specific data fields, namely \lstinline{isClosed}. The run-time schema for \lstinline{Doors} is then the following\footnote{It is possible to represent the global variables at run-time using an untyped table or hashmap, but for the sake of schema migration complexity, the encoding as fields in classes is more instructive.}:
 
@@ -1301,96 +1307,135 @@ In the following we assume that the state machine is executed by an interpreter 
 
 % This \textit{extended} class $\text{\lstinline{Machine}}^{++}$ also represents state machines, but this time at run time.
 
-
-\frameworkbox{
-\begin{wrapfigure}{r}{14.5em}
-\vspace{-0.5em}
-\includegraphics[width=14.5em]{figures/arr-model.png}
-\vspace{-1.5em}
-\end{wrapfigure}
-\frameworkboxtitle{TODO}
-Here, data $D_0$ now represent the state machine definition.
-Live data that we obtain by instantiating the state machine still contain this state machine
-definition, but also the necessary run-time state required for execution.
-
-This is used to synthesize live machine state $+D_0$ conforming to live machine type $+T_0$.
-This then runs producing $+T'_0$ and so on...
-
-If the state machine definition changes from $D_0$ to $D_1$,
-we can synthesize a new live machine state $+D_1$ conforming to new live machine type $+T_1$.
-
-The challenge is to merge these changes with the currently running state machine $+T'_0$.
-We have to produce merged live machine type $+T_0 \diamond +T_1$ and also merge the
-live state changes to obtain $+D'_0 \diamond +D_1$ of the new merged live machine type.
-}
-
 \begin{figure}[t]
-  \centering
+\vspace{-0.5em}
+\centering
 \begin{minipage}{0.5\textwidth}
 \includegraphics[width=\textwidth]{figures/runtime-model.pdf}
 \end{minipage}
 \hspace*{2pt}
 \vline
-\begin{minipage}{0.4\textwidth}  
+\begin{minipage}{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/doorsmachine.pdf}
 \end{minipage}
-\caption{Augmented run-time metamodel for state machines and a run-time instance of the Doors state machine during execution.}
+\caption{Augmented run-time metamodel for state machines (left) and a run-time instance
+of the Doors state machine during execution (right).}
 \label{FIG:doorsRuntime}
+\vspace{-0.5em}
 \end{figure}
 
+An instance of a running state machine consists of an object graph conforming to the run-time
+schema of a state machine, updating the \lstinline{current} state pointer in response to events.
+This object graph is depicted as a UML object diagram in Figure~\ref{FIG:doorsRuntime} (right),
+excluding the statement objects representing on-entry actions. As the diagram shows, the running
+machine has a current state (\lstinline{closed}) and the \lstinline{isClosed} field has a
+value (\lstinline{true}) in the \lstinline{vars} map. It is instructive to note that the
+diagram encodes both static and dynamic aspects of the state machine language.
 
-An instance of a running state machine consists of an object graph conforming to the run-time schema of state machines, updating the \lstinline{current} state pointer in response to events. This object graph is graphically depicted in Figure~\ref{FIG:doorsRuntime} as a UML object diagram, excluding the statement objects representing on-entry actions. As the diagram shows, the running machine has a current state (\lstinline{closed}) and the \lstinline{isClosed} field has an actual value (\lstinline{true}) in the \lstinline{vars} map. It is instructive to note that the diagram encodes both static and dynamic aspects of the state machine language. Live editing the state machine then requires to \textit{patch}~\cite{SemanticDeltas} this run-time structure without shutting it down, possibly requiring migration of run-time state.
+\challenge{Live Editing Domain-Specific Languages}
+The challenge is editing the state machine (Figure~\ref{FIG:statemachineUML}, right)
+created in the domain-specific language. This requires to \textit{patch}~\cite{SemanticDeltas} the
+run-time structure (Figure~\ref{FIG:doorsRuntime}, right) without discarding and recreating it,
+possibly requiring migration of run-time state.
 
-\subsection{Challenge}
-
-\begin{table}[t]
-  \centering
-\begin{tabular}{lll}\toprule
-\textsc{Change} & \textsc{What} & \textsc{How}\\\midrule
-add & state & simple  \\
-remove & state & structurally simple, but heuristic if state is current \\
-rename & state & simple\\
-add & variable & add entry to map and initialize \\
-remove & variable & remove from the variable map (NB: assumes variable is unused)\\
-rename & variable & rename in class, preserving value\\
-type change & variable & migrate value in map \\
-add & transition & simple \\
-remove & transition & structurally simple, but heuristic for pending events\\
-event change & transition & structurally simple, but heuristic for pending events\\
-add/remove & statement & hotswap code at quiescent point of interpreter\\
-\bottomrule
-\end{tabular}
-\caption{Possible program changes and how to deal with them at run time}
-\label{tbl:smchanges}
-\end{table}
-
-The space of possible (well-formed\footnote{The abstract syntax schema is not expressive enough to define all static invariants of the language, such as: states must by unique by name, references to variables in actions must be declared, etc.}) changes to a state machine are summarized in Table~\ref{tbl:smchanges}.
-The first column indicates the change category, the second the affected kind of object, and third a short description of how to deal with the respective change category. Some notes about this table:
+The space of possible %(well-formed)\footnote{The abstract syntax schema is not expressive enough
+%to define all static invariants of the language, such as: states must by unique by name, references
+%to variables in actions must be declared, etc.})
+changes to a state machine is summarized in Table~\ref{tbl:smchanges}.
+The first column indicates the change category, the second the affected kind of object, and third
+a description of how to deal with the respective change category. In summary:
 \begin{itemize}
-\item all rows with ``simple'' in the third column only require a quiescent~\cite{Tranquility} point in the interpreter loop to update the run-time structure (e.g., as shown in Figure~\ref{FIG:doorsRuntime}).
-\item removing a state, however, is only \textit{structurally} simple, since removal is easy, but special care is required if the subject of removal is the current state. In this case, some heuristic is needed, such as: reject the edit, point the current state to the initial state, or some other strategy (e.g., the nearest state, previous state etc.)
+\item All rows with ``simple'' in the third column only require a quiescent~\cite{Tranquility} point in the interpreter loop to update the run-time structure (e.g., as shown in Figure~\ref{FIG:doorsRuntime}).
+\item Removing a state, however, is only \textit{structurally} simple, since removal is easy, but special care is required if the subject of removal is the current state. In this case, heuristic or user input is needed, such as: reject the edit, point the current state to the initial state, or some other strategy (e.g., the nearest state, previous state etc.)
 % \item everywhere a row mentions ``migrate class'' in the third column, data migration is needed: the run-time objects conforming to the old class must be transformed to instances of the updated class, similar to how Smalltalk migrates objects using \lstinline{become:}.
-\item removing a transition or changing the event of a transition potentially has to deal with pending events (e.g., in an event queue) expecting such transitions, since such events are now potentially stale. Strategies to deal with this situation include: simply dropping the events, or requiring that such edits cannot be patched at run time when there are pending events.
-\item the type change edit of variable requires a strategy for the current value: either discard and reinitialize, or perform value conversion. For instance, if the type change is from boolean to integer, then true could become 1, and false could become 0.
-\item note finally that rename variable is mentioned explicitly as a change: this makes it possible to preserve the run-time value of the variable.
+\item Removing a transition or changing the event of a transition potentially has to deal with pending events (e.g., in an event queue) expecting such transitions, since such events are now potentially stale. Strategies to deal with this situation include dropping the events, or preventing the edit when there are pending events.
+\item Changing the type of a variable requires a strategy for the current value: either discard and reinitialize, or perform value conversion.
+\item Note finally that rename variable is mentioned explicitly as a change: this makes it possible to preserve the run-time value of the variable.
 \end{itemize}
 
-\subsection{Goals}
+\begin{table}[t]
+\begin{adjustwidth}{-2em}{-2em}
+\begin{tabular}{lll}\toprule
+{\firamedium Change} & {\firamedium What} & {\firamedium How}\\\midrule
+Add/Rename & state & Simple  \\
+Remove & state & Structurally simple, but heuristic if state is current \\
+Add & variable & Add entry to map and initialize \\
+Remove & variable & Remove from the variable map (NB: assumes variable is unused)\\
+Rename & variable & Rename in class, preserving value\\
+Type change & variable & Migrate value in map \\
+Add & transition & Simple \\
+Remove & transition & Structurally simple, but heuristic for pending events\\
+Event change & transition & Structurally simple, but heuristic for pending events\\
+Add/remove & statement & Hotswap code at quiescent point of interpreter\\
+\bottomrule
+\end{tabular}
+\vspace{0.3em}
+\caption{Possible program changes and how to deal with them at run time}
+\label{tbl:smchanges}
+\end{adjustwidth}
+\vspace{-1em}
+\end{table}
 
-The goals for this challenge are twofold: from the end-user perspective and from the language engineering perspective. A particular challenge from the end-user perspective is to ``do minimal harm'': it is essential for fluid programming experience that the automatically triggered migrations are in a sense as near as possible to the previous application state, to not surprise or confuse the user/developer.
+\frameworkbox{
+\begin{wrapfigure}{r}{14em}
+\vspace{-0.75em}
+\includegraphics[width=14.5em]{figures/arr-model.png}
+\vspace{-1.5em}
+\end{wrapfigure}
+\frameworkboxtitle{Code as Data Migrations}
+We could see this challenge as type, code and data co-evolution as in the case of the Elm
+architecture in Section~\ref{sec:elm}, but a more interesting perspective is to see the
+state machine definition as data $D_0$ conforming to a type $T$ defined by the metamodel.
+
+When the state machine is instantiated, the metamodel and the definition are used to derive
+the run-time type ${}^+\!T_0$. The run-time data ${}^+\!D_0$ conforming to this type still
+contain the state machine definition, but also the necessary run-time state required for
+its execution, which will produce new versions of the run-time data such as ${}^+\!D_0'$.
+
+If the state machine definition changes from $D_0$ to $D_1$ (top right), we can synthesize
+a new run-time state machine type ${}^+\!T_1$ and new data ${}^+\!D_1$ conforming to it.
+The challenge is to merge the two run-time types instantiated from different definitions
+to produce a type ${}^+\!T_0 \diamond {}+\!T_1$, but also merge the run-time state of the
+running machine with the new instantiated state to obtain ${}^+\!D'_0 \diamond {}^+\!D_1$.
+}
+
+\subsection*{Remarks: Requirements and Extensions}
+
+The goals for this challenge are twofold: from the end-user perspective and from the language engineering perspective. A challenge from the end-user perspective is again to ``do minimal harm'': it is essential for fluid programming experience that the automatically triggered migrations result in a state as near as possible to the previous application state, to not surprise or confuse the user/developer.
 % One approach  considered in earlier work~\cite{RuntimeConstraint} employs the constraint solver Z3 to find a ``nearest'' run-time instance compatible with a source change. Nevertheless, the patching of the run-time state should be quick enough so as to not disrupt the programmer experience.
 
-From the language engineering perspective the goal is to employ techniques, formalisms, and tools, to make the construction of such languages easier. The above example state machine DSL is derived from earlier work~\cite{vanRozen19}, where the authors manually implemented the run-time patch operation and concluded that even for such a simple language (simpler even than the example above) it is a complex and error-pone endeavor. Furthermore, the field of software language engineering studies and develops generic and reusable techniques to improve the development of DSLs and programming languages, for instance, in the context of language workbenches~\cite{ERDWEG201524}. The development of live programming languages, however, is currently still out of reach for all existing language workbenches. 
+From the language engineering perspective the goal is to employ techniques, formalisms, and tools, to make the construction of such languages easier. The above example is derived from earlier work~\cite{vanRozen19}, where the authors manually implemented the run-time patch operation and concluded that even for such a small language (simpler than the example here) it is a complex error-pone endeavor. Furthermore, the field of software language engineering studies and develops generic and reusable techniques to improve the development of DSLs and programming languages, e.g., in the context of language workbenches~\cite{ERDWEG201524}. The development of live programming languages, however, is currently out of reach for all existing language workbenches.
 
-The above case study is concerned with changes to the DSL program (e.g., the Doors statemachine). However, there is another level of schema change to be considered: what if the metamodel (cf. Figure~\ref{FIG:statemachineUML}) itself is edited? In this case both the programs (e.g., Doors) possibly need to be migrated (in case of a change that is not backwards compatible), \textit{and} the running instance, including the interpreter, since its structure is, too, governed by the abstract syntax of the language. 
+The above case study is concerned with changes to the DSL program (e.g., the Doors state machine). However, there is another level of schema change to be considered: what if the metamodel (cf. Figure~\ref{FIG:statemachineUML}) itself is edited? In this case both the programs (e.g., Doors) possibly need to be migrated (in case of a change that is not backwards compatible), \textit{and} the running instance, including the interpreter, since its structure is, too, governed by the abstract syntax of the language.
 
 %The aforementioned approach using a constraint solver is an example of such a \textit{language parametric} technique, in that it operates on the (extended) abstract syntax metamodel of a language, and does not assume anything further about the language itself. Another approach is the \textsc{Cascade} metamodeling formalism which has builtin support for run-time patching~\cite{Cascade}. However, further research is needed to design better principled language engineering approaches that solve the problem in a way that is both declarative and fast.
 
-\subsection{Extensions}
+While the above example is arguably simple, the problem becomes more challenging when the programs themselves define data types, classes, records, structures etc. Since possibly many instances (values, objects) of such data types may exist at run-time, these all have to be migrated in such a way that the programmer experience is minimally disrupted, and that the invariants of said data types is maintained.
+Another extension, tying in with the data-oriented examples above, involves refactorings of data types in a program. Typically, a refactoring should be behavior preserving, but can it also preserve run-time data? The minimal example is the consistent variable rename in Table~\ref{tbl:smchanges}, which should not have any effect on run-time state.
 
-While the above example is arguably simple, the problem becomes much more challenging when the programs themselves define data types, classes, records, structures etc. Since possibly many instances (values, objects) of such data types may exist at run-time, these all have to be migrated in such a way that programmer experience is minimally disrupted, and that the invariants of said data types is maintained.
-Another extension, tying in with the data-oriented examples above, involves refactorings of data types in a program. Typically, a refactoring should be behavior preserving, but can it also preserve run-time data? The minimal example is the consistent variable rename in Table~\ref{tbl:smchanges}, which should not have any effect on run-time state.  A more complex refactoring is described in Section~\ref{sec:elm}.
+\section{Conclusions}
+We believe that effective future programming systems will need to tighten the feedback loop,
+both in making programming more live and in making it more collaborative. One of the key obstacles
+to making progress in this direction is the problem of \emph{type evolution}. When the structure
+of a program evolves, code and data need to co-evolve to match the new structure.
+%
+The problem of type evolution has been explored in a wide range of sub-fields, but rarely in its
+full complexity. Moreover, different sub-fields often use different language, making knowledge
+transfer between them difficult.
 
+In this paper, we developed a conceptual framework
+that made it possible to present six case studies from a wide range of areas in a unified way.
+The areas included live programming, database schema change, model-driven development,
+spreadsheet and document-oriented programming.
+%
+Our work highlights the importance
+of the problem, provides a new uniform way of thinking about it and provides numerous specific
+challenges that can be used to evaluate the capabilities of new programming systems that aim
+to tackle the problem.
+
+We did not present new solutions to the problem, but we hope to inspired the reader to
+do so. Indeed, we look forward to novel solutions to the challenges presented in this paper and
+the resulting more live and collaborative future of programming!
 
 \newpage
 \appendix
@@ -1456,104 +1501,6 @@ Live programming~\cite{tanimoto90, rein2018exploratory} seeks to speed up feedba
 
 
 %\appendix
-
-\section{\textcolor{red}{[TVDS] Super rough attempt at the paragraph}}
-
-Modern day software development is collaborative. Single user programming does not exist anymore.
-Just as document editing is becoming more collaborative through online systems like pioneered by Google Docs,
-programming would benefit form online collaboration. In a sense this is live programming++: whereas traditional
-live programming systems assume a single developer editing code and see their changes immediately reflected
-in the running system, online collaborative programming is the same but for multiple programmers at the same time.
-The key challenge here, we posit, the *schema change*. We take inspiration from database migration,
-model evolution, and version control, and identify benchmark problems. This is already evident in live programming:
-editing a program, consisting of type definitions defining the structure run-time state and (transient) procedures, functions
-etc. operating on that state, requires run-time state to be migrated, after the programmer edits their program.
-Adding the dimension of multiple programs brings us into the domain local-first, and decentralized version control, where
-copies are created and edited, which eventually have to be reconciled again (e.g., through merging).
-Whereas schema evolution and its associated migration problems has seen a lot of attention in the database world,
-the model-driven world, and the bidirectional transformation (BX) communities, the techniques are still too low-level,
-too manual, and too much focused on a single user perspectives. By identifying the similarities between analogous
-problems in live, multi-user programming systems, we hope to stimulate further research on more comprehensive, automatic,
-high-level, and online solutions. So that the benefits of live programming can be enjoyed in a global and distributed setting
-involving multiple programmers at the same time.
-
-\section{\textcolor{red}{[JE] Type evolution for live programming}}
-
-Many past improvements in the practice of programming worked by speeding up feedback loops. Live Programming aspires to the optimum of immediate feedback. The problem is that modern software is built out of many layers of different technologies -- thoroughly live programming would propagate changes immediately up and down the entire stack of a running system, from the database to the code, and from the client to the server. We call this \textit{full-stack} live programming. Another problem is that modern software is built with complex collaborations involving development, testing, deployment, and suppport. Such workflows are themselves feedback loops -- thoroughly live programming would propagate changes between participants frictionlessly. We call this \textit{end-to-end} live programming.
-
-We propose a research agenda towards this greater vision of live programming. The starting point is database \textit{schema evolution}, which propagates database schema changes into data migrations and query rewriting. We call for generalized \textit{type evolution} that works immediately across the entire software stack, and automatically across the entire software workflow. This paper contributes a set of challenge problems to serve as targets for research on type evolution and as a basis of comparison for the results.
-
-\section{\textcolor{red}{[GL] Rough paragraph}}
-
-Most programming languages analysis treats state as ephemeral: tied to the lifetime of a running program, and reset when the program is edited. But when we take a broader view, most \textit{programming systems} (cite) have state that lasts beyond the lifetime of a single execution. This includes collaboration applications with state persisted in a database, image-based systems like Smalltalk, and live programming environments where the program can be edited without resetting all state.
-
-Although these programming systems exist in very different contexts, they all encounter similar problems related to the essential difficulty of preserving state across program edits. New versions of the program must correctly handle pre-existing data. When the data schema or type definitions change, existing data must be evolved to conform to the new schema. Changing data representations or types can also require changing corresponding parts of the program. These problems have been noticed, named, and studied in these different programming systems: ``schema evolution'' in the databases literature, ``hot reloading'' in live programming, etc.
-
-In this paper, we draw connections between these different contexts, pointing out essential shared structure in the hopes of motivating further research on this important problem and encouraging knowledge sharing across subfields. Our contributions are: 1) a shared framework for thinking about the relationship between schema, code, and data in a programming system, 2) Case studies of the framework in a highly diverse set of programming systems, motivated by real-world examples.
-
-
-\section{\textcolor{red}{[TP] Rough paragraph}}
-
-Programming is increasingly collaborative and interactive. We welcome this trend, because
-greater collaboration and interactivity make programming more effective. Future programming
-environments enable programmers to collaborate at a more fine-grained level, adopting individual
-code changes created by their collaborators as needed. They also let programmers interactively
-edit code, often during program execution.
-
-In order to support this new way of working, programming systems increasingly have to tackle the
-problem of schema evolution. If a programmer imports a change that edits a schema, code and data
-that relies on such schema needs to be adapted to match the new schema. Similarly, if a programmer
-in a live programming environment modifies their type definition, current program state needs to
-be updated to match the new structure of types. This is a well-understood and well-studied problem
-in database community, but it has received little attention in work on programming systems.
-
-The aim of this paper is to provide a conceptual framework for talking about schema evolution in
-collaborative and live programming systems. Taking inspiration from Stewart Brand's analysis of
-pace layers, we propose to think of the problem as the problem of evolution of occuring at three
-layers, the most permanent schema layer, less permanent code layer and least permanent data layer.
-A change at the most permanent layer affects the less permanent layer, which then has to be
-updated to keep correspondence between the layers.
-
-We consider four case studies of such schema evolution in collaborative and live programming
-systems. We present those throught the perspective of our unified conceptual framework. The work
-both sheds a new light at how schema change needs to be handled in programming systems and also
-provides a range of challenges that show interesting problems that future programming systems
-will need to tackle.
-
-
-\section{Introduction}
-
-\textcolor{red}{[JE] We should adopt the term Schema Evolution, which is favored in the research literature, defined to include schema change, data migration, and query rewriting. }
-
-Schema change won't go away. Changing requirements and changing code lead to changing the schema of a database. Schema change, also called schema migration, is the problem of migrating existing data from the old schema to the new. This often involves custom migration programs or specialized Domain Specific Langiuages. The migration must be carefully coordinated with upgrading the application code and associated artifacts that assume the new schema. Schema change on database servers is often delegated to Database Administrators and DevOps. Live programming~\cite{tanimoto90,Hancock03} and local-first software~\cite{localfirst} both move data away from the server, eliminating those jobs, but not eliminating the need to do schema change, and indeed increasing the need to do it automatically. Recently \citet{Cambria} spotlighted these problems and proposed an approach using lenses~\cite{Foster2007}, but otherwise there has been surprisingly little research. To promote further progress we offer a set of challenge problems to the live programming and local-first communities, inviting them to propose and compare solutions.
-
-Live programming seeks to erase the boundary between editing and running programs. In order to do so program data must be kept around while the program is being edited. Classic Lisp and Smalltalk systems integrated code and data into a persistent \textit{image}~\cite{Sandewall78, Goldberg80}. An interactive shell or \textit{Read Eval Print Loop (REPL)}~\cite{Deutsch64} is more transient than an image, but still builds up a context of data over long-lived programming sessions the loss of which disrupts the programmer's workflow. In all of these environments programs eventually get changed to create and expect data in a form incompatible with extant data. This happens whether or not the form of the data is specified explicitly in a type system or database schema, or whether it is left implicit in the behavior of the code. Some languages can tolerate a larger set of such changes, most notably Smalltalk which will automatically insert and delete members in existing instances when a class definition is changed~\cite[pp.252-272]{Goldberg80}.\footnote{Gemstone turns the Smalltalk image into a production-quality database and accordingly provides a sophisticated schema change API~\cite{Gemstone}. Schema change won't go away.} But there is still a large class of changes that create incompatibilities with existing data, whether it is inside an image, programming environment, REPL, or an external database. Some live programming environments generate data with unit tests, but that only shifts the problem of schema change to adapting those tests. One way or another, stopping everything to manually deal with schema change contradicts the goals of live programming. Schema change won't go away.
-
-Local-first software faces related problems. Its goal is to empower users by moving code and data from the cloud to the user's own devices. Distributed programming techniques like Convergent Replicated Data Types (CRDTs)~\cite{Shapiro11} are used to coordinate data changes peer-to-peer. Unfortunately these techniques so far have not addressed schema change nor code deployment The traditional techniques of schema change used in centrally managed databases are complicated by the distributed and intermittently connected nature of local-first data. Schema change won't go away.
-
-In the following sections we present a series of challenge problems dealing with schema change in the context of live programming and local-first software. These problems are necessarily expressed using established idioms or conventions, but nevertheless we welcome solutions that translate the spirit of the problem into other contexts.
-
-~
-
-~
-
-\textcolor{red}{TODO: Need to explain that we take the programming system view - program is not something
-built centrally, but something that exists and can be modified}
-
-~
-
-\textcolor{red}{TODO: Maybe the right way to frame this is to say that the challenges are intended
-less for evaluating particular solutions but more for framing and making sense of different
-kinds of schema-change-related problems.  You can read this paper and when you face a schema-change-related
-problem, think about it in terms of our dimensions. Maybe compare it to our challenges.
-We do not necessarilly expect that people will directly solve our challenges though. (Although
-some might and that would be nice..)}
-
-~
-
-\textcolor{red}{TODO: I also guess this is more about just ``change'' than ``schema change''
-which is one particular (most challenging) instance - i.e., change at the most permanent
-pace layer.}
 
 \end{document}
 
