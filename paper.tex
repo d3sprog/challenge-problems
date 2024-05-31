@@ -11,6 +11,7 @@
 \usepackage[many]{tcolorbox}
 \usepackage{float}
 \usepackage{wrapfig}
+\usepackage{framed}
 
 \lstdefinelanguage[programming]{TeX}[AlLaTeX]{TeX}{%
   deletetexcs={title,author,bibliography},%
@@ -405,6 +406,24 @@ Modifying \texttt{State} ranges from relatively simple problems (e.g., adding a 
 default value) to challenging case. In particular, if the programer refactors \texttt{State} to a
 semantically equivalent type, the programming system should, in principle, be able to automatically
 migrate both the original value and implementation of both functions to match the new type.
+
+\leftbar
+\begin{wrapfigure}{r}{12em}
+  \vspace{0em}
+  \includegraphics[width=12em]{figures/arr-steps.png}
+  \vspace{0em}
+\end{wrapfigure}
+\noindent\textbf{Primitive Type Transformations.}\quad
+In this case study, the evolving type is the \texttt{State} type. When the type evolves,
+the program logic (code) and the current live value of the type (data) needs to evolve
+correspondingly. The challenge is easier if we see the evolution as a sequence of more primitive
+transformations, such as those in Table~\ref{tbl:elmchanges}, that each has a corresponding
+primitive code and data transformation. The primitive transformations may either be invoked
+through a user interface, or inferred from textual code edits made by the programmer.
+
+\endleftbar
+
+
 
 \frameworkbox{
 \begin{wrapfigure}{r}{12em}
