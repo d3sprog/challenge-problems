@@ -55,7 +55,7 @@
 % define natbib citet
 \newcommand{\citet}[1]{\citeauthor*{#1}~\cite{#1}}
 
-\title{Type Evolution in Interactive Programming Systems}
+\title{Schema Evolution in Interactive Programming Systems}
 
 \author{Anonymous}
 \affiliation{blinded}
@@ -78,7 +78,7 @@
 
 % \authorrunning{J. Edwards, T. Petricek, T. van der Storm, G. Litt}
 
-\keywords{Type Evolution, Schema Evolution, Live Programming, Local-first Programming}
+\keywords{Type Evolution, Schema Evolution, Live Programming, Local-first Programming, Version Control, Hot Reloading}
 
 % TODO: Please go to https://dl.acm.org/ccs/ccs.cfm and generate your Classification System
 
@@ -86,36 +86,36 @@
 
 \begin{abstract}
 
+\textcolor{red}{JE: This structure is offputting. We should write a proper abstract. }
+
 % Context: What is the broad context of the work? What is the importance of the general research area?
-Many recent programming improvements have been enabled by shorter feedback loops. To further
-advance the state of programming, we need programming systems that enable rapid collaboration
-and make programming more live across the entire development stack. To do this, programming
-systems need to preserve state during development and interaction with the programmer.
+
+\noindent\textbf{Context:} Many recent improvements to programming have come from shortening feedback loops, for example in Live Programming and Distributed Version Control systems.
+To continue progress in this direction we need to extend Live Programming across the entire development stack, and to extend collaboration beyond compile time.
 
 % Inquiry: What problem or question does the paper address? How has this problem or question been addressed?
-The key obstacle to live collaborative programming systems is the problem of \emph{type evolution}.
-When programmer changes the structure of a type, programming system needs to co-evolve
+\noindent\textbf{Inquiry:} A key obstacle to live and collaborative programming systems is the problem of \emph{schema evolution}.
+When a programmer changes the structure of a datatype, a programming system needs to co-evolve
 existing live data and adapt code that implements the program behaviour to match the new structure.
-This problem has been studied in isolation as schema evolution in databases, hot code reloading
-in live programming and dynamic software updating, but we lack a unified comprehensive perspective.
+This problem has been studied in isolation as schema evolution in databases, but also recurs in hot code reloading in live programming and dynamic software updating.
+We connect these independent efforts in an interdisciplinary inquiry into the problem of schema change through all the layers of the development stack and across all the time-scales of programming.
+%Such schema evolutions must occur immediately during live programming, but also neeed to be conveyed through long-term unplanned collaborations.
 
 % Approach: What was done that unveiled new knowledge?
-In this paper, we develop a unified conceptual framework for analysing the problem of type evolution.
-We use the framework to study type evolution in five diverse case studies.
-%
+\noindent\textbf{Approach:} We distilled a set of case studies from personal experience, the research literature, and common industry practices. These cases reveal schema change problems recurring in different contexts in the developer stack and at different time-scales of collaboration, not just in database production upgrades.
+
 % Knowledge: What new facts were uncovered? What new capabilities are enabled by the work?
-By looking at the case studies through a unified perspective, we hope to inspire new thinking
-about the problem of type evolution and also encourage knowledge transfer across sub-fields.
+\noindent\textbf{Knowledge:} The problem of schema change is deeper, more widespread, and more interdisciplinary than commonly appreciated. It is a key obstacle to shortening feedback loops in diverse contexts of software development.
 
 % Grounding: What argument, feasibility proof, artifacts, or results and evaluation support this work?
-Our work takes the form of a sequence of challenge problems drawn from real-world programming
-scenario in diverse field such as live programming, database programming and model-driven
+\noindent\textbf{Grounding:} Our work takes the form of a suite of challenge problems drawn from real-world programming
+scenarios in diverse field such as live programming, database programming and model-driven
 development.
 %
+
 % Importance: Why does this work matter?
-Tackling the problem of type evolution in a unified way, enabled by our new conceptual framework,
-will make it possible to design and build a future generation of effective, live and collaborative
-programming systems.
+\noindent\textbf{Importance:} Schema change is a key problem for universal live programming and frictionless collaborative development. Our suite of challenge problems serve to ground further research and provide a basis for evaluation and comparison of results.
+
 
 \end{abstract}
 
@@ -125,56 +125,13 @@ programming systems.
 
 \section{Introduction}
 
-Many past improvements in the practice of programming worked by speeding up feedback loops,
-both in collaboration with other programmers (via collaborative development tools
-\cite{ProGit, goldman2011real,kurniawan2015coder,replit}) and in individual's interaction with the
-programming environment (through live programming \cite{rein2018exploratory}).
-%
-To make programming more effective, future programming systems will need to further tighten
-the feedback loop. They will need to enable programmers to collaborate at a fine-grained level,
-letting them adopt individual changes created by their collaborators (as in local-first software
-\cite{localfirst}). To provide live feedback, future programming systems will also need to
-transcend treating state as ephemeral and reset when the
-program is edited and rerun.
+Many improvements to the practice of programming are due to speeding up feedback loops. Replacing punched cards with interactive terminals was one of the greatest leaps of productivity in the history of programming. Unit tests and interactive type checking provide faster feedback on errors that modern programmers now expect. Research on Live Programming~\cite{rein2018exploratory} seeks to provide immediate feedback on runtime behavior while editing. Feedback is equally valuable in collaborative programming~\cite{ProGit, goldman2011real,kurniawan2015coder,replit}) to convey changes between coworkers with less friction.
+However there is still much room to improve feedback loops throughout the software development enterprise.
 
-To conceive of such systems, we need to shift our focus to \emph{programming systems} \cite{techdims}
-where program state is persistent and co-evolves with the behavior and data of the system. This view
-is already used in collaborative applications with state persistent in a database, image-based
-systems like Smalltalk and live programming environments with hot-reloading where the program can
-be edited without resetting all state.
+In this paper we identify a common problem, \emph{Schema Change}, that stands athwart feedback loops in diverse contexts of software development. While Schema Change has been extensively studied in the context of databases~\cite{erhard06}, we observe that analogous problems occur in varied and less-studied contexts. For example, many live programming techniques treat state as ephemeral and recreate it after every edit, but when the shape of longer-lived state changes then the illusion of liveness is shattered -- hot reloading works until it doesn't. Likewise collaborative programming works smoothly when code changes can be exchanged that do not alter the expected shape of external data, but changes that cross that line must be coordinated outside of the version control system. We discuss further examples in Related Work~\ref{sec:related}. In general, when the shape of data becomes a dependency then changes to that data's shape can require manual intervention which interrupts feedback loops. To coordinate research on these related problems we shift the focus to that of \emph{Interactive Programming Systems}~\cite{techdims} of all sorts and generalize the term `schema' to include not just database schema but also types and specifications of all sorts, whether expressed in a formal language or left implicit in code.
 
-While we are firmly convinced that more collaborative and live programming systems are the
-future of programming, there are a number of problems that need to be resolved in order for
-such systems to become a reality. A key problem is \emph{type evolution}: how to
-gracefully adapt the shape of data used in a program while preserving integrity
-constraints, existing data and the logic of code.
+Our primary contribution is a suite of challenge problems that exemplify a diverse range of typical schema change scenarios which interrupt feedback loops. We believe these problems have not been completely solved in theory or practice (see Related Work~\ref{sec:related}). While some of these problems come from our individual research efforts we have attempted to make neutral problem statements not slanted to our preferred approaches. We propose these challenge problems to motivate and facilitate further research. We hope they serve as examples to ground such research and as a basis for evaluating results. We invite contributions of further challenge problems and look forward to discussing competing solutions.
 
-Type evolution is not a new problem. It exists in various forms in a range of existing systems.
-The problem of schema evolution in databases is well-studied \cite{erhard06}.
-It typically considers data integrity, although co-evolution of database schema
-and code has also been studied \cite{Cleve2006,wang19}.
-In live programming, the problem is known as hot code reloading \cite{barenz2020essence,beckmann2021shortening},
-although it typically focuses on updating transient state and ignores the problem of more complex
-data migrations. The problem is also studied in the bidirectional transformation (BX)
-community \cite{czarnecki2009bidirectional}, in work on model-driven development
-\cite{Cicchetti11,alanen2003} and in more low-level work on dynamic software updating
-\cite{hicks2005dynamic}. We draw on extensive literature review, included in Appendix~\ref{sec:related}.
-
-Looking at type evolution from the perspective of programming systems can offer a new perspective that
-unifies the many different aspects of the problem partially explored in other sub-fields. A programming
-system may have permanent data (as in a database) whose structure can change, requiring
-corresponding change to data and code. A programming system may have a transient state conforming
-to a type structure that may change during live programming. A programming system may also need
-to allow programmers to independently work on different versions of a program.
-
-In this paper, we draw connections between these different kinds of type evolution, pointing out
-an essential shared structure. First, we present a shared conceptual
-framework for thinking about the relationship between schema, code, and data in a programming
-system. Second, we present six case studies that use the framework to study type evolution in a
-highly diverse set of real-world programming scenarios. We hope this will encourage knowledge
-sharing across different subfields, motivate further research on this important problem and
-offer inspiring challenges that developers of future live and collaborative programming systems
-will attempt to tackle.
 
 \begin{figure}[t]
 \centering
