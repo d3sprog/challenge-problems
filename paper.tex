@@ -128,9 +128,9 @@ development.
 Many improvements to the practice of programming are due to speeding up feedback loops. Replacing punched cards with interactive terminals was one of the greatest leaps of productivity in the history of programming. Unit tests and interactive type checking provide faster feedback on errors that modern programmers now expect. Research on Live Programming~\cite{rein2018exploratory} seeks to provide immediate feedback on runtime behavior while editing. Feedback is equally valuable in collaborative programming~\cite{ProGit, goldman2011real,kurniawan2015coder,replit}) to convey changes between coworkers with less friction.
 However there is still much room to improve feedback loops throughout the software development enterprise.
 
-In this paper we identify a common problem, \emph{Schema Change}, that stands athwart feedback loops in diverse contexts of software development. While Schema Change has been extensively studied in the context of databases~\cite{erhard06}, we observe that analogous problems occur in varied and less-studied contexts. For example, many live programming techniques treat state as ephemeral and recreate it after every edit, but when the shape of longer-lived state changes then the illusion of liveness is shattered -- hot reloading works until it doesn't. Likewise collaborative programming works smoothly when code changes can be exchanged that do not alter the expected shape of external data, but changes that cross that line must be coordinated outside of the version control system. We discuss further examples in Related Work~\ref{sec:related}. In general, when the shape of data becomes a dependency then changes to that data's shape can require manual intervention which interrupts feedback loops. To coordinate research on these related problems we shift the focus to that of \emph{Interactive Programming Systems}~\cite{techdims} of all sorts and generalize the term `schema' to include not just database schema but also types and specifications of all sorts, whether expressed in a formal language or left implicit in code.
+In this paper we identify a common problem, \emph{Schema Change}, that stands athwart feedback loops in diverse contexts of software development. While Schema Change has been extensively studied in the context of databases~\cite{erhard06}, we observe that analogous problems occur in varied and less-studied contexts. For example, many live programming techniques treat state as ephemeral and recreate it after every edit, but when the shape of longer-lived state changes then the illusion of liveness is shattered -- hot reloading works until it doesn't. Likewise collaborative programming works smoothly when code changes can be exchanged that do not alter the expected shape of external data, but changes that cross that line must be coordinated outside of the version control system. We discuss further examples in \S\ref{sec:related} Related Work. In general, when the shape of data becomes a dependency then changes to that data's shape can require manual intervention which interrupts feedback loops. To coordinate research on these related problems we shift the focus to that of \emph{Interactive Programming Systems}~\cite{techdims} of all sorts and generalize the term `schema' to include not just database schema but also types and specifications of all sorts, whether expressed in a formal language or left implicit in code.
 
-Our primary contribution is a suite of challenge problems that exemplify a diverse range of typical schema change scenarios which interrupt feedback loops. We believe these problems have not been completely solved in theory or practice (see Related Work~\ref{sec:related}). While some of these problems come from our individual research efforts we have attempted to make neutral problem statements not slanted to our preferred approaches. We propose these challenge problems to motivate and facilitate further research. We hope they serve as examples to ground such research and as a basis for evaluating results. We invite contributions of further challenge problems and look forward to discussing competing solutions.
+Our primary contribution is a suite of challenge problems that exemplify a diverse range of typical schema change scenarios which interrupt feedback loops. We believe these problems have not been completely solved in theory or practice (see \S\ref{sec:related}  Related Work). While some of these problems come from our individual research efforts we have attempted to make neutral problem statements not slanted to our preferred approaches. We propose these challenge problems to motivate and facilitate further research. We hope they serve as examples to ground such research and as a basis for evaluating results. We invite contributions of further challenge problems and look forward to discussing competing solutions.
 
 
 \begin{figure}[t]
@@ -397,7 +397,7 @@ description of the edits performed by the user.
 \section{Entity Evolution in Data-Centric Systems}
 If we see programming systems as stateful environments where programs co-exist with their persistent
 data, we can gain valuable insights from research on database systems.
-Although schema evolution is well-studied in databases (Appendix~\ref{sec:related}), past work
+Although schema evolution is well-studied in databases (\S\ref{sec:related} Related Work), past work
 does not resolve all problems in our second challenge.
 
 As an example, consider the Acme Corporation that records orders from various customers for
@@ -1182,7 +1182,7 @@ an example instance, as object diagram (middle) and as code (right).}
 %Related work
 %``Slogan'': editing a program is diverging from run-time schema.
 
-We considered live programming in the context of the Elm architecture in Section~\ref{sec:elm},
+We considered live programming in the context of the Elm architecture in \S\ref{sec:elm},
 where the challenge was to migrate run-time state (data) to a new type to keep the program running.
 Work on language modeling offers a new perspective on the problem.
 In the context of executable domain-specific modeling languages~\cite{klint2011easy}, one can see a
@@ -1343,7 +1343,7 @@ Add/remove & statement & Hotswap code at quiescent point of interpreter\\
 \end{wrapfigure}
 \frameworkboxtitle{Code as Data Migrations}
 We could see this challenge as type, code and data co-evolution as in the case of the Elm
-architecture in Section~\ref{sec:elm}, but a more interesting perspective is to see the
+architecture in \S\ref{sec:elm}, but a more interesting perspective is to see the
 state machine definition as data $D_0$ conforming to a type $T$ defined by the metamodel.
 
 When the state machine is instantiated, the metamodel and the definition are used to derive
@@ -1372,34 +1372,8 @@ The above case study is concerned with changes to the DSL program (e.g., the Doo
 While the above example is arguably simple, the problem becomes more challenging when the programs themselves define data types, classes, records, structures etc. Since possibly many instances (values, objects) of such data types may exist at run-time, these all have to be migrated in such a way that the programmer experience is minimally disrupted, and that the invariants of said data types is maintained.
 Another extension, tying in with the data-oriented examples above, involves refactorings of data types in a program. Typically, a refactoring should be behavior preserving, but can it also preserve run-time data? The minimal example is the consistent variable rename in Table~\ref{tbl:smchanges}, which should not have any effect on run-time state.
 
-\section{Conclusions}
-We believe that effective future programming systems will need to tighten the feedback loop,
-both in making programming more live and in making it more collaborative. One of the key obstacles
-to making progress in this direction is the problem of \emph{type evolution}. When the structure
-of a program evolves, code and data need to co-evolve to match the new structure.
-%
-The problem of type evolution has been explored in a wide range of sub-fields, but rarely in its
-full complexity. Moreover, different sub-fields often use different language, making knowledge
-transfer between them difficult.
 
-In this paper, we developed a conceptual framework
-that made it possible to present six case studies from a wide range of areas in a unified way.
-The areas included live programming, database schema change, model-driven development,
-spreadsheet and document-oriented programming.
-%
-Our work highlights the importance
-of the problem, provides a new uniform way of thinking about it and provides numerous specific
-challenges that can be used to evaluate the capabilities of new programming systems that aim
-to tackle the problem.
-
-We did not present new solutions to the problem, but we hope to inspired the reader to
-do so. Indeed, we look forward to novel solutions to the challenges presented in this paper and
-the resulting more live and collaborative future of programming!
-
-\newpage
-\appendix
-
-\section{Literature Review}
+\section{Related Work}
 \label{sec:related}
 
 There has been extensive research on coordinating the evolution of interdependent layers of software, much of it guided by schema and types. But the vast majority of these techniques involve writing custom code in some specialized language, rather than through immediate action in an interactive programming system. Nevertheless it is important to understand these batch techniques to envision more interactive ones.
@@ -1447,11 +1421,37 @@ Live programming~\cite{tanimoto90, rein2018exploratory} seeks to speed up feedba
 % \cite{mcdirmid13, Rauch_2019, beckmann2021shortening}
 \emph{Hot reloading/swapping}~\cite{barenz2020essence, hicks2005dynamic} installs code changes into a running system preserving some runtime state but not attempting to migrate that state through type changes.
 \citet{SemanticDeltas} proposes a research agenda for thoroughly live DSL programming focusing on \emph{Semantic Deltas} that unify edit-time and run-time change.
-\citet{RuntimeConstraint} study the live modeling problem in Section \ref{sec:livemodeling}. They use constraints supplied by the developer to solve for the best new runtime state following a DSL language evolution. \citet{vanRozen19} take an alternative approach to the same problem using \emph{origin tracking} in textual editing.
+\citet{RuntimeConstraint} study the live modeling problem in \S\ref{sec:livemodeling}. They use constraints supplied by the developer to solve for the best new runtime state following a DSL language evolution. \citet{vanRozen19} take an alternative approach to the same problem using \emph{origin tracking} in textual editing.
 %\citet{vanRozen23} subsequently proposed a metaprogramming language for live DSL programming.
 
 
 %\paragraph{collaborative programming tools}\cite{goldman2011real,kurniawan2015coder,replit}
+
+
+\section{Conclusions}
+We believe that effective future programming systems will need to tighten the feedback loop,
+both in making programming more live and in making it more collaborative. One of the key obstacles
+to making progress in this direction is the problem of \emph{type evolution}. When the structure
+of a program evolves, code and data need to co-evolve to match the new structure.
+%
+The problem of type evolution has been explored in a wide range of sub-fields, but rarely in its
+full complexity. Moreover, different sub-fields often use different language, making knowledge
+transfer between them difficult.
+
+In this paper, we developed a conceptual framework
+that made it possible to present six case studies from a wide range of areas in a unified way.
+The areas included live programming, database schema change, model-driven development,
+spreadsheet and document-oriented programming.
+%
+Our work highlights the importance
+of the problem, provides a new uniform way of thinking about it and provides numerous specific
+challenges that can be used to evaluate the capabilities of new programming systems that aim
+to tackle the problem.
+
+We did not present new solutions to the problem, but we hope to inspired the reader to
+do so. Indeed, we look forward to novel solutions to the challenges presented in this paper and
+the resulting more live and collaborative future of programming!
+
 
 
 %\bibliographystyle{abbrv}

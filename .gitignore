@@ -8,6 +8,7 @@
 *.fdb_latexmk
 *.fls
 *.out.ps
+*.synctex
 *.synctex.gz
 .vscode/settings.json
 # Tomas' build scripts
