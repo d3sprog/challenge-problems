@@ -258,7 +258,7 @@ developers of future programming systems.
 \section{Live Programming for the Elm Architecture}
 \label{sec:elm}
 
-The first challenge problem that we present in terms of our conceptual framework is live programming
+The first challenge problem that we present is live programming
 of user interfaces based on the Elm architecture. In this model, a reactive web application is
 structured in terms of current state and events that affect the state. The implementation then
 consists of two functions called \texttt{update} and \texttt{render}:
@@ -272,7 +272,7 @@ val render : State -> Html
 \end{lstlisting}
 
 \noindent
-The programming model works as follows:
+The schema involved here are statically checked Elm types. The programming model works as follows:
 
 \begin{itemize}
 \setlength\itemsep{0em}
@@ -301,7 +301,7 @@ type Event =
 Some systems that use the Elm architecture support hot reloading when the
 implementation of the \texttt{render} or \texttt{update} function changes, but they typically
 discard state and restart the application when the \texttt{State} type changes. A more effective
-live programming system would allow live updates to the structure of the two types too.
+live programming system would allow live updates to the structure of the two types.
 
 \begin{table}[t]
 \begin{tabular}{lll}\toprule
@@ -367,8 +367,8 @@ migrate both the original value and implementation of both functions to match th
 \includegraphics[width=12em]{figures/arr-steps.png}
 \vspace{0em}
 \end{wrapfigure}
-\frameworkboxtitle{Primitive Type Transformations}
-In this case study, the evolving type is the \texttt{State} type. When the type evolves,
+\frameworkboxtitle{Primitive Schema Transformations}
+In this case study, the evolving schema is the \texttt{State} type. When the type evolves,
 the program logic (code) and the current live value of the type (data) needs to evolve
 correspondingly. The challenge is easier if we see the evolution as a sequence of more primitive
 transformations, such as those in Table~\ref{tbl:elmchanges}, that each has a corresponding
@@ -396,7 +396,7 @@ description of the edits performed by the user.
 \section{Entity Evolution in Data-Centric Systems}
 If we see programming systems as stateful environments where programs co-exist with their persistent
 data, we can gain valuable insights from research on database systems.
-Although schema evolution is well-studied in databases (\S\ref{sec:related} Related Work), past work
+Although schema evolution is well-studied in databases (\S\ref{sec:related} Related Work), such past work
 does not resolve all problems in our second challenge.
 
 As an example, consider the Acme Corporation that records orders from various customers for
@@ -439,7 +439,7 @@ when the customer's address changes they have to go back and edit all of their o
     2 & Daffy Duck & White Rock Lake \\
     \hline
   \end{tabular}
-  \caption{Customers table after type evolution}
+  \caption{Customers table after schema evolution}
   \label{fig:db-customers}
 \end{subfigure}
 \hfill
@@ -457,12 +457,12 @@ when the customer's address changes they have to go back and edit all of their o
      3 & Bird Seed & 1 & & 1 \\
      \hline
     \end{tabular}
-  \caption{Orders linking to Customers, after type evolution}
+  \caption{Orders linking to Customers, after schema evolution}
  \label{fig:db-orders-link}
 \end{subfigure}
 \end{adjustwidth}
 \vspace{0.25em}
-\caption{Types and data before and after performing Extract Entity}
+\caption{Schema and data before and after performing Extract Entity}
 \label{fig:db}
 \end{figure}
 
@@ -471,7 +471,7 @@ Acme needs to evolve the above schema and data into two tables (Fig.~\ref{fig:db
 one with orders that links to one with customers.  We refer to this as the \emph{Extract Entity}
 operation, because it introduces a new \emph{entity}, a referencable holder of mutable attributes.
 The operation is needed when we realize that some attributes of one type of entity should belong to
-a  distinct type of entity that will be associated with the first one.
+a distinct type of entity that will be associated with the first one.
 
 The system needs to provide a mechanism for referencing entities, such as by using unique
 identifiers (here consecutive numbers). This allows, for example, a spelling error in a customer
@@ -584,8 +584,8 @@ preferably by reducing the need for developer-written code.
 \vspace{-1em}
 \end{wrapfigure}
 \frameworkboxtitle{Equivalence in Schema Evolution}
-We described our conceptual framework in terms of types, code and data, but this case
-study shows that the same patterns appear elsewhere. In database systems, the schema
+%We described our conceptual framework in terms of types, code and data, but this case study shows that the same patterns appear elsewhere.
+In database systems, the schema
 $S_1$ changes into $S_2$ and the data $D_1$ need to transform to corresponding $D_2$.
 Our framing shows that queries $Q_1$ also need to transform, which is not always addressed
 in work on schema evolution. Extract/Absorb Entity operations are also interesting because
@@ -598,7 +598,7 @@ they transform an equivalent pair of schemas and so it should be possible to app
 % ==================================================================================================
 
 \section{Evolution of Computational Documents}
-A different kind of type evolution is present in programming systems based on documents.
+A different kind of schema evolution is present in programming systems based on documents.
 The idea, dating back to Boxer \cite{diSessa86}, is to represent programs as documents
 with embedded computations. In our model, document can contain simple formulas (akin to those
 in Potluck~\cite{Litt2023} or spreadsheets) that may refer to other nodes of the document.
@@ -713,8 +713,8 @@ and Living Papers~\cite{Heer2023}.
 \caption{
 Initial version of the document (not shown) contains a list of three speakers (Goldberg, Hamilton,
 Jennings). The first challenge involves merging a data edit
-(Fig.~\ref{fig:conf-add}) with a type and data edit (Fig.~\ref{fig:conf-tab}); the second involves
-merging a type and data edit (Fig.~\ref{fig:conf-tab}) with edit adding code (Fig.~\ref{fig:conf-budget}).
+(Fig.~\ref{fig:conf-add}) with a schema and data edit (Fig.~\ref{fig:conf-tab}); the second involves
+merging a schema and data edit (Fig.~\ref{fig:conf-tab}) with edit adding code (Fig.~\ref{fig:conf-budget}).
 Formulas in the final version (Fig.~\ref{fig:conf-finfin}) are updated to match the new document structure.}
 \label{fig:conf}
 \end{figure}
@@ -727,12 +727,12 @@ by Jonathan and Tomas and change the list and the structure of the document:
 
 \begin{enumerate}
 \item Jonathan adds an additional speaker to the list and sorts the list of speakers
-  alphabetically by their first name. This changes data, but not the structure (type) of
+  alphabetically by their first name. This changes data, but not the structure (schema) of
   the document (Figure~\ref{fig:conf-add}).
 \item Tomas refactors the list into a table. He splits the single textual value
   into a name and an email (using a comma as the separator) and adds an additional column for
   tracking which of the organizers should contact the speaker (Figure~\ref{fig:conf-tab}).
-  This changes the document structure (implicit type).
+  This changes the document structure (an implicit schema).
 \end{enumerate}
 
 \noindent
@@ -750,12 +750,12 @@ or ask the user interactively.
 \vspace{-1em}
 \end{wrapfigure}
 \frameworkboxtitle{Merging Data and Code Edits}
-In this example, the \emph{type} is implicit and represents the structure of the document.
+In this example, the \emph{schema} is implicit and represents the structure of the document.
 It involves two independent edits. In one (top right), the data $D_1$ is
-changed to $D_2'$, but the type $T_1$ remains unchanged. In the other (bottom left), the
-type $T_1$ and data $D_1$ co-evolve into $T_2$ and $D_2$ and the data is further changed
+changed to $D_2'$, but the schema $T_1$ remains unchanged. In the other (bottom left), the
+schema $T_1$ and data $D_1$ co-evolve into $T_2$ and $D_2$ and the data is further changed
 to $D_3$. The challenge is to merge the two edits and obtain jointly modified data $D_3'$
-of type $T_2$. In the next section, we will see the same pattern, but also involving
+of schema $T_2$. In the next section, we will see the same pattern, but also involving
 code edits. We assume the \emph{convergence} model in this section, but will discuss
 the more challenging \emph{divergence} model later in the paper.}
 
@@ -765,7 +765,7 @@ the document structure and data) and the order in which the edits are applied sh
 matter. This may not always be possible and the system may ask the user for resolution or,
 possibly, use a default behavior specified by the user.
 
-The type and data evolution happens through a sequence of edits. Table~\ref{tbl:docchanges}
+The schema and data evolution happens through a sequence of edits. Table~\ref{tbl:docchanges}
 lists edits appearing in our examples (but not a complete list). A system may
 use a structure editor that provides high-level commands for triggering those edits.
 Recognising user intent from plain text editing of source code may make the challenge harder.
@@ -790,11 +790,11 @@ by counting the number of element of a specified list in the document.
 \noindent
 The challenge is, again, to merge the edits done independently by the co-organizers.
 The challenge extends the previous one by adding code. The change to the document structure
-(\emph{type}) thus has to co-evolve with both the \emph{data} and the \emph{code}.
+(\emph{schema}) thus has to co-evolve with both the \emph{data} and the \emph{code}.
 As shown in Figure~\ref{fig:conf-finfin}, the system needs to change the equation
 \texttt{COUNT(/ul[id='speakers']/li)} to \texttt{COUNT(/table[id='speakers']/tbody/tr)}.
 If the edit is recorded as a list of high-level edits shown in Figure~\ref{tbl:docchanges}
-(wrapping element, changing their types, etc.), then each edit needs to perform corresponding
+(wrapping element, changing their schema, etc.), then each edit needs to perform corresponding
 edit to selectors in formulas in the document.
 
 \begin{table}[t]
@@ -804,12 +804,12 @@ edit to selectors in formulas in the document.
 Change & Tag of an element & Apply to all matching elements and affected formulas\\
 Wrap & Selected element(s) & Wrap elements and update selectors in affected formulas  \\
 Split & Selected element(s) & Split matching elements using a rule (regular expression)\\
-Add & New item to a list & Add data without affecting document structure (type)\\
-Reorder & List items & Reorder data without affecting document structure (type)\\
+Add & New item to a list & Add data without affecting document structure (schema)\\
+Reorder & List items & Reorder data without affecting document structure (schema)\\
 \bottomrule
 \end{tabular}
 \vspace{0.3em}
-\caption{Changes to type and data and how the programming system should respond}
+\caption{Changes to schema and data and how the programming system should respond}
 \label{tbl:docchanges}
 \end{adjustwidth}
 \vspace{-1em}
@@ -822,7 +822,7 @@ needs to identify edits that invalidate some of the values (by changing the data
 depends on, or by changing the equation). It should then automatically re-evaluate or invalidate
 the computed results (requiring explicit re-evaluation). In this scenario, we distinguish between
 \emph{permanent data} (information in the document) and transient \emph{data} (computed by code).
-Whereas permanent data should be synchronized and co-evolve with the document structure (type),
+Whereas permanent data should be synchronized and co-evolve with the document structure (schema),
 transient data can be discarded.
 
 So far, we also assumed that the system follows the \emph{convergence} model, i.e., all variants
@@ -840,10 +840,10 @@ sections.
 % ==================================================================================================
 
 \section{Divergence Control in Spreadsheets}
-Type evolution becomes more challenging when data, code, and types cannot all be updated
+Schema evolution becomes more challenging when data, code, and Schema cannot all be updated
 together in an atomic way. In these situations, different versions must coexist and interoperate
-with one another. For example, edits done to data of a new type must be applied to
-data of an older type, or code written against older type must run against data of a newer type.
+with one another. For example, edits done to data of a new schema must be applied to
+data of an older schema, or code written against older schema must run against data of a newer schema.
 
 Such situations are common in software engineering. Web backend architectures often put data and
 code on separate machines, which makes it impossible to update both atomically. To perform
@@ -866,7 +866,7 @@ with no intention of ever converging.
 As a concrete example, we add the problem of divergence control to the
 earlier Extract Entity challenge. Every month the orders department sends its spreadsheet to
 the accounting department, which copies the data to its own version of the spreadsheet.
-This version uses the same structure (type), but includes additional code for financial tracking.
+This version uses the same structure (schema), but includes additional code for financial tracking.
 When the orders department migrates its spreadsheet to a database and extracts out customers,
 the accounting department does not want to conform. They want to continue using their old
 spreadsheet with their additional code.
@@ -884,14 +884,14 @@ evolved schema.
 \vspace{-2.5em}
 \end{wrapfigure}
 \frameworkboxtitle{Bidirectional Data Migration}
-The scenario adds the need for transferring data changes from a new type to an older type.
-In the diagram on the right, we only show data and type, ignoring the code added by the
-accounting department. We start with data $D_1$ of type~$T_1$. The accounting department
-evolves the type (via Extract Entity), obtaining data $D_2$ of type $T_2$ using an automatically
+The scenario adds the need for transferring data changes from a new schema to an older schema.
+In the diagram on the right, we only show data and schema, ignoring the code added by the
+accounting department. We start with data $D_1$ of schema~$T_1$. The accounting department
+evolves the schema (via Extract Entity), obtaining data $D_2$ of schema $T_2$ using an automatically
 generated forward transformation. It further modifies the data, obtaining $D_3$. When the
-accounting department receives data $D_3$, it needs to migrate it back from type $T_2$ to
+accounting department receives data $D_3$, it needs to migrate it back from schema $T_2$ to
 $T_1$ using an automatically generated backward transformation. That is,
-type evolution needs to be accompanied with both forward and backward projection for data
+schema evolution needs to be accompanied with both forward and backward projection for data
 (and code) migration.}
 
 What is needed is a user-friendly mechanism for transferring data changes from one schema to
@@ -948,11 +948,11 @@ wants to revert to try a different way she had started before.}
 \vspace{-1.5em}
 \end{wrapfigure}
 \frameworkboxtitle{Maintaining Divergent Variants}
-The extra complexity in the above scenario arises from the fact that both types and
-code are forked and evolve independently. In one branch, original types $T_1$ evolve
-into $T_2$ and original code $C_1$ into $C_3$. In another branch, original types $T_1$
+The extra complexity in the above scenario arises from the fact that both schema and
+code are forked and evolve independently. In one branch, original schema $T_1$ evolve
+into $T_2$ and original code $C_1$ into $C_3$. In another branch, original schema $T_1$
 evolve into $T'_2$ and original code $C_1$ into $C'_3$. The user then wants to merge
-the independently done changes into a new version of types and code, written as
+the independently done changes into a new version of schema and code, written as
 $T_2 \diamond T'_2$ and $C_3 \diamond C'_3$. The diverging transformations may make
 conflicting changes that would need to be resolved with assistance from the user.}
 
@@ -987,7 +987,7 @@ which has proven to baffle not only end-users but also a substantial fraction of
 
 \section{Multiplicity Change in Data Formats}
 
-The challenge of maintaining multiple divergent types in programming systems can
+The challenge of maintaining multiple divergent schema in programming systems can
 be well illustrated using \emph{multiplicity change}, which is a common kind of schema change.
 In this case a field changes from storing
 a single value to storing multiple values. For example, we might start by storing a single
@@ -997,14 +997,14 @@ realizing we want the ability to assign a todo to multiple people.
 
 In a relational schema, solving this problem might require extracting a normalized table for
 the linked entity; some of the challenges of this approach are covered in the Extract Entity
-challenge. In this section we will instead consider a type structure with support for arrays;
+challenge. In this section we will instead consider a schema structure with support for arrays;
 in this context, we can have a multiplicity change by turning a scalar value into an array value.
 %
-A change of multiplicity in the type requires producing a transformation for both the corresponding
+A change of multiplicity in the schema requires producing a transformation for both the corresponding
 data and the corresponding code. The challenge becomes particularly difficult to handle when there
-is ongoing divergence between multiple versions of the types and data.
+is ongoing divergence between multiple versions of the schema and data.
 
-\challenge{Multiplicity Change in Types}
+\challenge{Multiplicity Change in Schema}
 
 Consider the following schema for a todo list item, in which each item has a single assignee,
 represented by a user ID:
@@ -1073,22 +1073,22 @@ thus needs to consult the user.
 \end{wrapfigure}
 \frameworkboxtitle{Bidirectional Data Migration (Revisited)}
 The diagram illustrating the scenario remains the same as in the case of divergence control
-for Extract Entity. The initial data and type $D_1, T_1$ co-evolve into $D_2, T_2$ (adding
+for Extract Entity. The initial data and schema $D_1, T_1$ co-evolve into $D_2, T_2$ (adding
 multiplicity) and a new value is then assigned to the array of assignees, resulting in $D_3$.
 The difference from the earlier case is that the backward migration (from $D_3$ to $D'_3$)
-generated for the type evolution (from $T_1$ to $T_2$) cannot be generated fully automatically.
+generated for the schema evolution (from $T_1$ to $T_2$) cannot be generated fully automatically.
 In case of Extract Entity this was in principle possible.}
 
 \subsection*{Remarks: Managing Design Tradeoffs}
 
-If types, code and data can all be updated atomically together, then multiplicity change is
+If schema, code and data can all be updated atomically together, then multiplicity change is
 relatively straightforward  to handle. Existing scalar data can be trivially migrated to a
 list, and the code using the data will need to change to accommodate the list data.
 %
 However, ongoing divergence makes multiplicity change much more difficult, and exposes
-some general challenges. Different types may expose partial information, and writers using
-those types have to operate without total knowledge of the information available in other types.
-As a result, synchronizing writes across the types requires making difficult tradeoffs, such as
+some general challenges. Different schema may expose partial information, and writers using
+those schema have to operate without total knowledge of the information available in other schema.
+As a result, synchronizing writes across the schema requires making difficult tradeoffs, such as
 choosing to either preserve or destroy hidden data not visible to the writer.
 
 Although there is likely no silver bullet to navigate these tradeoffs, a good solution to this
@@ -1182,10 +1182,10 @@ an example instance, as object diagram (middle) and as code (right).}
 %``Slogan'': editing a program is diverging from run-time schema.
 
 We considered live programming in the context of the Elm architecture in \S\ref{sec:elm},
-where the challenge was to migrate run-time state (data) to a new type to keep the program running.
+where the challenge was to migrate run-time state (data) to a new schema to keep the program running.
 Work on language modeling offers a new perspective on the problem.
 In the context of executable domain-specific modeling languages~\cite{klint2011easy}, one can see a
-program in a domain-specific language as an instance of a metamodel (a static type) that
+program in a domain-specific language as an instance of a metamodel (a static type AKA schema) that
 defines the AST structure of the domain-specific language.
 
 A program in a domain-specific language in turn determines (defines/implies/induces) a run-time
@@ -1195,7 +1195,7 @@ Whereas the example discussed in this section is framed in terms of metamodels a
 be seen as an expository device: the principles and challenges apply in more grammar-oriented settings.
 However, the framing also suggests interesting additional challenges.
 
-In the absence of live programming, the run-time \emph{types} and \emph{code} do not change while
+In the absence of live programming, the run-time \emph{schema} and \emph{code} do not change while
 running a program in a given domain-specific language and the run-time \emph{state} changes constantly.
 Live programming, however, requires reconciling changes to the program with the induced run-time structures
 of both the code and the state. This typically means that at a certain point (a quiescent point)
@@ -1341,7 +1341,7 @@ Add/remove & statement & Hotswap code at quiescent point of interpreter\\
 \vspace{-1.5em}
 \end{wrapfigure}
 \frameworkboxtitle{Code as Data Migrations}
-We could see this challenge as type, code and data co-evolution as in the case of the Elm
+We could see this challenge as schema, code and data co-evolution as in the case of the Elm
 architecture in \S\ref{sec:elm}, but a more interesting perspective is to see the
 state machine definition as data $D_0$ conforming to a type $T$ defined by the metamodel.
 
@@ -1375,7 +1375,7 @@ Another extension, tying in with the data-oriented examples above, involves refa
 \section{Related Work}
 \label{sec:related}
 
-There has been extensive research on coordinating the evolution of interdependent layers of software, much of it guided by schema and types. But the vast majority of these techniques involve writing custom code in some specialized language, rather than through immediate action in an interactive programming system. Nevertheless it is important to understand these batch techniques to envision more interactive ones.
+There has been extensive research on coordinating the evolution of interdependent layers of software, much of it guided by schema and types. But the vast majority of these techniques involve writing custom code in some specialized language, rather than through immediate action and feedback in an interactive programming system. Nevertheless it is important to understand these batch techniques to envision more interactive ones.
 
 \paragraph{Schema evolution.}
 Schema evolution has long been a major problem for SQL databases because
@@ -1430,10 +1430,10 @@ Live programming~\cite{tanimoto90, rein2018exploratory} seeks to speed up feedba
 \section{Conclusions}
 We believe that effective future programming systems will need to tighten the feedback loop,
 both in making programming more live and in making it more collaborative. One of the key obstacles
-to making progress in this direction is the problem of \emph{type evolution}. When the structure
+to making progress in this direction is the problem of \emph{schema evolution}. When the structure
 of a program evolves, code and data need to co-evolve to match the new structure.
 %
-The problem of type evolution has been explored in a wide range of sub-fields, but rarely in its
+The problem of schema evolution has been explored in a wide range of sub-fields, but rarely in its
 full complexity. Moreover, different sub-fields often use different language, making knowledge
 transfer between them difficult.
 
