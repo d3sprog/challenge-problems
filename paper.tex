@@ -148,24 +148,24 @@ Our primary contribution is a suite of challenge problems that exemplify a diver
 % FRAMEWORK
 % ==================================================================================================
 
-\section{Type Evolution}
+\section{Layers and Dimensions of Schema Evolution}
+
 To paraphrase Stewart Brand \cite{Brand95}, ``almost no programs evolve well. But all programs
 (except for monuments) evolve anyway, however poorly, because the usages in and around them are
 changing constantly.'' Programs evolve both while they are being created and during their operation
-in response to new needs. As with buildings, different aspects of program evolve at different pace
+in response to new needs. As with buildings, different aspects of programs evolve at different paces
 (Figure~\ref{fig:layers}). And ``because of the different rates of change of its components,
 a program is always tearing itself apart.''
 
-\subsection{Types, Data and Code}
+%\subsection{Schema, Data and Code}
+
 In both buildings and programs, making a change at surface layers (skin or stuff) is relatively easy,
 but a change at a more fundamental layer (structure) has cascading effects on layers that depend on it.
-In the case of programs, we refer to the more fundamental layer as \emph{types}, although we do not
-use the term in a precise technical sense. Types is what defines the shape of data and code.
-Types may be database schema, data types that define the shape of data, they may be explicitly
-declared in code and checked statically, as well as dynamically checked or even implicit.
-The key property of types for us is that they constrain the shape of other layers
-of a program, namely data and code. As a result, a change of program types requires a
-corresponding change in program data and code.
+In the case of programs, we refer to the more fundamental layer as \emph{schema}, although we do not
+use the term in a precise technical sense. Schema are what define the shape of data and code, either as database schema, data types declared explicitly in code and checked statically, dynamically checked types and specifications, and even expectations implicit in the code.
+The key property of schema for us is that they constrain the shape of other layers
+of a program, namely data and code. As a result, a change of schema requires a
+corresponding change in data and code.
 
 \begin{wrapfigure}{r}{12em}
 \vspace{-1.5em}
@@ -174,11 +174,11 @@ corresponding change in program data and code.
 \end{wrapfigure}
 
 The situation is illustrated on the right. We start with code $C_1$ and
-data $D_1$ that have a shape corresponding to type $T_1$. When the type changes from $T_1$ to $T_2$ ($\rightarrow$),
+data $D_1$ that have a shape corresponding to schema $T_1$. When the schema changes from $T_1$ to $T_2$ ($\rightarrow$),
 a corresponding change needs to take place in data $D_1$ and code $C_1$. The problem
-of \emph{type evolution} is synthesising ($\Rightarrow$) suitable corresponding transformations
+of \emph{schema evolution} is synthesising ($\Rightarrow$) suitable corresponding transformations
 that will update data $D_1$ and code $C_1$ into new versions $D_2$ and $C_2$ that correspond
-to the new type $T_2$.
+to the new schema $T_2$.
 %
 The complexity of the problem varies and finding a suitable transformation may require user
 input. If there is code, it typically needs to be transformed, but data can sometimes be
@@ -193,10 +193,10 @@ them inside a box.
 
 Collaboration adds the \emph{non-local} dimension to the problem. A program may have multiple
 variants that exist independently and changes made to them may need to be synchronized. The
-situation is illustrated on the right. Here, the initial type $T_1$ is transformed by two
-users independently into types $T_2$ and $T_3$. The corresponding data is transformed accordingly,
+situation is illustrated on the right. Here, the initial schema $T_1$ is transformed by two
+users independently into schema $T_2$ and $T_3$. The corresponding data is transformed accordingly,
 producing $D_2$ and $D_3$. The challenge is now merging these two diverging transformation and
-obtaining a type $T_4$ and data $D_4$ that adopt both of the changes.
+obtaining a schema $T_4$ and data $D_4$ that adopt both of the changes.
 
 The difficulty of the problem depends on what kind of synchronization we want to support.
 If all variants of the program should eventually adopt all changes (converge), the complexity
@@ -204,51 +204,50 @@ is lesser. If we allow users to apply only certain changes from other users (div
 complexity is greater. A common case may be a combination of the two where types and schema
 of a program converge, but data may diverge.
 
-\subsection{Conceptual Framework}
+%\subsection{Conceptual Framework}
 
-We now describe a conceptual framework that lets us view a diverse set of real-world
-type evolution problems in a unified way. We distinguish between two dimensions.
-The \emph{local dimension} is concerned with how type evolution affects data and code within
-a single program. The \emph{non-local dimension} is concerned with how type evolution
+\paragraph{Locality of Change.}
+We can view diverse real-world schema evolution problems from a common perspective by distinguishing between two different dimensions of schema change.
+The \emph{local dimension} is concerned with how schema evolution affects data and code within
+a single program. The \emph{non-local dimension} is concerned with how schema evolution
 propagates across different program variants that may exist independently.
 
 \paragraph{Program Layers.}
-We consider the more permanent layer of \emph{types} and two less permanent layers of code and
-data that are structured by types. In specific case studies, the layers may map to
-different aspects of programs, some may be not present and some may be implicit.
+We consider the more permanent layer of \emph{schema} and two less permanent layers of code and
+data that are structured by those schema. In specific case studies, the layers may map to
+different aspects of programs, some may be not present, and some may be implicit.
 
 \begin{itemize}
-\item \emph{Types} -- structure program data and determine aspects of code. A change in types
-  requires a corresponding change in data and code. Types may be explicit (database schema, type definition)
-  or implicit (shape of data structures, shape of a document).
+\item \emph{Schema} -- structure program data and determine aspects of code. A change in schema
+  requires a corresponding change in data and code. Schema may be explicit (database schema, type declarations)
+  or implicit (expected shape of data structures or a document).
 \item \emph{Data} -- information stored by the program. Data may be more permanent (data in a
-  database) or less permanent (state in live programming). When types evolve, data needs to be
+  database) or less permanent (state in live programming). When scheam evolve, data needs to be
   updated or (in case of transient state) discarded.
-\item \emph{Code} -- or program logic, but not including source code that defines types.
-  When types evolve, code needs to change to consume/produce data of a correct shape.
+\item \emph{Code} -- or program logic, but not including source code that defines schema.
+  When schema evolve, code needs to change to consume/produce data of the correct shape.
 \end{itemize}
 
 \paragraph{Program Variants.}
 In programming systems that enable collaboration, multiple variants of a program may exist
-concurrently and their types, data and code may need to be synchronized. Although collaboration
+concurrently and their schema, data and code may need to be synchronized. Although collaboration
 is missing from some of our case studies, it adds an important dimension that is crucial for
-type evolution in future programming systems. We consider two characteristics.
+schema evolution in future programming systems. We consider two characteristics.
 
 \begin{itemize}
 \item \emph{Convergence} vs. \emph{Divergence}. In the convergence model, all program variants
   eventually adopt all changes. It may not be possible to adopt a change without adopting
   all earlier changes. In the divergence model, a user may choose only
   particular changes they want to adopt, but keep other aspects of their custom design.
-\item \emph{Centralized} vs. \emph{Decentralized}. In the centralized model, changes (type
-  evolution) can only originate from a particular source. In the decentralized model,
+\item \emph{Centralized} vs. \emph{Decentralized}. In the centralized model, changes (schema evolution) can only originate from a particular source. In the decentralized model,
   changes can be done on any of the multiple co-existing variants of a program.
 \end{itemize}
 
 \paragraph{Challenge Problems.}
-The conceptual framework offers a wide range of configurations for challenge problems, but
-our aim is not to enumerate all options. We use it to recast a number of
+These dimensions, layers, and variants offer a wide range of configurations for challenge problems, but
+our aim is not to enumerate all of them. We use them to recast a number of
 existing challenges in real-world programming systems as instances of the same problem of
-type evolution. The case studies show how well-known solutions or problems in one domain
+schema evolution. The case studies show how well-known solutions or problems in one domain
 map to another domain and they also provide and inspiration and a benchmark for
 developers of future programming systems.
 

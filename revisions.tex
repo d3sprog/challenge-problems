@@ -1,24 +1,40 @@
+\documentclass{article}
+\usepackage{csquotes}
+\usepackage{xcolor}
+\begin{document}
+
 We thank the anonymous reviewers for their helpful comments. In the following we summarize the changes we have made in response to those comments.
 
-Reviewer A
------------------------------------------------------------------
-
+\section{Reviewer A}
 
 We rewrote the introduction to remove statements of opinion and to clarify that the goal of our research on schema change is to speed feedback loops in software development. Ultimately that is a value judgement, but we believe that value is important to a substantial community of researchers and practitioners.
 
-Section 2 has been revised to remove the claim of providing a conceptial framework. Instead we define multiple dimensions of schema change that are used throughout the sequel to figuratively constrast different problems.
+Section 2 has been revised to remove the claim of providing a conceptual framework. Instead we define a descriptive framework of multiple dimensions and layers of schema change that are used to figuratively contrast the different problems.
+
+\textcolor{red}{I don't know what to do with this:}
+\begin{displayquote}
+  Just before 2.2 I think here you need to set expectations for correct local transformations, because no general solution exists, only conventions and expectations. Please, add numbers to those expectations, show examples of corner cases where stuff breaks and is an acceptable evil, and cases were stuff breaks on purpose (in some sense, and intended evil) To make an example: Java is of course not truly "cross-platform": if you wanted to put a formal definition to cross platform, the program should work identically in all environments. This would imply that the program should not be able to discover it's running environment. In Java I can make an 'if' at the beginning of the main and throw error on Windows. This makes Java not truly "cross-platform" in a logical sense, but this is often considered desirable.
+
+  In the context of those data transformations, there must be plenty of situations like that, where a change in behavior is not only possible or acceptable, but even desirable. However, we should have some clear formal definition of when/how/why such changes in behavior are introduced.
+\end{displayquote}
 
 
-Reviewer B
------------------------------------------------------------------
+\section{Reviewer B}
+
+As suggested we have replaced `type' with `schema' throughout the paper. The diagrams still use the letter `T' but we intend to change those to `S' in the camera-ready verison.
+
 As suggested, the Literature Review was converted into a more appropriately named Related Work section.
 
 
+\section{Reviewer C}
 
+\end{document}
 
 Reviewer A
 -----------------------------------------------------------------
-Not a conceptual framework
+I will start from the end. In the conclusion you state: 'we developed a conceptual framework....' I disagree. You informally spoke about those ideas in interesting and tough provoking ways, but this is very far from developing a conceptual framework, and if I had to interpret your work as a conceptual framework I would find it severely lacking. However, I do not need to do so, I think your work can stand on its own as a set of considerations of those problems from a unifying viewpoint. This viewpoint is interesting, but is clearly limited and is basically only applicable to layered systems. With imperative systems I mean system with a set of predefined datatypes that are in some sense 'superior' to the user defined ones, that are just lists/records/unions of those primitive data types. This is not the case for example in lambda calculus, where there are no primitive data types, or in pure OO, where everything truly is an object and you could define string and ints as user defined types using programming patterns not dissimilar to church encoding.
+
+Basically, as soon as 'true abstraction' is into place, most of your considerations stop being applicable.
 
 "our work highlights the importance of.." No, you state that those things are important over and over, but you never make a good argument for it. In particular, you never ever state clearly -why it is important -what is it important for: that is, something is not good or bad in isolation. Something is good or bad instrumentally in order to reach a specific objective. What is the objective that you think is facilitated by having 'better more fluid programming environments'? You leave this implicit across the whole document!!
 
