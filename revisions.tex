@@ -3,66 +3,71 @@
 \usepackage{xcolor}
 \begin{document}
 
-We thank the anonymous reviewers for their helpful comments. In the following we summarize the changes we have made in response to those comments.
+We thank the anonymous reviewers for their helpful comments. In the following we summarize the changes we have made in response.
 
 \section{Summary review}
 
-In the introduction we clarify that this paper is not about a tool under development. Some of the problems are extracted from our different research projects but none of these projects span the full range of problems.
+\begin{itemize}
+\item In the introduction we clarify that this paper is not about a tool under development. Some of the problems are extracted from our different research projects but none of these projects span the full range of problems.
 
-We have clarified in the introduction that we avoid speculating about possible solutions to the challenge problems so as to not bias them towards our preferred approaches (and to avoid the issues where we disagree). A primary goal of this paper is to establish a neutral common ground where researchers can meet to discuss their alternative approaches.
+\item We have clarified in the introduction that we avoid speculating about possible solutions to the challenge problems so as to not bias them towards our preferred approaches (and to avoid the issues where we disagree). A primary goal of this paper is to establish a neutral common ground where researchers can meet to discuss their alternative approaches.
 \textcolor{red}{Or do we want to add a speculative section?}
+\end{itemize}
 
 \section{Reviewer A}
 
-We rewrote the introduction to clarify that the goal of our research on schema change is to speed feedback loops in software development. Ultimately that is a value judgement, but we believe that value is important to a substantial community of researchers and practitioners. We have qualified statements of opinion throughout the paper.
+\begin{itemize}
+  \item We rewrote the introduction to clarify that the goal of our research on schema change is to speed feedback loops in software development. Ultimately that is a value judgement, but we believe that value is important to a substantial community of researchers and practitioners. We have qualified statements of opinion throughout the paper.
 
-Section 2 has been revised to remove the claim of providing a conceptual framework. Instead we define a descriptive framework of multiple dimensions and layers of schema change that are used to figuratively contrast the different problems.
+  \item Section 2 has been revised to remove the claim of providing a conceptual framework. Instead we define a descriptive framework of multiple dimensions and layers of schema change that are used to figuratively contrast the different problems.
 
-\textcolor{red}{I don't know what to do with this:}
+  \item \textcolor{red}{I don't know what to do with this:}
 \begin{displayquote}
   Just before 2.2 I think here you need to set expectations for correct local transformations, because no general solution exists, only conventions and expectations. Please, add numbers to those expectations, show examples of corner cases where stuff breaks and is an acceptable evil, and cases were stuff breaks on purpose (in some sense, and intended evil) To make an example: Java is of course not truly "cross-platform": if you wanted to put a formal definition to cross platform, the program should work identically in all environments. This would imply that the program should not be able to discover it's running environment. In Java I can make an 'if' at the beginning of the main and throw error on Windows. This makes Java not truly "cross-platform" in a logical sense, but this is often considered desirable.
 
   In the context of those data transformations, there must be plenty of situations like that, where a change in behavior is not only possible or acceptable, but even desirable. However, we should have some clear formal definition of when/how/why such changes in behavior are introduced.
 \end{displayquote}
 
-We clarified that the goal of Divergence in End-User Workflows is to create a new kind of feedback channel for end users rather than speeding up existing channels.
+\item We clarified that the goal of Divergence in End-User Workflows is to create a new kind of feedback channel for end users rather than speeding up existing channels.
 
-In \S\emph{Remarks: Managing Design Tradeoffs} we noted the importance of offering solutions simple enough to be actually used.
+\item In \S\emph{Remarks: Managing Design Tradeoffs} we noted the importance of offering solutions simple enough to be actually used.
+\end{itemize}
 
 \section{Reviewer B}
+\begin{itemize}
 
-As suggested we have replaced `type' with `schema' throughout the paper. Some diagrams still use the letter `T' for type but we intend to change those to `S' in the camera-ready version.
+  \item As suggested we have replaced `type' with `schema' throughout the paper. Some diagrams still use the letter `T' for type but we intend to change those to `S' in the camera-ready version.
 
-\textcolor{red}{I don't know what to do with this:}
+  \item \textcolor{red}{I don't know what to do with this:}
 \begin{displayquote}
 I liked the discussion of both local/singular and collaborative development and the problems associated with them. And I would have liked to see those two situations discussed separately, because of their technical complexity and also the processes (people) causing them.
 
 The placement of “local-first” felt like it didn’t help me understanding the problem. Maybe you can revisit the intent of those references. My preference would be try without them.
 \end{displayquote}
 
-\textcolor{red}{I don't know what to do with this:}
+\item \textcolor{red}{I don't know what to do with this:}
 \begin{displayquote}
   While re-reading the submission, I noticed quite a similarity to a pattern language (in the sense of Christopher Alexander and/or the software patterns community). All sections covering a challenge problem present the context in which the problems occurs, describe the problem, and provide an example illustrating the problem to better relate to it. Also, they cross-reference other related challenge problems. The only obvious part that is missing (on purpose, see above) is a generative solution.
 
   However, even though those elements are all present to a varying extent, the guiding structure of a pattern and their interconnection through a pattern language might be helpful but is missing. I strongly believe that transforming the material from a simple collection of problems into a pattern-language-like (the “like” because of the missing generative solutions) artifact would be helpful not only for the readers but the community helping provide those generative solutions and extending the (such) system of patterns…
 \end{displayquote}
 
-As suggested, the Literature Review was converted into a more appropriately named Related Work section.
-
+\item As suggested, the Literature Review was converted into a more appropriately named Related Work section.
+\end{itemize}
 
 \section{Reviewer C}
+\begin{itemize}
+  \item in \S\emph{Remarks: Requirements and Implementation} we clarify that the goal is to adapt to schema changes automatically to avoid interrupting live programming.
 
-in \S\emph{Remarks: Requirements and Implementation} we clarify that the goal is to adapt to schema changes automatically to avoid interrupting live programming.
+  \item Added to Related Work the history of how the view-update problem led to lenses which led to DELs.
 
-We added to Related Work the history of how the view-update problem led to lenses which led to DELs.
+  \item Cited Hazel in Related Work.
 
-We cited Hazel in Related Work.
+  \item Mention the possibility of using CRDTs for evolving computational documents.
 
-We now mention the possibility of using CRDTs for evolving computational documents.
+  \item Divergence Control for Spreadsheets has been corrected to just Divergence Control.
 
-Divergence Control for Spreadsheets has been corrected to just Divergence Control.
-
-As mentioned above, we have added an explanation in the introduction of why we maintain neutrality by avoiding speculation on our preferred solutions.
-
+  \item As mentioned above, we have added an explanation in the introduction of why we maintain neutrality by avoiding speculation on our preferred solutions.
+\end{itemize}
 \end{document}
 
