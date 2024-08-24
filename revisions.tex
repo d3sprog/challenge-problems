@@ -7,7 +7,7 @@ We thank the anonymous reviewers for their helpful comments. In the following we
 
 \section{Summary review}
 
-In the introduction we clarify that this paper is not about a tool under development. Some of the problems are extracted from our different research projects but none of these projects span the rull range of problems.
+In the introduction we clarify that this paper is not about a tool under development. Some of the problems are extracted from our different research projects but none of these projects span the full range of problems.
 
 We have clarified in the introduction that we avoid speculating about possible solutions to the challenge problems so as to not bias them towards our preferred approaches (and to avoid the issues where we disagree). A primary goal of this paper is to establish a neutral common ground where researchers can meet to discuss their alternative approaches.
 \textcolor{red}{Or do we want to add a speculative section?}
@@ -27,7 +27,7 @@ Section 2 has been revised to remove the claim of providing a conceptual framewo
 
 We clarified that the goal of Divergence in End-User Workflows is to create a new kind of feedback channel for end users rather than speeding up existing channels.
 
-In \S\emph{Remarks: Managing Design Tradeoffs} we noted the importance of oferring solutions simple enough to be actually used.
+In \S\emph{Remarks: Managing Design Tradeoffs} we noted the importance of offering solutions simple enough to be actually used.
 
 \section{Reviewer B}
 
@@ -52,45 +52,17 @@ As suggested, the Literature Review was converted into a more appropriately name
 
 \section{Reviewer C}
 
+in \S\emph{Remarks: Requirements and Implementation} we clarify that the goal is to adapt to schema changes automatically to avoid interrupting live programming.
+
+We added to Related Work the history of how the view-update problem led to lenses which led to DELs.
+
+We cited Hazel in Related Work.
+
+We now mention the possibility of using CRDTs for evolving computational documents.
+
+Divergence Control for Spreadsheets has been corrected to just Divergence Control.
+
+As mentioned above, we have added an explanation in the introduction of why we maintain neutrality by avoiding speculation on our preferred solutions.
+
 \end{document}
-
-Reviewer C
------------------------------------------------------------------
-
-- Live Programming for the Elm Architecture
-
-I agree with the presented arguments but have difficulty understanding the remarks about requirements and implementation. The authors say that the migration needs to be done automatically but do not suggest a solution to the problem. Is it a type-based program synthesis? Generation of lenses? In what scenario does it need to be done automatically? A more straightforward way (but maybe not what the authors were thinking) would be to ask the programmer to write the transformation function. So, what is the goal of the idealised system being thought over?
-
-A reference like https://hazel.org/ should be referenced here.
-
-- Entity Evolution in Data-centric Systems
-
-In this case, the authors miss a classic reference to the problem of updatable views, which deal with the same category of issues when solving a different problem. Migrations here feel a lot like the back translation problem in updatable views.
-
-Also, this is the most common type of evolution problem in the software industry, which is treated by disciplining the software process, versioning, and creating adapters. A contrast with these solutions, pointing again to the ghost system, would be very welcome. This approach is presented in section 6, but it makes sense to refer here as well.
-
-https://www.irisa.fr/lande/lande/icse-proceedings/seams/p86.pdf
-
-- Evolution of Computational Documents
-
-This is a problem that existing approaches solve relatively well, and there is work using, for instance, operation-based CRDTs to solve the problem of collaborative editing and ensure eventual consistency. I think those solutions should be referred to, and their results should be compared to the goals presented in this section.
-
-- Divergence control in Spreadsheets
-
-The problem in this use case is broader than spreadsheets, and the section title may be misleading. Versioning schemes, like semantic versioning or language-based versioning, could solve the problem of divergence control in spreadsheets. This class of solutions could help present this case better.
-
-https://dl.acm.org/doi/10.1145/3479394.3479416
-Multiplicity Change in Data Formats (Migrations)
-
-Using lenses to solve this problem would be a very good idea to highlight here, as in some old work of Benjamin Pierce and a system called Unison. This problem was central in transformations and sync operations in XML documents. I have no specific reference to point out, but Unison seems a good place to start. The synthesis of lenses can be done.
-
-- Live Modelling Languages
-
-This case study is, in my opinion, the more solid one in terms of presentation. It almost seems that this is the idealised system that the authors are thinking about. This presentation also gives away the identity of the authors (Programming is not double-blind; I am just referring to this since the authors omitted their names in the paper).
-
-The comment about the presented example being out of reach for all existing language workbenches could be expanded to explain why. Are there any techniques extracted from the remaining case studies that would be useful here?
-
-- Overall
-
-the discussion and conclusions are very brief both at the end and in each case study and do not provide a clear path to solving the challenges presented in the paper. Even a speculative section pointing to combining features from different systems would be welcome to communicate the authors' vision of the future of interactive programming systems.
 
