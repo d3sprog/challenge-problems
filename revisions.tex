@@ -13,7 +13,7 @@ We have clarified that this paper is not about a tool under development. Some of
 
 \section{Reviewer A}
 
-We rewrote the introduction to remove statements of opinion and to clarify that the goal of our research on schema change is to speed feedback loops in software development. Ultimately that is a value judgement, but we believe that value is important to a substantial community of researchers and practitioners.
+We rewrote the introduction to clarify that the goal of our research on schema change is to speed feedback loops in software development. Ultimately that is a value judgement, but we believe that value is important to a substantial community of researchers and practitioners. We have qualified statements of opinion throughout the paper.
 
 Section 2 has been revised to remove the claim of providing a conceptual framework. Instead we define a descriptive framework of multiple dimensions and layers of schema change that are used to figuratively contrast the different problems.
 
@@ -24,6 +24,9 @@ Section 2 has been revised to remove the claim of providing a conceptual framewo
   In the context of those data transformations, there must be plenty of situations like that, where a change in behavior is not only possible or acceptable, but even desirable. However, we should have some clear formal definition of when/how/why such changes in behavior are introduced.
 \end{displayquote}
 
+We clarified that the goal of Divergence in End-User Workflows is to create a new kind of feedback channel for end users rather than speeding up existing channels.
+
+In \S\emph{Remarks: Managing Design Tradeoffs} we noted the importance of oferring solutions simple enough to be actually used.
 
 \section{Reviewer B}
 
@@ -35,41 +38,6 @@ As suggested, the Literature Review was converted into a more appropriately name
 \section{Reviewer C}
 
 \end{document}
-
-Reviewer A
------------------------------------------------------------------
-I will start from the end. In the conclusion you state: 'we developed a conceptual framework....' I disagree. You informally spoke about those ideas in interesting and tough provoking ways, but this is very far from developing a conceptual framework, and if I had to interpret your work as a conceptual framework I would find it severely lacking. However, I do not need to do so, I think your work can stand on its own as a set of considerations of those problems from a unifying viewpoint. This viewpoint is interesting, but is clearly limited and is basically only applicable to layered systems. With imperative systems I mean system with a set of predefined datatypes that are in some sense 'superior' to the user defined ones, that are just lists/records/unions of those primitive data types. This is not the case for example in lambda calculus, where there are no primitive data types, or in pure OO, where everything truly is an object and you could define string and ints as user defined types using programming patterns not dissimilar to church encoding.
-
-Basically, as soon as 'true abstraction' is into place, most of your considerations stop being applicable.
-
-"our work highlights the importance of.." No, you state that those things are important over and over, but you never make a good argument for it. In particular, you never ever state clearly -why it is important -what is it important for: that is, something is not good or bad in isolation. Something is good or bad instrumentally in order to reach a specific objective. What is the objective that you think is facilitated by having 'better more fluid programming environments'? You leave this implicit across the whole document!!
-
-Section 1: "future programming systems will need to further..." Why? why will they need to do it? again, you do not "need to do" something in isolation. You need to do something in order to obtain or facilitate a goal. What is the goal here? I suspect once you state the goal I would be able to show you that it may not be the case.
-
-So, "future programming systems will need to further..." is incomplete, the goal must be added, but even when the goal is added, this statement must be clearly labelled as an OPINION. I suspect it would be a widely agreed upon opinion, but an opinion; not a fact.
-
-"will also need to transcend.." Again, add goal and flag as OPINION
-
-"While we are firmly convinced that... are the future of programming" So much is implicit here. Do you think this is the future in the sense that you think is good and you think it will happen? Do you think it is the future because you hate it, but you still think it is going to be unavoidable? Do you think it will happen independently of your research work, or that it will happen because of your research work? There are 10 other possible interpretations for this sentence.
-
-Just before 2.2 I think here you need to set expectations for correct local transformations, because no general solution exists, only conventions and expectations. Please, add numbers to those expectations, show examples of corner cases where stuff breaks and is an acceptable evil, and cases were stuff breaks on purpose (in some sense, and intended evil) To make an example: Java is of course not truly "cross-platform": if you wanted to put a formal definition to cross platform, the program should work identically in all environments. This would imply that the program should not be able to discover it's running environment. In Java I can make an 'if' at the beginning of the main and throw error on Windows. This makes Java not truly "cross-platform" in a logical sense, but this is often considered desirable.
-
-In the context of those data transformations, there must be plenty of situations like that, where a change in behavior is not only possible or acceptable, but even desirable. However, we should have some clear formal definition of when/how/why such changes in behavior are introduced.
-
-pg 7: "the key requirement.... do minimal harm" This is an Opinion + Industry convention.
-
-"not commonly supported in data APIs" Define what a data API is and add a citation.
-
-pg 10: "when applying code migrations, the system should minimize... the need for developer -written code" Again, "should" requires an explicit objective we are working toward. Plus, even after you add the objective, this still need to be labelled as an Opinion.
-
-pg 13: Here I'm starting to wonder why you use this model at all. Once we accept that code can be changed and updated, the difference between data and code disappear. We could simply represent all data as hard coded instructions recreating such data. This may produce a much more cohesive mental model for the problem at hand. For example in this new model programs are able to 'restart' and when they restart they will execute this code 'pre-loading' the data in the state it was when the program was terminated.
-
-Once code can be updated, data is just another kind of code. This requires a language where it is easy to declaratively describe any kind of arbitrary reachable object graphs, including circular ones.
-
-Pg 16: "Live programming must move.... affordances" This is again an Opinion, and again 'must' can not exists alone, it needs a GOAL we are trying to obtain. You may think that such goal is really 'obvious', but it is not. What kind of programming you want to facilitate? why you want to facilitate that kind of programming? that kind of programming would in turn facilitate certain human endeavors but maybe not others, and the results may be very hard to predict and quite chaotic.
-
-Pg 18: "no silver bullet to navigate... a good solution... tradeoffs" This assume no perverse incentives. Consider that if an operation is easier such operation will be done more often, and by sloppier and less skilled operators. Assuming the operators will be competent and will care about what they are doing is unrealistic.
-
 
 Reviewer B
 -----------------------------------------------------------------

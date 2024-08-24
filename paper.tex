@@ -125,12 +125,12 @@ development.
 
 \section{Introduction}
 
-Many improvements to the practice of programming are due to speeding up feedback loops. Replacing punched cards with interactive terminals was one of the greatest leaps of productivity in the history of programming. Unit tests and interactive type checking provide faster feedback on errors that modern programmers now expect. Research on Live Programming~\cite{rein2018exploratory} seeks to provide immediate feedback on runtime behavior while editing. Feedback is equally valuable in collaborative programming~\cite{ProGit, goldman2011real,kurniawan2015coder,replit}) to convey changes between coworkers with less friction.
-However there is still much room to improve feedback loops throughout the software development enterprise.
+Many improvements to the practice of programming have come from speeding up feedback loops. Replacing punched cards with interactive terminals was one of the greatest leaps of productivity in the history of programming. Unit tests and interactive type checking provide faster feedback on errors that modern programmers now expect. Research on Live Programming~\cite{rein2018exploratory} seeks to provide immediate feedback on runtime behavior while editing. Feedback is equally valuable in collaborative programming~\cite{ProGit, goldman2011real,kurniawan2015coder,replit}) to convey changes between coworkers with less friction.
+However there is still much room to improve feedback loops throughout software development.
 
-In this paper we identify a common problem, \emph{Schema Change}, that stands athwart feedback loops in diverse contexts of software development. While Schema Change has been extensively studied in the context of databases~\cite{erhard06}, we observe that analogous problems occur in varied and less-studied contexts. For example, many live programming techniques treat state as ephemeral and recreate it after every edit, but when the shape of longer-lived state changes then the illusion of liveness is shattered -- hot reloading works until it doesn't. Likewise collaborative programming works smoothly when code changes can be exchanged that do not alter the expected shape of external data, but changes that cross that line must be coordinated outside of the version control system. We discuss further examples in \S\ref{sec:related} Related Work. In general, when the shape of data becomes a dependency then changes to that data's shape can require manual intervention which interrupts feedback loops. To coordinate research on these related problems we shift the focus to that of \emph{Interactive Programming Systems}~\cite{techdims} of all sorts and generalize the term `schema' to include not just database schema but also types and specifications of all sorts, whether expressed in a formal language or left implicit in code.
+In this paper we identify a common problem, \emph{Schema Change}, that stands athwart feedback loops in diverse contexts of software development. Schema Change has been extensively studied in the context of databases where it necesitates manual and error-prone data migrations.~\cite{erhard06} We observe analogous problems occuring in varied and less-studied contexts. For example, many live programming techniques treat state as ephemeral and recreate it after every edit, but when the shape of longer-lived state changes then the illusion of liveness is shattered -- hot reloading works until it doesn't. Likewise collaborative programming works smoothly when code changes can be exchanged that do not alter the expected shape of external data, but changes that cross that line must be coordinated outside of the version control system. We discuss further examples in \S\ref{sec:related} Related Work. In general, when the shape of data becomes a dependency then changes to that data's shape can require manual intervention which interrupts feedback loops. To coordinate research on these related problems we shift the focus to that of \emph{Interactive Programming Systems}~\cite{techdims} of all sorts and generalize the term `schema' to include not just database schema but also data types and specifications of all sorts, whether expressed in a formal language or left implicit in code.
 
-Our primary contribution is a suite of challenge problems exemplifying a diverse range of typical schema change scenarios that interrupt feedback loops. We believe these problems have not been completely solved in theory or practice (see \S\ref{sec:related} Related Work). While some of these problems come from our individual research efforts we have attempted to make neutral problem statements not slanted to our preferred approaches. None of our ongoing efforts yet address the full range of problems. Indeed the motivation of this paper is to provide a basis for communicating and collaborating between related efforts, not to mention motivating further research efforts. We hope these challange problems serve as examples to ground future research and as a basis for evaluating the results. We invite contributions of new challenge problems and look forward to discussing competing solutions.
+Our primary contribution is a suite of challenge problems exemplifying a diverse range of typical schema change scenarios that interrupt feedback loops. We believe these problems have not been completely solved in theory or practice (see \S\ref{sec:related} Related Work). While some of these problems come from our individual research efforts we have attempted to make neutral problem statements not slanted to our preferred approaches. None of our ongoing efforts yet address the full range of problems. Indeed the motivation of this paper is to provide a basis for communicating and collaborating between such related efforts, as well as to facilitate further research efforts. We hope these challange problems serve as examples to ground future research and as a basis for evaluating its results. We invite contributions of new challenge problems and look forward to discussing competing solutions.
 
 
 \begin{figure}[t]
@@ -244,8 +244,8 @@ schema evolution in future programming systems. We consider two characteristics.
 \end{itemize}
 
 \paragraph{Challenge Problems.}
-These dimensions, layers, and variants offer a wide range of configurations for challenge problems, but
-our aim is not to enumerate all of them. We use them to recast a number of
+These dimensions, layers, and variants generate a wide range of configurations for challenge problems, but
+our aim is not to cover all of them. Instead we use them to recast a number of
 existing challenges in real-world programming systems as instances of the same problem of
 schema evolution. The case studies show how well-known solutions or problems in one domain
 map to another domain and they also provide and inspiration and a benchmark for
@@ -377,7 +377,7 @@ through a user interface, or inferred from textual code edits made by the progra
 }
 
 \subsection*{Remarks: Requirements and Implementation}
-The key requirement from the live programming perspective is to ``do minimal harm''.
+The key requirement from the live programming perspective is to ``do minimal harm'' to the experience of liveness.
 The migration of \emph{data} needs to be done automatically and the system should strive
 to produce a new state that is as near as possible to the previous state. Migrating
 \emph{code} can be done in various ways,
@@ -488,7 +488,7 @@ merging entities whose attributes are all equal. But that might not be correct i
 What if there was a typo in one of the addresses that made it look different from other instances
 of the customer? To repair that error we need to merge the falsely distinct customers into one
 and fix any references from orders. We call this operation \emph{Merge Entities} -- note that
-it is not a schema change but a data change, yet nevertheless not commonly supported in data APIs.
+it is not a schema change but a data change, yet nevertheless not commonly supported as an operaton in database APIs or DMLs.
 
 Entity evolution can happen through operations such as those listed in
 Table~\ref{tbl:dbchanges}. Every schema operation should have an inverse as the
@@ -572,9 +572,9 @@ WHERE ship_date IS NULL;
 \noindent
 In database systems, the system can use a mechanism such as a
 view and execute the original query over the view. When applying code migrations,
-the system should minimize the need for users to manaually intervene. It should also
+the system should minimize the need for users to manually intervene, which interrupts feedback from the migration. It should also
 minimize the possibilities that developer-written code is subtly incorrect in edge cases,
-preferably by reducing the need for developer-written code.
+preferably by reducing the need for developer-written code in the first place.
 
 
 \frameworkbox{
@@ -970,16 +970,15 @@ The Divergence Control challenge is in a sense to provide ``version control for 
 change'' meeting these criteria, with the key technical challenge being the ability to
 transfer selected differences bidirectionally through schema changes as independently as possible.
 
-This challenge invites a change of perspective in both live programming and local-first software.
-Live programming must move from being a solitary activity to a collaborative workflow, and one
-where the collaboration is not just on editing source code but on live integrated code and data,
+This challenge envisions a new feedback channel that end users have not experienced before: the ability to frictionlessly exchange variations and elaborations they make to docuuments, replacing the hellscape of manual copy \& paste. But meeting this challenge may require a basic change of perspective in both live programming and local-first software.
+Live programming must move from being a solitary activity to a collaborative workflow, and further where the collaboration is not just on editing source code but on live integrated code and data,
 as in the Smalltalk/Lisp images of old.
 %\footnote{If only we had this in the 90's when Smalltalk had a shot at the mainstream!}
 Local-first software must move from automatically converging data replicas
 to also interactively managing long-term divergence. That implies either application state
-is being directly exposed to the user, or the application code is using an API to present
-version control affordances. We encourage both communities to think outside the box of Git,
-which has proven to baffle not only end-users but also a substantial fraction of developers.
+is being directly exposed to the user, or the application itself offers
+version control affordances to the user. We encourage both communities to think outside the box of Git,
+which has proven to baffle not only end-users but also a substantial fraction of developers. The Divergence challenge may be as much a technical challenge as a conceptual challenge, asking us to reconsider the entrenched boundaries between technologies in the stack.
 
 % ==================================================================================================
 % MULTIPLICITY
@@ -1082,7 +1081,7 @@ In case of Extract Entity this was in principle possible.}
 \subsection*{Remarks: Managing Design Tradeoffs}
 
 If schema, code and data can all be updated atomically together, then multiplicity change is
-relatively straightforward  to handle. Existing scalar data can be trivially migrated to a
+relatively straightforward to handle. Existing scalar data can be trivially migrated to a
 list, and the code using the data will need to change to accommodate the list data.
 %
 However, ongoing divergence makes multiplicity change much more difficult, and exposes
@@ -1096,6 +1095,7 @@ problem would give developers or users tools to manage these tradeoffs. For exam
 might allow developers to specify the desired behavior for a particular pair of schemas based
 on the requirements of the domain. Or a system might even allow users to manually
 disambiguate their intent for a given write.
+Whatever the solution, it must be easy to learn and simple to use otherwise it won't be used in practice.
 
 % ==================================================================================================
 % MODELING
