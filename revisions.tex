@@ -7,9 +7,10 @@ We thank the anonymous reviewers for their helpful comments. In the following we
 
 \section{Summary review}
 
-We have clarified that this paper is not about a tool under development. Some of the problems are extracted from our different research projects but none of these projects span the rull range of problems.
+In the introduction we clarify that this paper is not about a tool under development. Some of the problems are extracted from our different research projects but none of these projects span the rull range of problems.
 
-\textrcolor{red}{explicitly speculative section?}
+We have clarified in the introduction that we avoid speculating about possible solutions to the challenge problems so as to not bias them towards our preferred approaches (and to avoid the issues where we disagree). A primary goal of this paper is to establish a neutral common ground where researchers can meet to discuss their alternative approaches.
+\textcolor{red}{Or do we want to add a speculative section?}
 
 \section{Reviewer A}
 
@@ -30,7 +31,21 @@ In \S\emph{Remarks: Managing Design Tradeoffs} we noted the importance of oferri
 
 \section{Reviewer B}
 
-As suggested we have replaced `type' with `schema' throughout the paper. The diagrams still use the letter `T' but we intend to change those to `S' in the camera-ready verison.
+As suggested we have replaced `type' with `schema' throughout the paper. Some diagrams still use the letter `T' for type but we intend to change those to `S' in the camera-ready version.
+
+\textcolor{red}{I don't know what to do with this:}
+\begin{displayquote}
+I liked the discussion of both local/singular and collaborative development and the problems associated with them. And I would have liked to see those two situations discussed separately, because of their technical complexity and also the processes (people) causing them.
+
+The placement of “local-first” felt like it didn’t help me understanding the problem. Maybe you can revisit the intent of those references. My preference would be try without them.
+\end{displayquote}
+
+\textcolor{red}{I don't know what to do with this:}
+\begin{displayquote}
+  While re-reading the submission, I noticed quite a similarity to a pattern language (in the sense of Christopher Alexander and/or the software patterns community). All sections covering a challenge problem present the context in which the problems occurs, describe the problem, and provide an example illustrating the problem to better relate to it. Also, they cross-reference other related challenge problems. The only obvious part that is missing (on purpose, see above) is a generative solution.
+
+  However, even though those elements are all present to a varying extent, the guiding structure of a pattern and their interconnection through a pattern language might be helpful but is missing. I strongly believe that transforming the material from a simple collection of problems into a pattern-language-like (the “like” because of the missing generative solutions) artifact would be helpful not only for the readers but the community helping provide those generative solutions and extending the (such) system of patterns…
+\end{displayquote}
 
 As suggested, the Literature Review was converted into a more appropriately named Related Work section.
 
@@ -38,34 +53,6 @@ As suggested, the Literature Review was converted into a more appropriately name
 \section{Reviewer C}
 
 \end{document}
-
-Reviewer B
------------------------------------------------------------------
-
-[Types]
-
-The concept of types as used in the paper was introduced too late (p. 3). And their definition (“we refer to the more fundamental layer as types, although we do not use the term in a precise technical sense”) was surprising, certainly from the point of view of the programming languages community. The “types” referred to in the paper felt closer to schemas / schema definitions (classic data types) than the more mathematical/logical foundations formulated in type systems. Maybe you can try to avoid or at least reduce this potential for confusion by using a different (better?) name. “Schema” might be a good start…
-
-[Problems/Solutions]
-
-I think that the submission being mainly about challenge problems and not about their solution(s) is important to (as mentioned in the abstract) allow the community explore the solution space themselves.
-
-[Collaboration / Local-first]
-
-I liked the discussion of both local/singular and collaborative development and the problems associated with them. And I would have liked to see those two situations discussed separately, because of their technical complexity and also the processes (people) causing them.
-
-The placement of “local-first” felt like it didn’t help me understanding the problem. Maybe you can revisit the intent of those references. My preference would be try without them.
-
-[Structure / Pattern Language]
-
-While re-reading the submission, I noticed quite a similarity to a pattern language (in the sense of Christopher Alexander and/or the software patterns community). All sections covering a challenge problem present the context in which the problems occurs, describe the problem, and provide an example illustrating the problem to better relate to it. Also, they cross-reference other related challenge problems. The only obvious part that is missing (on purpose, see above) is a generative solution.
-
-However, even though those elements are all present to a varying extent, the guiding structure of a pattern and their interconnection through a pattern language might be helpful but is missing. I strongly believe that transforming the material from a simple collection of problems into a pattern-language-like (the “like” because of the missing generative solutions) artifact would be helpful not only for the readers but the community helping provide those generative solutions and extending the (such) system of patterns…
-
-[Literature Review]
-
-To me, this was the weak spot of the submission. While I appreciate the links to related work, I was hoping for a description of (or reference to) the method(s) used to carry out the review. There are certainly several ways to address this. One of them might be to just provide that information. Another one might be to avoid “review” und discuss related work instead…
-
 
 Reviewer C
 -----------------------------------------------------------------
@@ -107,11 +94,3 @@ The comment about the presented example being out of reach for all existing lang
 
 the discussion and conclusions are very brief both at the end and in each case study and do not provide a clear path to solving the challenges presented in the paper. Even a speculative section pointing to combining features from different systems would be welcome to communicate the authors' vision of the future of interactive programming systems.
 
-
-Meta-review
------------------------------------------------------------------
-Please revise this paper to satisfy the following suggestions:
-
-- clarify if the paper targets a concrete tool under development, present it, and link it to the different aspects
-- Make sure that all aspects are related to concrete tools, or explicitly saying that it is not possible or only in research prototypes
-- Include an explicitly speculative section when tools do not exist, or the authors want to share some ideas for the future. The authors should take the more detailed changes into account as well.

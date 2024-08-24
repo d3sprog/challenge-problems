@@ -78,7 +78,7 @@
 
 % \authorrunning{J. Edwards, T. Petricek, T. van der Storm, G. Litt}
 
-\keywords{Type Evolution, Schema Evolution, Live Programming, Local-first Programming, Version Control, Hot Reloading}
+\keywords{Type Evolution, Schema Evolution, Live Programming, Local-first Software, Version Control, Hot Reloading, Image-based Programming}
 
 % TODO: Please go to https://dl.acm.org/ccs/ccs.cfm and generate your Classification System
 
@@ -130,7 +130,7 @@ However there is still much room to improve feedback loops throughout software d
 
 In this paper we identify a common problem, \emph{Schema Change}, that stands athwart feedback loops in diverse contexts of software development. Schema Change has been extensively studied in the context of databases where it necesitates manual and error-prone data migrations.~\cite{erhard06} We observe analogous problems occuring in varied and less-studied contexts. For example, many live programming techniques treat state as ephemeral and recreate it after every edit, but when the shape of longer-lived state changes then the illusion of liveness is shattered -- hot reloading works until it doesn't. Likewise collaborative programming works smoothly when code changes can be exchanged that do not alter the expected shape of external data, but changes that cross that line must be coordinated outside of the version control system. We discuss further examples in \S\ref{sec:related} Related Work. In general, when the shape of data becomes a dependency then changes to that data's shape can require manual intervention which interrupts feedback loops. To coordinate research on these related problems we shift the focus to that of \emph{Interactive Programming Systems}~\cite{techdims} of all sorts and generalize the term `schema' to include not just database schema but also data types and specifications of all sorts, whether expressed in a formal language or left implicit in code.
 
-Our primary contribution is a suite of challenge problems exemplifying a diverse range of typical schema change scenarios that interrupt feedback loops. We believe these problems have not been completely solved in theory or practice (see \S\ref{sec:related} Related Work). While some of these problems come from our individual research efforts we have attempted to make neutral problem statements not slanted to our preferred approaches. None of our ongoing efforts yet address the full range of problems. Indeed the motivation of this paper is to provide a basis for communicating and collaborating between such related efforts, as well as to facilitate further research efforts. We hope these challange problems serve as examples to ground future research and as a basis for evaluating its results. We invite contributions of new challenge problems and look forward to discussing competing solutions.
+Our primary contribution is a suite of challenge problems exemplifying a diverse range of typical schema change scenarios that interrupt feedback loops. We believe these problems have not been completely solved in theory or practice, which we discuss further in \S\ref{sec:related} Related Work. While some of these problems come from our individual research efforts we have attempted to make neutral problem statements not slanted to our preferred approaches. None of our ongoing efforts yet address the full range of problems. Indeed the motivation of this paper is to provide a basis for communicating and collaborating between such related efforts, as well as to facilitate further research efforts. We hope these challange problems serve as examples to ground future research and as a basis for evaluating its results. We invite contributions of new challenge problems and look forward to discussing competing solutions.
 
 
 \begin{figure}[t]
@@ -245,7 +245,7 @@ schema evolution in future programming systems. We consider two characteristics.
 
 \paragraph{Challenge Problems.}
 These dimensions, layers, and variants generate a wide range of configurations for challenge problems, but
-our aim is not to cover all of them. Instead we use them to recast a number of
+our aim is not to cover all of them. Instead we use this perspective to recast a number of
 existing challenges in real-world programming systems as instances of the same problem of
 schema evolution. The case studies show how well-known solutions or problems in one domain
 map to another domain and they also provide and inspiration and a benchmark for
