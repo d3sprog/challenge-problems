@@ -86,36 +86,30 @@
 
 \begin{abstract}
 
-\textcolor{red}{JE: This structure is offputting. We should write a proper abstract. }
+Many improvements to programming have come from shortening feedback loops, for example with Integrated Development Environments, Unit Testing, Live Programming, and Distributed Version Control.
+\emph{Schema evolution} is a roadblock to feedback in many situations that deserves greater attention.
+When requirements on the shape of data change then existing data must be migrated into the new shape, and existing code must be modified to suit. In many cases these adaptations must be performed manually, or with ad hoc code. Manual schema evolution not only delays feedback but since it occurs outside the purvey of version control tools it also interrupts collaboration.
 
+Schema evolution has long been studied in databases. We observe that the problem also occurs in non-database contexts that have been less studied. We present a suite of challenge problems exemplifying this range of contexts, including traditional database programming as well as live front-end programming, model-driven development, and collaboration in computational documents. We systematize these various contexts by defining a set of layers and dimensions of schema evolution.
+
+We offer these challenge problems to ground future research on the general problem of schema evolution in interactive programming systems and to serve as a basis for evaluating the results of that research.
+We hope that better support for schema evolution will make programming more live and collaboration more fluid.
+
+\begin{comment}
+Old abstract.
 % Context: What is the broad context of the work? What is the importance of the general research area?
-
-\noindent\textbf{Context:} Many recent improvements to programming have come from shortening feedback loops, for example in Live Programming and Distributed Version Control systems.
-To continue progress in this direction we need to extend Live Programming across the entire development stack, and to extend collaboration beyond compile time.
-
+Many recent programming improvements have been enabled by shorter feedback loops. To further advance the state of programming, we need to enable rapid collaboration and make programming more live across the entire development stack. To do this, programming systems need to preserve state during development and interaction with the programmer.
 % Inquiry: What problem or question does the paper address? How has this problem or question been addressed?
-\noindent\textbf{Inquiry:} A key obstacle to live and collaborative programming systems is the problem of \emph{schema evolution}.
-When a programmer changes the structure of a datatype, a programming system needs to co-evolve
-existing live data and adapt code that implements the program behaviour to match the new structure.
-This problem has been studied in isolation as schema evolution in databases, but also recurs in hot code reloading in live programming and dynamic software updating.
-We connect these independent efforts in an interdisciplinary inquiry into the problem of schema change through all the layers of the development stack and across all the time-scales of programming.
-%Such schema evolutions must occur immediately during live programming, but also need to be conveyed through long-term unplanned collaborations.
-
+The key obstacle to live collaborative programming systems is the problem of \emph{type evolution}. When programmer changes the structure of a type, programming system needs to co-evolve. This problem has been studied in isolation as schema evolution in databases, hot code reloading in live programming and dynamic software updating, but we lack a unified comprehensive perspective.
 % Approach: What was done that unveiled new knowledge?
-\noindent\textbf{Approach:} We distilled a set of case studies from personal experience, the research literature, and common industry practices. These cases reveal schema change problems recurring in different contexts in the developer stack and at different time-scales of collaboration, not just in database production upgrades.
-
+In this paper, we develop a unified conceptual framework for analysing the problem of type evolution. We use the framework to study type evolution in five diverse case studies.
 % Knowledge: What new facts were uncovered? What new capabilities are enabled by the work?
-\noindent\textbf{Knowledge:} The problem of schema change is deeper, more widespread, and more interdisciplinary than commonly appreciated. It is a key obstacle to shortening feedback loops in diverse contexts of software development.
-
+By looking at the case studies through a unified perspective, we hope to inspire new thinking about the problem of type evolution and also encourage knowledge transfer across sub-fields.
 % Grounding: What argument, feasibility proof, artifacts, or results and evaluation support this work?
-\noindent\textbf{Grounding:} Our work takes the form of a suite of challenge problems drawn from real-world programming
-scenarios in diverse field such as live programming, database programming and model-driven
-development.
-%
-
+Our work takes the form of a sequence of challenge problems drawn from real-world programming scenario in diverse field such as live programming, database programming and model-driven development.
 % Importance: Why does this work matter?
-\noindent\textbf{Importance:} Schema change is a key problem for universal live programming and frictionless collaborative development. Our suite of challenge problems serve to ground further research and provide a basis for evaluation and comparison of results.
-
+Tackling the problem of type evolution in a unified way, enabled by our new conceptual framework, will make it possible to design and build a future generation of effective, live and collaborative programming systems.
+\end{comment}
 
 \end{abstract}
 
