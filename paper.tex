@@ -212,14 +212,14 @@ data that are structured by those schema. In specific case studies, the layers m
 different aspects of programs, some may be not present, and some may be implicit.
 
 \begin{itemize}
-\item \emph{Schema} -- structure program data and determine aspects of code. A change in schema
+\item \emph{Schema} -- structures program data and determines aspects of code. A change in schema
   requires a corresponding change in data and code. Schema may be explicit (database schema, type declarations)
   or implicit (expected shape of data structures or a document).
 \item \emph{Data} -- information stored by the program. Data may be more permanent (data in a
-  database) or less permanent (state in live programming). When scheam evolve, data needs to be
+  database) or less permanent (state in live programming). When schemas evolve, data needs to be
   updated or (in case of transient state) discarded.
 \item \emph{Code} -- or program logic, but not including source code that defines schema.
-  When schema evolve, code needs to change to consume/produce data of the correct shape.
+  When schemas evolve, code needs to change to consume/produce data of the correct shape.
 \end{itemize}
 
 \paragraph{Program Variants.}
