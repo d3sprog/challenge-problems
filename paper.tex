@@ -88,7 +88,7 @@
 
 Many improvements to programming have come from shortening feedback loops, for example with Integrated Development Environments, Unit Testing, Live Programming, and Distributed Version Control.
 A barrier to feedback that deserves greater attention is \emph{Schema Evolution}.
-When requirements on the shape of data change then existing data must be migrated into the new shape, and existing code must be modified to suit. In many cases these adaptations must be performed manually, or with ad hoc code. Manual schema evolution not only delays feedback but since it occurs outside the purvey of version control tools it also interrupts collaboration.
+When requirements on the shape of data change then existing data must be migrated into the new shape, and existing code must be modified to suit. Currently these adaptations are often performed manually, or with ad hoc code. Manual schema evolution not only delays feedback but since it occurs outside the purvey of version control tools it also interrupts collaboration.
 
 Schema evolution has long been studied in databases. We observe that the problem also occurs in non-database contexts that have been less studied. We present a suite of challenge problems exemplifying this range of contexts, including traditional database programming as well as live front-end programming, model-driven development, and collaboration in computational documents. We systematize these various contexts by defining a set of layers and dimensions of schema evolution.
 
@@ -122,7 +122,7 @@ Tackling the problem of type evolution in a unified way, enabled by our new conc
 Many improvements to the practice of programming have come from speeding up feedback loops. Replacing punched cards with interactive terminals was one of the greatest leaps of productivity in the history of programming. Unit tests and interactive type checking provide faster feedback on errors that modern programmers now expect. Research on Live Programming~\cite{rein2018exploratory} seeks to provide immediate feedback on runtime behavior while editing. Feedback is equally valuable in collaborative programming~\cite{ProGit, goldman2011real,kurniawan2015coder,replit}) to convey changes between coworkers with less friction.
 However there is still much room to improve feedback loops throughout software development.
 
-In this paper we identify a common problem, \emph{Schema Change}, that stands athwart feedback loops in diverse contexts of software development. Schema Change has been extensively studied in the context of databases where it necessitates manual and error-prone data migrations.~\cite{erhard06} We observe analogous problems occuring in varied and less-studied contexts. For example, many live programming techniques treat state as ephemeral and recreate it after every edit, but when the shape of longer-lived state changes then the illusion of liveness is shattered -- hot reloading works until it doesn't. Likewise collaborative programming works smoothly when code changes can be exchanged that do not alter the expected shape of external data, but changes that cross that line must be coordinated outside of the version control system. We discuss further examples in \S\ref{sec:related} Related Work. In general, when the shape of data becomes a dependency then changes to that data's shape can require manual intervention which interrupts feedback loops. To coordinate research on these related problems we shift the focus to that of \emph{Interactive Programming Systems}~\cite{techdims} of all sorts and generalize the term `schema' to include not just database schema but also data types and specifications of all sorts, whether expressed in a formal language or left implicit in code.
+In this paper we identify a common problem, \emph{Schema Change}, that interferes with feedback loops in diverse contexts of software development. Schema Change has been extensively studied in the context of databases where it necessitates manual and error-prone data migrations ~\cite{erhard06}. We observe analogous problems occuring in varied and less-studied contexts. For example, many live programming techniques treat state as ephemeral and recreate it after every edit, but when the shape of longer-lived state changes then the illusion of liveness is shattered -- hot reloading works until it doesn't. Likewise collaborative programming works smoothly when code changes can be exchanged that do not alter the expected shape of external data, but changes that cross that line must be coordinated outside of the version control system. We discuss further examples in \S\ref{sec:related} Related Work. In general, when the shape of data becomes a dependency then changes to that data's shape can require manual intervention which interrupts feedback loops. To coordinate research on these related problems we shift the focus to that of \emph{Interactive Programming Systems}~\cite{techdims} of all sorts and generalize the term `schema' to include not just database schema but also data types and specifications of all sorts, whether expressed in a formal language or left implicit in code.
 
 Our primary contribution is a suite of challenge problems exemplifying a diverse range of typical schema change scenarios that interrupt feedback loops. We believe these problems have not been completely solved in theory or practice, which we discuss further in \S\ref{sec:related} Related Work. While some of these problems come from our individual research efforts we have attempted to make neutral problem statements not slanted to our preferred approaches. None of our ongoing efforts yet address the full range of problems. Indeed the motivation of this paper is to provide a basis for communicating and collaborating between such related efforts, as well as to facilitate further research efforts. We hope these challenge problems serve as examples to ground future research and as a basis for evaluating its results. We invite contributions of new challenge problems and look forward to discussing competing solutions.
 
@@ -212,14 +212,14 @@ data that are structured by those schema. In specific case studies, the layers m
 different aspects of programs, some may be not present, and some may be implicit.
 
 \begin{itemize}
-\item \emph{Schema} -- structure program data and determine aspects of code. A change in schema
+\item \emph{Schema} -- structures program data and determines aspects of code. A change in schema
   requires a corresponding change in data and code. Schema may be explicit (database schema, type declarations)
   or implicit (expected shape of data structures or a document).
 \item \emph{Data} -- information stored by the program. Data may be more permanent (data in a
-  database) or less permanent (state in live programming). When scheam evolve, data needs to be
+  database) or less permanent (state in live programming). When schemas evolve, data needs to be
   updated or (in case of transient state) discarded.
 \item \emph{Code} -- or program logic, but not including source code that defines schema.
-  When schema evolve, code needs to change to consume/produce data of the correct shape.
+  When schemas evolve, code needs to change to consume/produce data of the correct shape.
 \end{itemize}
 
 \paragraph{Program Variants.}
@@ -242,7 +242,7 @@ These dimensions, layers, and variants generate a wide range of configurations f
 our aim is not to cover all of them. Instead we use this perspective to recast a number of
 existing challenges in real-world programming systems as instances of the same problem of
 schema evolution. The case studies show how well-known solutions or problems in one domain
-map to another domain and they also provide and inspiration and a benchmark for
+map to another domain, and we hope they provide an inspiration and a benchmark for
 developers of future programming systems.
 
 % ==================================================================================================
@@ -526,9 +526,7 @@ source code edits, but would typically offer UI affordances for the commands. Th
 try to minimize the number and complexity of commands that must be introduced and also the
 interruption to live execution of the code.
 
-The Extract Entity challenge in the non-local case (for local-first software) is similar to the
-local live programming challenge except that the context is an application that offers similar
-functionality with peer-to-peer collaboration. In this context the schema change does not need
+We can also consider the Extract Entity challenge in a local-first ~\cite{localfirst} case, where the context is an application that offers peer-to-peer collaboration. In this context the schema change does not need
 to be performed interactively -- a developer can take some time to build, test, and package a
 solution, perhaps using an API or DSL. The hard part comes when the schema change is to
 be deployed across all the replicas. This deployment must synchronize code and data upgrades
@@ -981,7 +979,7 @@ which has proven to baffle not only end-users but also a substantial fraction of
 
 \section{Multiplicity Change in Data Formats}
 
-The challenge of maintaining multiple divergent schema in programming systems can
+The challenge of maintaining multiple divergent schemas in programming systems can
 be well illustrated using \emph{multiplicity change}, which is a common kind of schema change.
 In this case a field changes from storing
 a single value to storing multiple values. For example, we might start by storing a single
@@ -1056,8 +1054,7 @@ with different tradeoffs:
 \end{enumerate}
 
 Because the intent of the writer to the scalar schema cannot be unambiguously interpreted from the
-write alone, it is impossible to make a perfect choice among these options. The programming system
-thus needs to consult the user.
+write alone, it is impossible to make a perfect choice among these options. A programming system could consult the user to disambiguate their intent, as well as choose (and explain) a default behavior.
 
 \frameworkbox{
 \begin{wrapfigure}{r}{13em}
