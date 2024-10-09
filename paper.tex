@@ -1,4 +1,4 @@
-\documentclass[english,submission]{programming}
+\documentclass[english,crc]{programming}
 
 \usepackage{inputenx}
 \usepackage[backend=bibtex]{biblatex}
@@ -50,37 +50,77 @@
   area={Programming Systems},
 }
 
-\begin{document}
-
 % define natbib citet
 \newcommand{\citet}[1]{\citeauthor*{#1}~\cite{#1}}
 
+\begin{document}
+
+
 \title{Schema Evolution in Interactive Programming Systems}
 
-\author{Anonymous}
-\affiliation{blinded}
-% \author[a]{Jonathan Edwards}%[0000-0003-1958-7967]
-% \authorinfo{is an independent researcher. Contact him at \email{jonathanmedwards@gmail.com}.}
-% \affiliation[a]{Independent, Boston, MA, USA}
+\author[a]{Jonathan Edwards}[0000-0003-1958-7967]
+\authorinfo{is an independent researcher working on drastically simplifying programming. He is known
+for his Subtext series of programming language experiments and his blog at \href{https://alarmingdevelopment.org}{\texttt{alarmingdevelopment.org}}.
+He has been a researcher at MIT CSAIL and CDG/HARC. He tweets \href{https://x.com/jonathoda}{\texttt{@jonathoda}} and can be reached at
+\email{jonathanmedwards@gmail.com}.}
+\affiliation[a]{Independent, Boston, MA, USA}
 
-% \author[b]{Tomas Petricek}%[0000-0002-7242-2208]
-% \authorinfo{is an Associate Professor at Charles University. Contact him at \email{tomas@tomasp.net}.}
-% \affiliation[b]{Charles University, Prague, Czechia}
+\author[b]{Tomas Petricek}[0000-0002-7242-2208]
+\authorinfo{is an assistant professor at Charles University. He
+is interested in finding easier and more accessible ways of thinking
+about programming. To do so, he combines technical work on
+programming systems and tools with research into history and
+philosophy of science. His work can be found at \href{https://tomasp.net}{\texttt{tomasp.net}} and
+he can be reached at \email{tomas@tomasp.net}.}
+\affiliation[b]{Charles University, Prague, Czechia}
 
-% \author[c,d]{Tijs van der Storm}%[0000-0001-8853-7934]
-% \authorinfo{is a Senior Researcher at Centrum Wiskunde \&\ Informatica (CWI) and a Professor at the University of Groningen. Contact him at \email{storm@cwi.nl}.}
-% \affiliation[c]{Centrum Wiskunde \&\ Informatica (CWI), Amsterdam, Netherlands}
-% \affiliation[d]{University of Groningen, Groningen, Netherlands}
+\author[c,d]{Tijs van der Storm}[0000-0001-8853-7934]
+\authorinfo{is a senior researcher in the Software Analysis and Transformation (SWAT) group at Centrum Wiskunde \&\ Informatica (CWI) in Amsterdam,
+and full professor in Software Engineering at the University of Groningen in Groningen. His research focuses on improving programmer
+experience through new and better software languages and developing the tools and techniques to engineer them in a modular and interactive fashion. Contact him at \email{storm@cwi.nl}.}
+\affiliation[c]{Centrum Wiskunde \&\ Informatica (CWI), Amsterdam, Netherlands}
+\affiliation[d]{University of Groningen, Groningen, Netherlands}
 
-% \author[e]{Geoffrey Litt}%[0000-0003-0858-5165]
-% \authorinfo{is a Senior Researcher at the independent research lab Ink \& Switch. Contact him at \email{gklitt@gmail.com}.}
-% \affiliation[e]{Ink \& Switch, Planet Earth}
+\author[e]{Geoffrey Litt}[0000-0003-0858-5165]
+\authorinfo{is a senior researcher at the independent research lab Ink \& Switch.
+Previously, he completed a PhD at MIT CSAIL in the Software Design Group advised by Daniel Jackson.
+Before that, he spent five years as an early engineer and designer building the edtech startup Panorama Education (YC S13).
+Contact him at \email{gklitt@gmail.com}.}
+\affiliation[e]{Ink \& Switch, Planet Earth}
 
-% \authorrunning{J. Edwards, T. Petricek, T. van der Storm, G. Litt}
+\authorrunning{J. Edwards, T. Petricek, T. van der Storm, G. Litt}
 
 \keywords{Type Evolution, Schema Evolution, Live Programming, Local-first Software, Version Control, Hot Reloading, Image-based Programming}
 
-% TODO: Please go to https://dl.acm.org/ccs/ccs.cfm and generate your Classification System
+\begin{CCSXML}
+<ccs2012>
+   <concept>
+       <concept_id>10011007.10011006.10011008</concept_id>
+       <concept_desc>Software and its engineering~General programming languages</concept_desc>
+       <concept_significance>300</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10011007.10011006.10011008.10011024.10011028</concept_id>
+       <concept_desc>Software and its engineering~Data types and structures</concept_desc>
+       <concept_significance>500</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10011007.10011006.10011073</concept_id>
+       <concept_desc>Software and its engineering~Software maintenance tools</concept_desc>
+       <concept_significance>300</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10002951.10002952.10003219</concept_id>
+       <concept_desc>Information systems~Information integration</concept_desc>
+       <concept_significance>300</concept_significance>
+       </concept>
+ </ccs2012>
+\end{CCSXML}
+
+\ccsdesc[300]{Software and its engineering~General programming languages}
+\ccsdesc[500]{Software and its engineering~Data types and structures}
+\ccsdesc[300]{Software and its engineering~Software maintenance tools}
+\ccsdesc[300]{Information systems~Information integration}
 
 \maketitle
 
@@ -88,7 +128,7 @@
 
 Many improvements to programming have come from shortening feedback loops, for example with Integrated Development Environments, Unit Testing, Live Programming, and Distributed Version Control.
 A barrier to feedback that deserves greater attention is \emph{Schema Evolution}.
-When requirements on the shape of data change then existing data must be migrated into the new shape, and existing code must be modified to suit. Currently these adaptations are often performed manually, or with ad hoc code. Manual schema evolution not only delays feedback but since it occurs outside the purvey of version control tools it also interrupts collaboration.
+When requirements on the shape of data change then existing data must be migrated into the new shape, and existing code must be modified to suit. Currently these adaptations are often performed manually, or with ad hoc scripts. Manual schema evolution not only delays feedback but since it occurs outside the purview of version control tools it also interrupts collaboration.
 
 Schema evolution has long been studied in databases. We observe that the problem also occurs in non-database contexts that have been less studied. We present a suite of challenge problems exemplifying this range of contexts, including traditional database programming as well as live front-end programming, model-driven development, and collaboration in computational documents. We systematize these various contexts by defining a set of layers and dimensions of schema evolution.
 
@@ -119,12 +159,12 @@ Tackling the problem of type evolution in a unified way, enabled by our new conc
 
 \section{Introduction}
 
-Many improvements to the practice of programming have come from speeding up feedback loops. Replacing punched cards with interactive terminals was one of the greatest leaps of productivity in the history of programming. Unit tests and interactive type checking provide faster feedback on errors that modern programmers now expect. Research on Live Programming~\cite{rein2018exploratory} seeks to provide immediate feedback on runtime behavior while editing. Feedback is equally valuable in collaborative programming~\cite{ProGit, goldman2011real,kurniawan2015coder,replit}) to convey changes between coworkers with less friction.
+Many improvements to the practice of programming have come from speeding up feedback loops. Replacing punched cards with interactive terminals was one of the greatest leaps of productivity in the history of programming. Unit tests and interactive type checking provide faster feedback on errors that modern programmers now expect. Research on Live Programming~\cite{rein2018exploratory} seeks to provide immediate feedback on runtime behavior while editing. Feedback is equally valuable in collaborative programming~\cite{ProGit, goldman2011real,kurniawan2015coder,replit} to convey changes between coworkers with less friction.
 However there is still much room to improve feedback loops throughout software development.
 
-In this paper we identify a common problem, \emph{Schema Change}, that interferes with feedback loops in diverse contexts of software development. Schema Change has been extensively studied in the context of databases where it necessitates manual and error-prone data migrations ~\cite{erhard06}. We observe analogous problems occuring in varied and less-studied contexts. For example, many live programming techniques treat state as ephemeral and recreate it after every edit, but when the shape of longer-lived state changes then the illusion of liveness is shattered -- hot reloading works until it doesn't. Likewise collaborative programming works smoothly when code changes can be exchanged that do not alter the expected shape of external data, but changes that cross that line must be coordinated outside of the version control system. We discuss further examples in \S\ref{sec:related} Related Work. In general, when the shape of data becomes a dependency then changes to that data's shape can require manual intervention which interrupts feedback loops. To coordinate research on these related problems we shift the focus to that of \emph{Interactive Programming Systems}~\cite{techdims} of all sorts and generalize the term `schema' to include not just database schema but also data types and specifications of all sorts, whether expressed in a formal language or left implicit in code.
+In this paper we identify a common problem, \emph{Schema Change}, that interferes with feedback loops in diverse contexts of software development. Schema Change has been extensively studied in the context of databases where it necessitates manual and error-prone data migrations ~\cite{erhard06}. We observe analogous problems occuring in varied and less-studied contexts. For example, many live programming techniques treat state as ephemeral and recreate it after every edit, but when the shape of longer-lived state changes then the illusion of liveness is shattered -- hot reloading works until it doesn't. Likewise collaborative programming works smoothly when code changes can be exchanged that do not alter the expected shape of external data, but changes that cross that line must be coordinated outside of the version control system. We discuss further examples in Section~\ref{sec:related}. In general, when the shape of data becomes a dependency, changes to that data's shape can require manual intervention which interrupts feedback loops. To coordinate research on these related problems we shift the focus to \emph{Interactive Programming Systems}~\cite{techdims} and generalize the term `schema' to include not just database schema but also data types and specifications of all sorts, whether expressed in a formal language or left implicit in code.
 
-Our primary contribution is a suite of challenge problems exemplifying a diverse range of typical schema change scenarios that interrupt feedback loops. We believe these problems have not been completely solved in theory or practice, which we discuss further in \S\ref{sec:related} Related Work. While some of these problems come from our individual research efforts we have attempted to make neutral problem statements not slanted to our preferred approaches. None of our ongoing efforts yet address the full range of problems. Indeed the motivation of this paper is to provide a basis for communicating and collaborating between such related efforts, as well as to facilitate further research efforts. We hope these challenge problems serve as examples to ground future research and as a basis for evaluating its results. We invite contributions of new challenge problems and look forward to discussing competing solutions.
+Our primary contribution is a suite of challenge problems exemplifying a diverse range of typical schema change scenarios that interrupt feedback loops. We believe these problems have not been completely solved in theory or practice. While some of them come from our individual research efforts we have attempted to make neutral problem statements independent of our preferred approaches. None of our ongoing efforts yet address the full range of problems. Indeed, the aim of this paper is to provide a basis for collaboration between such related efforts, facilitate further research, as well as to serve as a basis for evaluating research results. We invite contributions of new challenge problems and look forward to discussing competing solutions.
 
 
 \begin{figure}[t]
@@ -162,17 +202,17 @@ of a program, namely data and code. As a result, a change of schema requires a
 corresponding change in data and code.
 
 \begin{wrapfigure}{r}{12em}
-\vspace{-1.5em}
+\vspace{-1.6em}
 \includegraphics[width=12em]{figures/arr-basic.png}
-\vspace{-1.5em}
+\vspace{-1.6em}
 \end{wrapfigure}
 
 The situation is illustrated on the right. We start with code $C_1$ and
-data $D_1$ that have a shape corresponding to schema $T_1$. When the schema changes from $T_1$ to $T_2$ ($\rightarrow$),
+data $D_1$ that have a shape corresponding to schema $S_1$. When the schema changes from $S_1$ to $S_2$ ($\rightarrow$),
 a corresponding change needs to take place in data $D_1$ and code $C_1$. The problem
 of \emph{schema evolution} is synthesising ($\Rightarrow$) suitable corresponding transformations
 that will update data $D_1$ and code $C_1$ into new versions $D_2$ and $C_2$ that correspond
-to the new schema $T_2$.
+to the new schema $S_2$.
 %
 The complexity of the problem varies and finding a suitable transformation may require user
 input. If there is code, it typically needs to be transformed, but data can sometimes be
@@ -182,15 +222,15 @@ them inside a box.
 \begin{wrapfigure}{r}{12em}
 \vspace{-1.5em}
 \includegraphics[width=12em]{figures/arr-forkjoin.png}
-\vspace{-1.5em}
+\vspace{-2em}
 \end{wrapfigure}
 
 Collaboration adds the \emph{non-local} dimension to the problem. A program may have multiple
 variants that exist independently and changes made to them may need to be synchronized. The
-situation is illustrated on the right. Here, the initial schema $T_1$ is transformed by two
-users independently into schema $T_2$ and $T_3$. The corresponding data is transformed accordingly,
+situation is illustrated on the right. Here, the initial schema $S_1$ is transformed by two
+users independently into schema $S_2$ and $S_3$. The corresponding data is transformed accordingly,
 producing $D_2$ and $D_3$. The challenge is now merging these two diverging transformation and
-obtaining a schema $T_4$ and data $D_4$ that adopt both of the changes.
+obtaining a schema $S_4$ and data $D_4$ that adopt both of the changes.
 
 The difficulty of the problem depends on what kind of synchronization we want to support.
 If all variants of the program should eventually adopt all changes (converge), the complexity
@@ -200,12 +240,14 @@ of a program converge, but data may diverge.
 
 %\subsection{Conceptual Framework}
 
+\vspace{-0.4em}
 \paragraph{Locality of Change.}
 We can view diverse real-world schema evolution problems from a common perspective by distinguishing between two different dimensions of schema change.
 The \emph{local dimension} is concerned with how schema evolution affects data and code within
 a single program. The \emph{non-local dimension} is concerned with how schema evolution
 propagates across different program variants that may exist independently.
 
+\vspace{-0.4em}
 \paragraph{Program Layers.}
 We consider the more permanent layer of \emph{schema} and two less permanent layers of code and
 data that are structured by those schema. In specific case studies, the layers may map to
@@ -219,9 +261,10 @@ different aspects of programs, some may be not present, and some may be implicit
   database) or less permanent (state in live programming). When schemas evolve, data needs to be
   updated or (in case of transient state) discarded.
 \item \emph{Code} -- or program logic, but not including source code that defines schema.
-  When schemas evolve, code needs to change to consume/produce data of the correct shape.
+  When schemas evolve, code needs to change to work with data of the correct shape.
 \end{itemize}
 
+\vspace{-0.4em}
 \paragraph{Program Variants.}
 In programming systems that enable collaboration, multiple variants of a program may exist
 concurrently and their schema, data and code may need to be synchronized. Although collaboration
@@ -237,13 +280,14 @@ schema evolution in future programming systems. We consider two characteristics.
   changes can be done on any of the multiple co-existing variants of a program.
 \end{itemize}
 
+\vspace{-0.4em}
 \paragraph{Challenge Problems.}
-These dimensions, layers, and variants generate a wide range of configurations for challenge problems, but
-our aim is not to cover all of them. Instead we use this perspective to recast a number of
+These dimensions, layers, and variants generate a wide range of problem configuration.
+Our aim is not to cover all of them. Instead we use this perspective to recast a number of
 existing challenges in real-world programming systems as instances of the same problem of
 schema evolution. The case studies show how well-known solutions or problems in one domain
-map to another domain, and we hope they provide an inspiration and a benchmark for
-developers of future programming systems.
+map to another domain. We hope they provide an inspiration and a benchmark for
+developers of future systems.
 
 % ==================================================================================================
 % ELM
@@ -297,6 +341,17 @@ implementation of the \texttt{render} or \texttt{update} function changes, but t
 discard state and restart the application when the \texttt{State} type changes. A more effective
 live programming system would allow live updates to the structure of the two types.
 
+\challenge{Live State Type Evolution}
+Assume that we have a running todo list with the above state and events. To test the application,
+the programmer has already created a number of items and so there is a value of the
+\texttt{State} type that represents the current state of the application such as:
+
+\begin{lstlisting}[language=ml,morekeywords={true,false}]
+{ items : [
+   { id = 1; title = "Check Twitter"; completed = true }
+   { id = 2; title = "Write the paper"; completed = false } ] }
+\end{lstlisting}
+
 \begin{table}[t]
 \begin{tabular}{lll}\toprule
 {\firamedium Change} & {\firamedium What} & {\firamedium How}\\\midrule
@@ -313,18 +368,6 @@ Modify & structure of \texttt{State} & Migrate state value and edit code accordi
 \vspace{-1em}
 \end{table}
 
-\challenge{Live State Type Evolution}
-Assume that we have a running todo list with the above state and events. To test the application,
-the programmer has already created a number of items and so there is a value of the
-\texttt{State} type that represents the current state of the application such as:
-
-\begin{lstlisting}[language=ml,morekeywords={true,false}]
-{ items : [
-   { id = 1; title = "Check Twitter"; completed = true }
-   { id = 2; title = "Write the paper"; completed = false } ] }
-\end{lstlisting}
-
-\noindent
 There is a number of edits to the types that the programmer may now want to do without
 restarting the application and losing the data. For example, they may want to change the
 \texttt{completed} field of \texttt{Item} to instead store optional completion time:
@@ -332,8 +375,7 @@ restarting the application and losing the data. For example, they may want to ch
 \begin{lstlisting}[language=ml]
 type Item = { id : id; title : string; completed : Maybe<DateTime> }
 type State = { items : Item list }
-type Event =
-  | .. | SetCompleted of id * Maybe<DateTime> | ..
+type Event = .. | SetCompleted of id * Maybe<DateTime> | ..
 \end{lstlisting}
 
 \noindent
@@ -362,12 +404,12 @@ migrate both the original value and implementation of both functions to match th
 \vspace{0em}
 \end{wrapfigure}
 \frameworkboxtitle{Primitive Schema Transformations}
-In this case study, the evolving schema is the \texttt{State} type. When the type evolves,
-the program logic (code) and the current live value of the type (data) needs to evolve
+Here, the evolving schema is the \texttt{State} type. When the type evolves,
+the program logic (code) and the current live value (data) needs to evolve
 correspondingly. The challenge is easier if we see the evolution as a sequence of more primitive
 transformations, such as those in Table~\ref{tbl:elmchanges}, that each has a corresponding
 primitive code and data transformation. The primitive transformations may either be invoked
-through a user interface, or inferred from textual code edits made by the programmer.
+through a UI, or inferred from textual code edits made by the programmer.
 }
 
 \subsection*{Remarks: Requirements and Implementation}
@@ -390,7 +432,7 @@ description of the edits performed by the user.
 \section{Entity Evolution in Data-Centric Systems}
 If we see programming systems as stateful environments where programs co-exist with their persistent
 data, we can gain valuable insights from research on database systems.
-Although schema evolution is well-studied in databases (\S\ref{sec:related} Related Work), such past work
+Although schema evolution is well-studied in databases (Section~\ref{sec:related}), such past work
 does not resolve all problems in our second challenge.
 
 As an example, consider the Acme Corporation that records orders from various customers for
@@ -484,6 +526,22 @@ of the customer? To repair that error we need to merge the falsely distinct cust
 and fix any references from orders. We call this operation \emph{Merge Entities} -- note that
 it is not a schema change but a data change, yet nevertheless not commonly supported as an operaton in database APIs or DMLs.
 
+
+\begin{table}[t]
+\begin{tabular}{lll}\toprule
+{\firamedium Change} & {\firamedium What} & {\firamedium How}\\\midrule
+Extract & new type of entity & Migrate data to a new table and add links \\
+Absorb & a linked type of entity & Migrate data and remove unneeded table \\
+Merge & multiple data items & Automatic de-duplication with mistake handling \\
+Split & multiple data items & Interactively, following user guidance\\
+\bottomrule
+\end{tabular}
+\vspace{0.3em}
+\caption{Changes to types and how a programming system should handle them}
+\label{tbl:dbchanges}
+\vspace{-1em}
+\end{table}
+
 Entity evolution can happen through operations such as those listed in
 Table~\ref{tbl:dbchanges}. Every schema operation should have an inverse as the
 change in requirements that triggered an evolution might change back again.
@@ -503,21 +561,6 @@ and shouldn't have been extracted. These are arguments that we shouldn't need \t
 Entity}, contradicting the principle that evolution operations should be invertible.
 It is interesting to observe that evolution in nature can also fail to invert, leaving
 behind vestigial features. We consider this to be an open issue.
-
-\begin{table}[t]
-\begin{tabular}{lll}\toprule
-{\firamedium Change} & {\firamedium What} & {\firamedium How}\\\midrule
-Extract & new type of entity & Migrate data to a new table and add links \\
-Absorb & a linked type of entity & Migrate data and remove unneeded table \\
-Merge & multiple data items & Automatic de-duplication with mistake handling \\
-Split & multiple data items & Interactively, following user guidance\\
-\bottomrule
-\end{tabular}
-\vspace{0.3em}
-\caption{Changes to types and how a programming system should handle them}
-\label{tbl:dbchanges}
-\vspace{-1em}
-\end{table}
 
 \subsection*{Remarks: Representation and Replication}
 The central problem is to coordinate the schema evolution with code edits to keep the system
@@ -571,16 +614,16 @@ preferably by reducing the need for developer-written code in the first place.
 
 \frameworkbox{
 \begin{wrapfigure}{r}{12em}
-\vspace{-0.5em}
+\vspace{-2em}
 \includegraphics[width=12em]{figures/arr-db.png}
-\vspace{-1em}
+\vspace{-1.5em}
 \end{wrapfigure}
 \frameworkboxtitle{Equivalence in Schema Evolution}
 %We described our conceptual framework in terms of types, code and data, but this case study shows that the same patterns appear elsewhere.
 In database systems, the schema
 $S_1$ changes into $S_2$ and the data $D_1$ need to transform to corresponding $D_2$.
 Our framing shows that queries $Q_1$ also need to transform, which is not always addressed
-in work on schema evolution. Extract/Absorb Entity operations are also interesting because
+in work on schema evolution. Extract/Absorb Entity are also interesting because
 they transform an equivalent pair of schemas and so it should be possible to apply them
 (and the corresponding data and query transformations) automatically.
 }
@@ -602,10 +645,9 @@ and inspired by a typical use of Notion~\cite{notion}. A number of co-organizers
 a conference that will feature talks by several invited speakers. They need to agree on the
 speaker list, contact speakers and calculate the conference budget.
 %
-The ideas in this section also apply to work on computational scientific notebooks
-that combine code and data such as Jupyter \cite{Kluyver2016}. We hope to contribute to ongoing
-work on advancing the format as done by Nextjournal \cite{Nextjournal21}, Nota~\cite{Crichton2021}
-and Living Papers~\cite{Heer2023}.
+The ideas in this section also apply to computational scientific notebooks
+that combine code and data \cite{Kluyver2016}. We hope to contribute to ongoing
+work advancing the format \cite{Nextjournal21,Crichton2021,Heer2023}.
 
 \begin{figure}
 \begin{adjustwidth}{-2.5em}{-2.5em}
@@ -735,22 +777,6 @@ Tomas. The newly added speaker should be reformatted into the new format; for th
 ``Organizer'' column of the newly created table, the system may use a suitable default value
 or ask the user interactively.
 
-\frameworkbox{
-\begin{wrapfigure}{r}{13em}
-\vspace{-0.5em}
-\includegraphics[width=13em]{figures/arr-datafork.png}
-\vspace{-1em}
-\end{wrapfigure}
-\frameworkboxtitle{Merging Data and Code Edits}
-In this example, the \emph{schema} is implicit and represents the structure of the document.
-It involves two independent edits. In one (top right), the data $D_1$ is
-changed to $D_2'$, but the schema $T_1$ remains unchanged. In the other (bottom left), the
-schema $T_1$ and data $D_1$ co-evolve into $T_2$ and $D_2$ and the data is further changed
-to $D_3$. The challenge is to merge the two edits and obtain jointly modified data $D_3'$
-of schema $T_2$. In the next section, we will see the same pattern, but also involving
-code edits. We assume the \emph{convergence} model in this section, but will discuss
-the more challenging \emph{divergence} model later in the paper.}
-
 \subsection*{Remarks: Requirements and Representation}
 It should be possible to automatically merge any two sequences of edits (changing both
 the document structure and data) and the order in which the edits are applied should also not
@@ -761,6 +787,23 @@ The schema and data evolution happens through a sequence of edits. Table~\ref{tb
 lists edits appearing in our examples (but not a complete list). A system may
 use a structure editor that provides high-level commands for triggering those edits.
 Recognizing user intent from plain text editing of source code may make the challenge harder.
+
+\frameworkbox{
+\begin{wrapfigure}{r}{13em}
+\vspace{-0.5em}
+\includegraphics[width=13em]{figures/arr-datafork.png}
+\vspace{-1em}
+\end{wrapfigure}
+\frameworkboxtitle{Merging Data and Code Edits}
+In this example, the \emph{schema} is implicit and represents the structure of the document.
+It involves two independent edits. In one (top right), the data $D_1$ is
+changed to $D_2'$, but the schema $S_1$ remains unchanged. In the other (bottom left), the
+schema $S_1$ and data $D_1$ co-evolve into $S_2$ and $D_2$ and the data is further changed
+to $D_3$. The challenge is to merge the two edits and obtain jointly modified data $D_3'$
+of schema $S_2$. In the next section, we will see the same pattern, but also involving
+code edits. We assume the \emph{convergence} model in this section, but will discuss
+the more challenging \emph{divergence} model later in the paper.}
+
 
 \challenge{Code Co-Evolution for Structured Document Edits}
 The conference organizers now also use the document to calculate the conference budget.
@@ -879,11 +922,11 @@ evolved schema.
 \frameworkboxtitle{Bidirectional Data Migration}
 The scenario adds the need for transferring data changes from a new schema to an older schema.
 In the diagram on the right, we only show data and schema, ignoring the code added by the
-accounting department. We start with data $D_1$ of schema~$T_1$. The accounting department
+accounting department. We start with data $D_1$ of schema~$S_1$. The accounting department
 evolves the schema (via Extract Entity), obtaining data $D_2$ of schema $T_2$ using an automatically
 generated forward transformation. It further modifies the data, obtaining $D_3$. When the
-accounting department receives data $D_3$, it needs to migrate it back from schema $T_2$ to
-$T_1$ using an automatically generated backward transformation. That is,
+accounting department receives data $D_3$, it needs to migrate it back from schema $S_2$ to
+$S_1$ using an automatically generated backward transformation. That is,
 schema evolution needs to be accompanied with both forward and backward projection for data
 (and code) migration.}
 
@@ -942,11 +985,11 @@ wants to revert to try a different way she had started before.}
 \end{wrapfigure}
 \frameworkboxtitle{Maintaining Divergent Variants}
 The extra complexity in the above scenario arises from the fact that both schema and
-code are forked and evolve independently. In one branch, original schema $T_1$ evolve
-into $T_2$ and original code $C_1$ into $C_3$. In another branch, original schema $T_1$
-evolve into $T'_2$ and original code $C_1$ into $C'_3$. The user then wants to merge
+code are forked and evolve independently. In one branch, original schema $S_1$ evolve
+into $S_2$ and original code $C_1$ into $C_3$. In another branch, original schema $S_1$
+evolve into $S'_2$ and original code $C_1$ into $C'_3$. The user then wants to merge
 the independently done changes into a new version of schema and code, written as
-$T_2 \diamond T'_2$ and $C_3 \diamond C'_3$. The diverging transformations may make
+$S_2 \diamond S'_2$ and $C_3 \diamond C'_3$. The diverging transformations may make
 conflicting changes that would need to be resolved with assistance from the user.}
 
 
@@ -1064,10 +1107,10 @@ write alone, it is impossible to make a perfect choice among these options. A pr
 \end{wrapfigure}
 \frameworkboxtitle{Bidirectional Data Migration (Revisited)}
 The diagram illustrating the scenario remains the same as in the case of divergence control
-for Extract Entity. The initial data and schema $D_1, T_1$ co-evolve into $D_2, T_2$ (adding
+for Extract Entity. The initial data and schema $D_1, S_1$ co-evolve into $D_2, S_2$ (adding
 multiplicity) and a new value is then assigned to the array of assignees, resulting in $D_3$.
 The difference from the earlier case is that the backward migration (from $D_3$ to $D'_3$)
-generated for the schema evolution (from $T_1$ to $T_2$) cannot be generated fully automatically.
+generated for the schema evolution (from $S_1$ to $S_2$) cannot be generated fully automatically.
 In case of Extract Entity this was in principle possible.}
 
 \subsection*{Remarks: Managing Design Tradeoffs}
@@ -1082,8 +1125,8 @@ those schema have to operate without total knowledge of the information availabl
 As a result, synchronizing writes across the schema requires making difficult tradeoffs, such as
 choosing to either preserve or destroy hidden data not visible to the writer.
 
-Although there is likely no silver bullet to navigate these tradeoffs, a good solution to this
-problem would give developers or users tools to manage these tradeoffs. For example, a system
+Although there is likely no silver bullet to navigate these tradeoffs, a good solution
+would give developers or users tools to manage these tradeoffs. For example, a system
 might allow developers to specify the desired behavior for a particular pair of schemas based
 on the requirements of the domain. Or a system might even allow users to manually
 disambiguate their intent for a given write.
@@ -1134,6 +1177,33 @@ Whatever the solution, it must be easy to learn and simple to use otherwise it w
 % \vspace{0.5em}
 % \end{figure}
 
+\section{Live Modeling Languages}
+\label{sec:livemodeling}
+%Related work
+%``Slogan'': editing a program is diverging from run-time schema.
+
+We considered live programming in the context of Elm in Section~\ref{sec:elm},
+where the challenge was to migrate run-time state (data) to a new schema to keep the program running.
+Work on language modeling offers a new perspective on the problem.
+In the context of executable domain-specific modeling languages~\cite{klint2011easy}, one can see a
+program in a domain-specific language as an instance of a metamodel (a static type, or, a schema) that
+defines the AST structure of the domain-specific language.
+
+A program in a domain-specific language in turn determines (defines/implies/induces) a run-time
+schema: the run-time structures of code (e.g., classes, inheritance links, declarations, method
+definitions etc.), as well as the structure of the run-time state (the heap, slots for user data, etc.).
+Whereas the example discussed in this section is framed in terms of metamodels and models, this can
+be seen as an expository device: the principles and challenges apply in more grammar-oriented settings.
+However, the framing also suggests interesting additional challenges.
+
+In the absence of live programming, the run-time \emph{schema} and \emph{code} do not change while
+running a program in a given domain-specific language and the run-time \emph{state} changes constantly.
+Live programming, however, requires reconciling changes to the program with the induced run-time structures
+of both the code and the state. This typically means that at a certain point (a quiescent point)
+during execution, the code structures need to be updated (hot swapped), and the state needs to be
+\textit{migrated}.
+
+
 \begin{figure}[t]
 \begin{adjustwidth}{-3em}{-3em}
 \begin{minipage}{0.4\textwidth}
@@ -1165,34 +1235,6 @@ state opened
 an example instance, as object diagram (middle) and as code (right).}
 \label{FIG:statemachineUML}
 \end{figure}
-
-~
-
-\section{Live Modeling Languages}
-\label{sec:livemodeling}
-%Related work
-%``Slogan'': editing a program is diverging from run-time schema.
-
-We considered live programming in the context of the Elm architecture in \S\ref{sec:elm},
-where the challenge was to migrate run-time state (data) to a new schema to keep the program running.
-Work on language modeling offers a new perspective on the problem.
-In the context of executable domain-specific modeling languages~\cite{klint2011easy}, one can see a
-program in a domain-specific language as an instance of a metamodel (a static type AKA schema) that
-defines the AST structure of the domain-specific language.
-
-A program in a domain-specific language in turn determines (defines/implies/induces) a run-time
-schema: the run-time structures of code (e.g., classes, inheritance links, declarations, method
-definitions etc.), as well as the structure of the run-time state (the heap, slots for user data, etc.).
-Whereas the example discussed in this section is framed in terms of metamodels and models, this can
-be seen as an expository device: the principles and challenges apply in more grammar-oriented settings.
-However, the framing also suggests interesting additional challenges.
-
-In the absence of live programming, the run-time \emph{schema} and \emph{code} do not change while
-running a program in a given domain-specific language and the run-time \emph{state} changes constantly.
-Live programming, however, requires reconciling changes to the program with the induced run-time structures
-of both the code and the state. This typically means that at a certain point (a quiescent point)
-during execution, the code structures need to be updated (hot swapped), and the state needs to be
-\textit{migrated}.
 
 Figure~\ref{FIG:statemachineUML} defines a simple state machine domain-specific language with
 on-entry actions, and typed global variables (loosely inspired by SML \cite{vanRozen19}).
@@ -1282,6 +1324,28 @@ machine has a current state (\lstinline{closed}) and the \lstinline{isClosed} fi
 value (\lstinline{true}) in the \lstinline{vars} map. It is instructive to note that the
 diagram encodes both static and dynamic aspects of the state machine language.
 
+
+\begin{table}[b]
+\begin{tabular}{lll}\toprule
+{\firamedium Change} & {\firamedium What} & {\firamedium How}\\\midrule
+Add/Rename & state & Simple  \\
+Remove & state & Structurally simple, but heuristic if state is current \\
+Add & variable & Add entry to map and initialize \\
+Remove & variable & Remove from the variable map (assuming it is unused)\\
+Rename & variable & Rename in class, preserving value\\
+Type change & variable & Migrate value in map \\
+Add & transition & Simple \\
+Remove & transition & Structurally simple, but heuristic for pending events\\
+Event change & transition & Structurally simple, but heuristic for pending events\\
+Add/remove & statement & Hotswap code at quiescent point of interpreter\\
+\bottomrule
+\end{tabular}
+\vspace{0.3em}
+\caption{Possible program changes and how to deal with them at run time}
+\label{tbl:smchanges}
+\vspace{-1em}
+\end{table}
+
 \challenge{Live Editing Domain-Specific Languages}
 The challenge is editing the state machine (Figure~\ref{FIG:statemachineUML}, right)
 created in the domain-specific language. This requires to \textit{patch}~\cite{SemanticDeltas} the
@@ -1303,29 +1367,6 @@ a description of how to deal with the respective change category. In summary:
 \item Note finally that rename variable is mentioned explicitly as a change: this makes it possible to preserve the run-time value of the variable.
 \end{itemize}
 
-\begin{table}[t]
-\begin{adjustwidth}{-2em}{-2em}
-\begin{tabular}{lll}\toprule
-{\firamedium Change} & {\firamedium What} & {\firamedium How}\\\midrule
-Add/Rename & state & Simple  \\
-Remove & state & Structurally simple, but heuristic if state is current \\
-Add & variable & Add entry to map and initialize \\
-Remove & variable & Remove from the variable map (NB: assumes variable is unused)\\
-Rename & variable & Rename in class, preserving value\\
-Type change & variable & Migrate value in map \\
-Add & transition & Simple \\
-Remove & transition & Structurally simple, but heuristic for pending events\\
-Event change & transition & Structurally simple, but heuristic for pending events\\
-Add/remove & statement & Hotswap code at quiescent point of interpreter\\
-\bottomrule
-\end{tabular}
-\vspace{0.3em}
-\caption{Possible program changes and how to deal with them at run time}
-\label{tbl:smchanges}
-\end{adjustwidth}
-\vspace{-1em}
-\end{table}
-
 \frameworkbox{
 \begin{wrapfigure}{r}{14em}
 \vspace{-0.75em}
@@ -1334,18 +1375,18 @@ Add/remove & statement & Hotswap code at quiescent point of interpreter\\
 \end{wrapfigure}
 \frameworkboxtitle{Code as Data Migrations}
 We could see this challenge as schema, code and data co-evolution as in the case of the Elm
-architecture in \S\ref{sec:elm}, but a more interesting perspective is to see the
-state machine definition as data $D_0$ conforming to a type $T$ defined by the metamodel.
+architecture in Section~\ref{sec:elm}, but a more interesting perspective is to see the
+state machine definition as data $D_0$ conforming to a type $S$ defined by the metamodel.
 
 When the state machine is instantiated, the metamodel and the definition are used to derive
-the run-time type ${}^+\!T_0$. The run-time data ${}^+\!D_0$ conforming to this type still
+the run-time type ${}^+\!S_0$. The run-time data ${}^+\!D_0$ conforming to this type still
 contain the state machine definition, but also the necessary run-time state required for
 its execution, which will produce new versions of the run-time data such as ${}^+\!D_0'$.
 
 If the state machine definition changes from $D_0$ to $D_1$ (top right), we can synthesize
-a new run-time state machine type ${}^+\!T_1$ and new data ${}^+\!D_1$ conforming to it.
+a new run-time state machine type ${}^+\!S_1$ and new data ${}^+\!D_1$ conforming to it.
 The challenge is to merge the two run-time types instantiated from different definitions
-to produce a type ${}^+\!T_0 \diamond {}+\!T_1$, but also merge the run-time state of the
+to produce a type ${}^+\!S_0 \diamond {}+\!S_1$, but also merge the run-time state of the
 running machine with the new instantiated state to obtain ${}^+\!D'_0 \diamond {}^+\!D_1$.
 }
 
@@ -1387,7 +1428,7 @@ Some tools provide a Domain Specific Language (DSL) to describe schema evolution
 Schema evolution is also a problem for NoSQL~\cite{sadalage12} databases. While such databases are sometimes called ``schemaless'' in effect that means the schema is left implicit and tools must try to infer it~\cite{storl20, storl22}. \citet{Cambria} uses lenses~\cite{Foster2007} for bidirectional transformation of JSON. \citet{scherzinger13} define a set of operators like the relational SMOs discussed above. \citeauthor*{chillon21}~\cite{chillon21, chillon22} offer a more comprehensive set of SMOs that may be capable of handling \textit{Extract/Absorb Entity} and \emph{Multiplicity Change} but not \emph{Split/Merge Entity} nor divergence. None of the above approaches to NoSQL evolution have yet extended into updating code or rewriting queries like their SQL cousins.
 
 \emph{Local-first software}~\cite{localfirst} adds the divergence dimension to NoSQL evolution, because the code running on different replicas can evolve at different paces. \citet{Cambria} applies lenses~\cite{Foster2007} to this problem, specifically discussing the \emph{Multiplicity Change} problem.
-
+%
 Schema evolution has also been studied for Object Oriented Databases(OODB)~\cite{li99,banerjee87}. Smalltalk~\cite{Goldberg80} is itself an OODB, persisting all object instances in an ``image file'' with some evolution capabilities incorporated in the programming environment~\cite[pp.252-272]{Goldberg80}. Gemstone turns the Smalltalk image into a production-quality database and accordingly provides a complex schema evolution API~\cite{Gemstone}.
 
 \paragraph{Type-driven transformations.}
@@ -1412,7 +1453,7 @@ Live programming~\cite{tanimoto90, rein2018exploratory, HazelnutLive19} seeks to
 % \cite{mcdirmid13, Rauch_2019, beckmann2021shortening}
 \emph{Hot reloading/swapping}~\cite{barenz2020essence, hicks2005dynamic} installs code changes into a running system preserving some runtime state but not attempting to migrate that state through type changes.
 \citet{SemanticDeltas} proposes a research agenda for thoroughly live DSL programming focusing on \emph{Semantic Deltas} that unify edit-time and run-time change.
-\citet{RuntimeConstraint} study the live modeling problem in \S\ref{sec:livemodeling}. They use constraints supplied by the developer to solve for the best new runtime state following a DSL language evolution. \citet{vanRozen19} take an alternative approach to the same problem using \emph{origin tracking} in textual editing.
+\citet{RuntimeConstraint} study the live modeling problem in Section~\ref{sec:livemodeling}. They use constraints supplied by the developer to solve for the best new runtime state following a DSL language evolution. \citet{vanRozen19} take an alternative approach to the same problem using \emph{origin tracking} in textual editing.
 %\citet{vanRozen23} subsequently proposed a metaprogramming language for live DSL programming.
 
 
@@ -1443,7 +1484,11 @@ We did not present new solutions to the problem, but we hope to inspired the rea
 do so. Indeed, we look forward to novel solutions to the challenges presented in this paper and
 the resulting more live and collaborative future of programming!
 
-
+\acks
+We are thank reviewers and attendees of the LIVE 2023 workshop who provided invaluable
+feedback on earlier version of the paper. We are also grateful to the anonymous reviewers
+of the journal version of the paper whose feedback greatly improved the quality of the final
+version. The second author has been supported by Charles University grant PRIMUS/24/SCI/021.
 
 %\bibliographystyle{abbrv}
 %\bibliography{paper}
