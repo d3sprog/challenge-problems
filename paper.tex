@@ -8,7 +8,7 @@
 \usepackage{changepage}
 \usepackage{multicol}
 \usepackage{xcolor}
-\usepackage{ccicons}
+%\usepackage{ccicons}
 \usepackage{float}
 \usepackage{wrapfig}
 \usepackage{framed}
@@ -26,7 +26,7 @@
   keywordstyle=\firamedium,
   belowskip=1em,
   aboveskip=1em,
-  framesep=0.5em,
+  %framesep=0.5em,
   basicstyle=\normalsize\ttfamily,
   %stringstyle=\color{RosyBrown},%
   %texcsstyle=*{\color{Purple}\mdseries},%
@@ -34,7 +34,7 @@
   %texcsstyle=*[3]{\color{ForestGreen}},%
   %commentstyle={\color{FireBrick}},%
   numbersep=1em,
-  xleftmargin=1.5em,
+  %xleftmargin=1.5em,
   escapechar=`,}
 \newcommand*{\CTAN}[1]{\href{http://ctan.org/tex-archive/#1}{\nolinkurl{CTAN:#1}}}
 %%
@@ -43,7 +43,7 @@
 \newcommand{\challenge}[1]{\subsection*{\addtocounter{challengen}{1}Challenge \#\thechallengen: #1}}
 
 \DeclareRobustCommand{\frameworkbox}[1]{\leftbar#1\endleftbar}
-\newcommand{\frameworkboxtitle}[1]{\noindent{\firamedium #1.}\quad}
+\newcommand{\frameworkboxtitle}[1]{\noindent{\firamedium #1}\quad}
 
 \paperdetails{
   perspective=engineering,
@@ -95,7 +95,7 @@ experience through new and better software languages and developing the tools an
 Previously, he completed a PhD at MIT CSAIL in the Software Design Group advised by Daniel Jackson.
 Before that, he spent five years as an early engineer and designer building the edtech startup Panorama Education (YC S13).
 Contact him at \email{gklitt@gmail.com}.}
-\affiliation[e]{Ink \& Switch, Planet Earth}
+\affiliation[e]{Ink \& Switch, USA}
 
 \authorrunning{J. Edwards, T. Petricek, T. van der Storm, G. Litt}
 
@@ -250,14 +250,14 @@ of a program converge, but data may diverge.
 %\subsection{Conceptual Framework}
 
 \vspace{-0.4em}
-\paragraph{Locality of Change.}
+\paragraph{Locality of Change}
 We can view diverse real-world schema evolution problems from a common perspective by distinguishing between two different dimensions of schema change.
 The \emph{local dimension} is concerned with how schema evolution affects data and code within
 a single program. The \emph{non-local dimension} is concerned with how schema evolution
 propagates across different program variants that may exist independently.
 
 \vspace{-0.4em}
-\paragraph{Program Layers.}
+\paragraph{Program Layers}
 We consider the more permanent layer of \emph{schema} and two less permanent layers of code and
 data that are structured by those schema. In specific case studies, the layers may map to
 different aspects of programs, some may be not present, and some may be implicit.
@@ -274,7 +274,7 @@ different aspects of programs, some may be not present, and some may be implicit
 \end{itemize}
 
 \vspace{-0.4em}
-\paragraph{Program Variants.}
+\paragraph{Program Variants}
 In programming systems that enable collaboration, multiple variants of a program may exist
 concurrently and their schema, data and code may need to be synchronized. Although collaboration
 is missing from some of our case studies, it adds an important dimension that is crucial for
@@ -290,7 +290,7 @@ schema evolution in future programming systems. We consider two characteristics.
 \end{itemize}
 
 \vspace{-0.4em}
-\paragraph{Challenge Problems.}
+\paragraph{Challenge Problems}
 These dimensions, layers, and variants generate a wide range of problem configuration.
 Our aim is not to cover all of them. Instead we use this perspective to recast a number of
 existing challenges in real-world programming systems as instances of the same problem of
@@ -362,6 +362,8 @@ the programmer has already created a number of items and so there is a value of 
 \end{lstlisting}
 
 \begin{table}[t]
+\caption{Changes to types and how a programming system should handle them}
+\label{tbl:elmchanges}
 \begin{tabular}{lll}\toprule
 {\firamedium Change} & {\firamedium What} & {\firamedium How}\\\midrule
 Add & case to \texttt{Event} & Requires adding corresponding case to \texttt{update} \\
@@ -371,10 +373,7 @@ Remove & field from \texttt{State} & Migrate state (assuming field unused) \\
 Modify & structure of \texttt{State} & Migrate state value and edit code accordingly \\
 \bottomrule
 \end{tabular}
-\vspace{0.3em}
-\caption{Changes to types and how a programming system should handle them}
-\label{tbl:elmchanges}
-\vspace{-1em}
+\vspace{-0.5em}
 \end{table}
 
 There is a number of edits to the types that the programmer may now want to do without
@@ -537,6 +536,8 @@ it is not a schema change but a data change, yet nevertheless not commonly suppo
 
 
 \begin{table}[t]
+\caption{Changes to schema and how a programming system should handle them}
+\label{tbl:dbchanges}
 \begin{tabular}{lll}\toprule
 {\firamedium Change} & {\firamedium What} & {\firamedium How}\\\midrule
 Extract & new type of entity & Migrate data to a new table and add links \\
@@ -545,10 +546,7 @@ Merge & multiple data items & Automatic de-duplication with mistake handling \\
 Split & multiple data items & Interactively, following user guidance\\
 \bottomrule
 \end{tabular}
-\vspace{0.3em}
-\caption{Changes to types and how a programming system should handle them}
-\label{tbl:dbchanges}
-\vspace{-1em}
+\vspace{-0.5em}
 \end{table}
 
 Entity evolution can happen through operations such as those listed in
@@ -842,6 +840,8 @@ If the edit is recorded as a list of high-level edits shown in Figure~\ref{tbl:d
 edit to selectors in formulas in the document.
 
 \begin{table}[t]
+\caption{Changes to schema and data and how the programming system should respond}
+\label{tbl:docchanges}
 \begin{adjustwidth}{-2em}{-2em}
 \begin{tabular}{lll}\toprule
 {\firamedium Change} & {\firamedium What} & {\firamedium How}\\\midrule
@@ -852,11 +852,8 @@ Add & New item to a list & Add data without affecting document structure (schema
 Reorder & List items & Reorder data without affecting document structure (schema)\\
 \bottomrule
 \end{tabular}
-\vspace{0.3em}
-\caption{Changes to schema and data and how the programming system should respond}
-\label{tbl:docchanges}
 \end{adjustwidth}
-\vspace{-1em}
+\vspace{-0.5em}
 \end{table}
 
 \subsection*{Remarks: Liveness and Divergence}
@@ -1335,6 +1332,8 @@ diagram encodes both static and dynamic aspects of the state machine language.
 
 
 \begin{table}[b]
+\caption{Possible program changes and how to deal with them at run time}
+\label{tbl:smchanges}
 \begin{tabular}{lll}\toprule
 {\firamedium Change} & {\firamedium What} & {\firamedium How}\\\midrule
 Add/Rename & state & Simple  \\
@@ -1349,10 +1348,7 @@ Event change & transition & Structurally simple, but heuristic for pending event
 Add/remove & statement & Hotswap code at quiescent point of interpreter\\
 \bottomrule
 \end{tabular}
-\vspace{0.3em}
-\caption{Possible program changes and how to deal with them at run time}
-\label{tbl:smchanges}
-\vspace{-1em}
+\vspace{-0.5em}
 \end{table}
 
 \challenge{Live Editing Domain-Specific Languages}
@@ -1419,7 +1415,7 @@ Another extension, tying in with the data-oriented examples above, involves refa
 
 There has been extensive research on coordinating the evolution of interdependent layers of software, much of it guided by schema and types. But the vast majority of these techniques involve writing custom code in some specialized language, rather than through immediate action and feedback in an interactive programming system. Nevertheless it is important to understand these batch techniques to envision more interactive ones.
 
-\paragraph{Schema evolution.}
+\paragraph{Schema Evolution}
 Schema evolution has long been a major problem for SQL databases because
 the SQL Data Definition Language (DDL) has limited capabilities to redefine existing data. It can rename tables and columns. SQLite \cite{sqliteDatatypes} uses dynamically typed values allowing them to be implicitly converted if the datatype of the column changes.
 MYSql \cite{mysqlAlterTable} can reorder columns without destroying their data. But apart from such special cases, SQL databases have no general purpose support for data migration. As a result in practice schema evolution is mostly done by writing custom Data Manipulation Language (DML) code to migrate the data. Such custom code is greatly complicated if it needs to be done without taking the database offline or must be coordinated across multiple shards.
@@ -1440,24 +1436,24 @@ Schema evolution is also a problem for NoSQL~\cite{sadalage12} databases. While 
 %
 Schema evolution has also been studied for Object Oriented Databases(OODB)~\cite{li99,banerjee87}. Smalltalk~\cite{Goldberg80} is itself an OODB, persisting all object instances in an ``image file'' with some evolution capabilities incorporated in the programming environment~\cite[pp.252-272]{Goldberg80}. Gemstone turns the Smalltalk image into a production-quality database and accordingly provides a complex schema evolution API~\cite{Gemstone}.
 
-\paragraph{Type-driven transformations.}
+\paragraph{Type-Driven Transformations}
 Programming language theory undergirds research on type-driven transformations. Bidirectional Transformations~\cite{czarnecki2009bidirectional} have been used for data format conversion and view update.
 Coupled Transformations~\cite{Berdaguer07, alcino06, Cleve2006} express transformations coordinated between types and their instances by encoding them into functions on Haskell GADTs built with strategy combinators. \citet{JVisser08} extends the encoding to transform queries written in point-free style. \citet{lammel16} recapitulates coupled transformations within logic programming which extends it to transform logic programs. It is not clear how bidirectional transformations can handle generating the unique IDs required in some evolutions, nor the information loss and duplication which can arise in some divergence scenarios.
 
-\paragraph{Model Driven Engineering.}
+\paragraph{Model Driven Engineering}
 Model Driven Engineering must also handle evolution. Unlike the textual artifacts involved in other domains, models typically assign unique identifiers enabling more precise differencing and mergeing~\cite{alanen2003}.
 Models are often themselves modeled by a metamodel, which lifts the evolution problem to the metalevel: models must be migrated through the evolution of their metamodel, analogously to changing the grammar of a programming language.~\cite{Herrmannsdoerfer11}. \citet{Cicchetti11} study metamodel evolution in the context of divergent changes.
 \citet{vermolen11} define a DSL for evolving a data model by generating SQL migrations on the backing database. They consider the evolution of OO-style subclass hierarchies which goes beyond most other work. Their running example includes both our \emph{Extract Entity} and \emph{Multiplicity Change} examples, and would make for a good follow-on problem. However they do not address code/query rewriting.
 
-\paragraph{Migration by example.}
+\paragraph{Migration by Example}
 Programming by example has been used to infer schema migration programs from examples specified by the developer~\cite{wang20, Alexe11}.
 This work deals with the reality that schema live in the database and so examples must be supplied separately, but we wonder why not incorporate examples into a schema definition language? Textual edits to schema in this language would also adapt the examples, which then could be used to infer an abstract migration, thus avoiding the ambiguities of textually comparing pure schema.
 
-\paragraph{Data wrangling.} The evolution of data formats is a concern in Data Science. Data~Diff~\cite{sutton18} compares two versions of tabular data and finds a minimal matching transformation.
+\paragraph{Data Wrangling} The evolution of data formats is a concern in Data Science. Data~Diff~\cite{sutton18} compares two versions of tabular data and finds a minimal matching transformation.
 Wrangler~\cite{kandel11} observes interactive manipulation of sampled data to write data transformation programs.
 \citet{petersohn20} present an algebra of operations on Python dataframes that include shape transformations.
 
-\paragraph{Live programming.}
+\paragraph{Live Programming}
 Live programming~\cite{tanimoto90, rein2018exploratory, HazelnutLive19} seeks to speed up feedback in (primarily solo) programming.
 % \cite{mcdirmid13, Rauch_2019, beckmann2021shortening}
 \emph{Hot reloading/swapping}~\cite{barenz2020essence, hicks2005dynamic} installs code changes into a running system preserving some runtime state but not attempting to migrate that state through type changes.
