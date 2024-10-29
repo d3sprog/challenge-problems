@@ -1,21 +1,18 @@
-@inproceedings{goldman2011real,
-  title={Real-time collaborative coding in a web IDE},
-  author={Goldman, Max and Little, Greg and Miller, Robert C},
-  booktitle={Proceedings of the 24th annual ACM symposium on User interface software and technology},
-  pages={155--164},
-  year={2011}
+@inproceedings{10.1145/543613.543644,
+  author    = {Lenzerini, Maurizio},
+  title     = {Data integration: a theoretical perspective},
+  year      = {2002},
+  isbn      = {1581135076},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  doi       = {10.1145/543613.543644},
+  abstract  = {Data integration is the problem of combining data residing at different sources, and providing the user with a unified view of these data. The problem of designing data integration systems is important in current real world applications, and is characterized by a number of issues that are interesting from a theoretical point of view. This document presents on overview of the material to be presented in a tutorial on data integration. The tutorial is focused on some of the theoretical issues that are relevant for data integration. Special attention will be devoted to the following aspects: modeling a data integration application, processing queries in data integration, dealing with inconsistent data sources, and reasoning on queries.},
+  booktitle = {Proceedings of the Twenty-First ACM SIGMOD-SIGACT-SIGART Symposium on Principles of Database Systems},
+  pages     = {233--246},
+  numpages  = {14},
+  location  = {<conf-loc>, <city>Madison</city>, <state>Wisconsin</state>, </conf-loc>},
+  series    = {PODS '02}
 }
-
-@article{kurniawan2015coder,
-  title={Coder: Real-time code editor application for collaborative programming},
-  author={Kurniawan, Aditya and Soesanto, Christine and Wijaya, Joe Erik Carla},
-  journal={Procedia Computer Science},
-  volume={59},
-  pages={510--519},
-  year={2015},
-  publisher={Elsevier}
-}
-
 
 @online{airtable,
 title = {The fastest way to build apps},
@@ -25,6 +22,50 @@ urldate = {2023-06-01},
 year = {2023}
 }
 
+
+@inproceedings{alanen2003,
+  title        = {Difference and union of models},
+  author       = {Alanen, Marcus and Porres, Ivan},
+  booktitle    = {{\guillemotleft}UML{\guillemotright} 2003-The Unified Modeling Language. Modeling Languages and Applications: 6th International Conference, San Francisco, CA, USA, October 20-24, 2003. Proceedings 6},
+  pages        = {2--17},
+  year         = {2003},
+  organization = {Springer}
+}
+
+
+@inproceedings{alcino06,
+  author    = {Cunha, Alcino
+               and Oliveira, Jos{\'e} Nuno
+               and Visser, Joost},
+  editor    = {Misra, Jayadev
+               and Nipkow, Tobias
+               and Sekerinski, Emil},
+  title     = {Type-Safe Two-Level Data Transformation},
+  booktitle = {FM 2006: Formal Methods},
+  year      = {2006},
+  publisher = {Springer Berlin Heidelberg},
+  address   = {Berlin, Heidelberg},
+  pages     = {284--299},
+  abstract  = {A two-level data transformation consists of a type-level transformation of a data format coupled with value-level transformations of data instances corresponding to that format. Examples of two-level data transformations include XML schema evolution coupled with document migration, and data mappings used for interoperability and persistence.},
+  isbn      = {978-3-540-37216-5}
+}
+
+@inproceedings{Alexe11,
+  author    = {Alexe, Bogdan and ten Cate, Balder and Kolaitis, Phokion G. and Tan, Wang-Chiew},
+  title     = {Designing and refining schema mappings via data examples},
+  year      = {2011},
+  isbn      = {9781450306614},
+  publisher = {Association for Computing Machinery},
+  url       = {https://doi.org/10.1145/1989323.1989338},
+  doi       = {10.1145/1989323.1989338},
+  abstract  = {A schema mapping is a specification of the relationship between a source schema and a target schema. Schema mappings are fundamental building blocks in data integration and data exchange and, as such, obtaining the right schema mapping constitutes a major step towards the integration or exchange of data. Up to now, schema mappings have typically been specified manually or have been derived using mapping-design systems that automatically generate a schema mapping from a visual specification of the relationship between two schemas. We present a novel paradigm and develop a system for the interactive design of schema mappings via data examples. Each data example represents a partial specification of the semantics of the desired schema mapping. At the core of our system lies a sound and complete algorithm that, given a finite set of data examples, decides whether or not there exists a GLAV schema mapping (i.e., a schema mapping specified by Global-and-Local-As-View constraints) that "fits" these data examples. If such a fitting GLAV schema mapping exists, then our system constructs the "most general" one. We give a rigorous computational complexity analysis of the underlying decision problem concerning the existence of a fitting GLAV schema mapping, given a set of data examples. Specifically, we prove that this problem is complete for the second level of the polynomial hierarchy, hence, in a precise sense, harder than NP-complete. This worst-case complexity analysis notwithstanding, we conduct an experimental evaluation of our prototype implementation that demonstrates the feasibility of interactively designing schema mappings using data examples. In particular, our experiments show that our system achieves very good performance in real-life scenarios.},
+  booktitle = {Proceedings of the 2011 ACM SIGMOD International Conference on Management of Data},
+  pages     = {133--144},
+  numpages  = {12},
+  keywords  = {data examples, data exchange, data integration, schema mappings},
+  location  = {Athens, Greece},
+  series    = {SIGMOD '11}
+}
 
 @online{AlterTable,
 title={ALTER TABLE, SQL Language Reference},
@@ -42,6 +83,45 @@ urldate={2021-02-01}
   year={2006},
   publisher={Addison Wesley},
   address = {USA}
+}
+
+@article{Bancilhon81,
+  author    = {Fran{\c{c}}ois Bancilhon and
+               Nicolas Spyratos},
+  title     = {Update Semantics of Relational Views},
+  journal   = {{ACM} Trans. Database Syst.},
+  volume    = {6},
+  number    = {4},
+  pages     = {557--575},
+  year      = {1981},
+  url       = {https://doi.org/10.1145/319628.319634},
+  doi       = {10.1145/319628.319634},
+  timestamp = {Tue, 06 Nov 2018 12:51:47 +0100},
+  biburl    = {https://dblp.org/rec/journals/tods/BancilhonS81.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{banerjee87,
+  author    = {Banerjee, Jay and Kim, Won and Kim, Hyoung-Joo and Korth, Henry F.},
+  title     = {Semantics and implementation of schema evolution in object-oriented databases},
+  year      = {1987},
+  isbn      = {0897912365},
+  publisher = {Association for Computing Machinery},
+  url       = {https://doi.org/10.1145/38713.38748},
+  doi       = {10.1145/38713.38748},
+  booktitle = {Proceedings of the 1987 ACM SIGMOD International Conference on Management of Data},
+  pages     = {311--322},
+  numpages  = {12},
+  location  = {San Francisco, California, USA},
+  series    = {SIGMOD '87}
+}
+
+@inproceedings{barenz2020essence,
+  title={The essence of live coding: change the program, keep the state!},
+  author={B{\"a}renz, Manuel},
+  booktitle={Proceedings of the 7th ACM SIGPLAN International Workshop on Reactive and Event-Based Languages and Systems},
+  pages={2--14},
+  year={2020}
 }
 
 @book{Barstow1984,
@@ -67,6 +147,49 @@ urldate={2021-02-01}
   timestamp = {Thu, 19 May 2022 16:52:59 +0200},
   biburl    = {https://dblp.org/rec/conf/ppig/Basman19.bib},
   bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{beckmann2021shortening,
+  title={Shortening Feedback Loops in a Live Game Development Environment},
+  author={Beckmann, Tom and Krebs, Eva and Rein, Patrick and Ramson, Stefan and Hirschfeld, Robert},
+  booktitle={2021 IEEE Symposium on Visual Languages and Human-Centric Computing (VL/HCC)},
+  pages={1--5},
+  year={2021},
+  organization={IEEE}
+}
+
+@inproceedings{Berdaguer07,
+  author    = {Berdaguer, Pablo and Cunha, Alcino and Pacheco, Hugo and Visser, Joost},
+  title     = {Coupled schema transformation and data conversion for XML and SQL},
+  year      = {2007},
+  isbn      = {3540696083},
+  publisher = {Springer-Verlag},
+  url       = {https://doi.org/10.1007/978-3-540-69611-7_19},
+  doi       = {10.1007/978-3-540-69611-7_19},
+  abstract  = {A two-level data transformation consists of a type-level transformation of a data format coupled with value-level transformations of data instances corresponding to that format. We have implemented a system for performing two-level transformations on XML schemas and their corresponding documents, and on SQL schemas and the databases that they describe. The core of the system consists of a combinator library for composing type-changing rewrite rules that preserve structural information and referential constraints. We discuss the implementation of the system's core library, and of its SQL and XML front-ends in the functional language Haskell. We show how the system can be used to tackle various two-level transformation scenarios, such as XML schema evolution coupled with document migration, and hierarchical-relational data mappings that convert between XML documents and SQL databases.},
+  booktitle = {Proceedings of the 9th International Conference on Practical Aspects of Declarative Languages},
+  pages     = {290–304},
+  numpages  = {15},
+  keywords  = {Haskell, SQL, XML, transformation},
+  location  = {Nice, France},
+  series    = {PADL'07}
+}
+
+@inproceedings{bernstein07,
+  author    = {Bernstein, Philip A. and Melnik, Sergey},
+  title     = {Model management 2.0: manipulating richer mappings},
+  year      = {2007},
+  isbn      = {9781595936868},
+  publisher = {Association for Computing Machinery},
+  url       = {https://doi.org/10.1145/1247480.1247482},
+  doi       = {10.1145/1247480.1247482},
+  abstract  = {Model management is a generic approach to solving problems of data programmability where precisely engineered mappings are required. Applications include data warehousing, e-commerce, object-to-relational wrappers, enterprise information integration, database portals, and report generators. The goal is to develop a model management engine that can support tools for all of these applications. The engine supports operations to match schemas, compose mappings, diff schemas, merge schemas, translate schemas into different data models, and generate data transformations from mappings.Much has been learned about model management since it was proposed seven years ago. This leads us to a revised vision that differs from the original in two main respects: the operations must handle more expressive mappings, and the runtime that executes mappings should be added as an important model management component. We review what has been learned from recent experience, explain the revised model management vision based on that experience, and identify the research problems that the revised vision opens up.},
+  booktitle = {Proceedings of the 2007 ACM SIGMOD International Conference on Management of Data},
+  pages     = {1--12},
+  numpages  = {12},
+  keywords  = {schema matching, schema mapping, schema evolution, model management, engineered mapping, data translation, data integration, data exchange},
+  location  = {Beijing, China},
+  series    = {SIGMOD '07}
 }
 
 @online{Bracha.history,
@@ -101,6 +224,7 @@ urldate={2020-05-01}
   publisher={Penguin}
 }
 
+
 @inproceedings{Burnett14,
   author    = {Burnett, Margaret M. and Myers, Brad A.},
   title     = {Future of End-User Software Engineering: Beyond the Silos},
@@ -125,12 +249,87 @@ year={2020},
 urldate={2020-10-01}
 }
 
+@inproceedings{carvalho21,
+  author    = {Carvalho, Lu\'{\i}s and Seco, Jo\~{a}o Costa},
+  title     = {Deep Semantic Versioning for Evolution and Variability},
+  year      = {2021},
+  isbn      = {9781450386890},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/3479394.3479416},
+  doi       = {10.1145/3479394.3479416},
+  booktitle = {Proceedings of the 23rd International Symposium on Principles and Practice of Declarative Programming},
+  articleno = {21},
+  numpages  = {13},
+  keywords  = {Program evolution, Program versioning, Type system},
+  location  = {Tallinn, Estonia},
+  series    = {PPDP '21}
+}
+
 @InProceedings{Cascade,
 title                = {Cascade: A meta-language for change, cause and effect},
 author               = {van Rozen, Riemer},
 booktitle            = {LIVE workshop at SPLASH'22},
 year                 = 2022,
 month                = nov
+}
+
+@inproceedings{chillon21,
+  author    = {Chill\'{o}n, Alberto Hern\'{a}ndez and Ruiz, Diego Sevilla and Molina, Jes\'{u}s Garc\'{\i}a},
+  title     = {Towards a Taxonomy of Schema Changes for NoSQL Databases: The Orion Language},
+  year      = {2021},
+  isbn      = {978-3-030-89021-6},
+  publisher = {Springer-Verlag},
+  address   = {Berlin, Heidelberg},
+  url       = {https://doi.org/10.1007/978-3-030-89022-3_15},
+  doi       = {10.1007/978-3-030-89022-3_15},
+  booktitle = {Conceptual Modeling: 40th International Conference, ER 2021, Virtual Event, October 18-21, 2021, Proceedings},
+  pages     = {176--185},
+  numpages  = {10},
+  keywords  = {Domain specific language, Schema change operations, Taxonomy of changes, Schema evolution, NoSQL databases}
+}
+
+@misc{chillon22,
+  title         = {A Taxonomy of Schema Changes for NoSQL Databases},
+  author        = {Alberto Hern{\'a}ndez Chill{\'o}n and Meike Klettke and Diego Sevilla Ruiz and Jes{\'u}s Garc{\'i}a Molina},
+  year          = {2022},
+  eprint        = {2205.11660},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.DB}
+}
+
+@inproceedings{Cicchetti11,
+  author    = {Cicchetti, Antonio and Ciccozzi, Federico and Leveque, Thomas and Pierantonio, Alfonso},
+  title     = {On the concurrent versioning of metamodels and models: challenges and possible solutions},
+  year      = {2011},
+  isbn      = {9781450306683},
+  publisher = {Association for Computing Machinery},
+  url       = {https://doi.org/10.1145/2000410.2000414},
+  doi       = {10.1145/2000410.2000414},
+  abstract  = {Model-Driven Engineering aims at shifting the focus of software development from coding to modelling in order to reduce the complexity of realizing nowadays applications. In this respect, models are expected to evolve due to refinements, improvements, bug fixes, and so forth. Because of the same reasons, also modelling languages (i.e. metamodels) are expected to be changed, even though at a different speed if compared to models. The relevant corpus of research grown up in the latest years and dealing with both these problems considers them as separate events; however, in normal practice not all the models are migrated instantaneously due to a metamodel adaptation, rather the co-adaptation is required when commits are attempted from a local workspace to the model repository, which can demand for different management policies.This paper illustrates the challenges arising in coping with concurrent metamodel and model versioning. In particular, it details a set of desired behaviours among which the user would usually select the appropriate management for the scenario into consideration together with entailed problems. Moreover, the work proposes corresponding solutions and discusses open issues.},
+  booktitle = {Proceedings of the 2nd International Workshop on Model Comparison in Practice},
+  pages     = {16–25},
+  numpages  = {10},
+  location  = {Zurich, Switzerland},
+  series    = {IWMCP '11}
+}
+
+@inbook{Cleve2006,
+  author    = {Cleve, Anthony
+               and Hainaut, Jean-Luc},
+  editor    = {L{\"a}mmel, Ralf
+               and Saraiva, Jo{\~a}o
+               and Visser, Joost},
+  title     = {Co-transformations in Database Applications Evolution},
+  booktitle = {Generative and Transformational Techniques in Software Engineering: International Summer School, GTTSE 2005, Braga, Portugal, July 4-8, 2005. Revised Papers},
+  year      = {2006},
+  publisher = {Springer Berlin Heidelberg},
+  address   = {Berlin, Heidelberg},
+  pages     = {409--421},
+  abstract  = {The paper adresses the problem of consistency preservation in data intensive applications evolution. When the database structure evolves, the application programs must be changed to interface with the new schema. The latter modification can prove very complex, error prone and time consuming. We describe a comprehensive transformation/generative approach according to which automated program transformation can be derived from schema transformation. The proposal is illustrated in the particular context of database reengineering, for which a specific methodology and a prototype tool are presented. Some results of two case studies are described.},
+  isbn      = {978-3-540-46235-4},
+  doi       = {10.1007/11877028_17},
+  url       = {https://doi.org/10.1007/11877028_17}
 }
 
 @inproceedings{Crichton2021,
@@ -140,6 +339,33 @@ month                = nov
   year = {2021},
   organization = {ACM},
   url = {https://willcrichton.net/nota/},
+}
+
+@article{curino08,
+  author     = {Curino, Carlo A. and Moon, Hyun J. and Zaniolo, Carlo},
+  title      = {Graceful database schema evolution: the PRISM workbench},
+  year       = {2008},
+  issue_date = {August 2008},
+  publisher  = {VLDB Endowment},
+  volume     = {1},
+  number     = {1},
+  issn       = {2150-8097},
+  url        = {https://doi.org/10.14778/1453856.1453939},
+  doi        = {10.14778/1453856.1453939},
+  abstract   = {Supporting graceful schema evolution represents an unsolved problem for traditional information systems that is further exacerbated in web information systems, such as Wikipedia and public scientific databases: in these projects based on multiparty cooperation the frequency of database schema changes has increased while tolerance for downtimes has nearly disappeared. As of today, schema evolution remains an error-prone and time-consuming undertaking, because the DB Administrator (DBA) lacks the methods and tools needed to manage and automate this endeavor by (i) predicting and evaluating the effects of the proposed schema changes, (ii) rewriting queries and applications to operate on the new schema, and (iii) migrating the database.Our PRISM system takes a big first step toward addressing this pressing need by providing: (i) a language of Schema Modification Operators to express concisely complex schema changes, (ii) tools that allow the DBA to evaluate the effects of such changes, (iii) optimized translation of old queries to work on the new schema version, (iv) automatic data migration, and (v) full documentation of intervened changes as needed to support data provenance, database flash back, and historical queries. PRISM solves these problems by integrating recent theoretical advances on mapping composition and invertibility, into a design that also achieves usability and scalability. Wikipedia and its 170+ schema versions provided an invaluable testbed for validating PRISM tools and their ability to support legacy queries.},
+  journal    = {Proc. VLDB Endow.},
+  month      = aug,
+  pages      = {761--772},
+  numpages   = {12}
+}
+
+@inproceedings{czarnecki2009bidirectional,
+  title        = {Bidirectional Transformations: A Cross-Discipline Perspective: GRACE Meeting Notes, State of the Art, and Outlook},
+  author       = {Czarnecki, Krzysztof and Foster, J Nathan and Hu, Zhenjiang and L{\"a}mmel, Ralf and Sch{\"u}rr, Andy and Terwilliger, James F},
+  booktitle    = {Theory and Practice of Model Transformations: Second International Conference, ICMT 2009, Zurich, Switzerland, June 29-30, 2009. Proceedings 2},
+  pages        = {260--283},
+  year         = {2009},
+  organization = {Springer}
 }
 
 @online{daff,
@@ -198,7 +424,6 @@ year={2024},
 urldate={2024-05-01}
 }
 
-
 @online{dedupe,
 title = {What's the best way to dedupe a table?},
 author = {{Stack Overflow}},
@@ -235,6 +460,14 @@ author={DoltHub Inc},
 url={https://www.dolthub.com/},
 year={2021},
 urldate={2021-7-01}
+}
+
+@online{edgedb,
+title = {Schema migrations},
+author = {EdgeDB Inc},
+url = {https://docs.edgedb.com/guides/migrations},
+urldate = {2024-05-01},
+year = 2024
 }
 
 @inproceedings{Ellis89,
@@ -293,6 +526,43 @@ issn = {1477-8424},
 doi = {https://doi.org/10.1016/j.cl.2015.08.007},
 url = {https://www.sciencedirect.com/science/article/pii/S1477842415000573},
 author = {Sebastian Erdweg and Tijs {van der Storm} and Markus V{\"o}lter and Laurence Tratt and Remi Bosman and William R. Cook and Albert Gerritsen and Angelo Hulshout and Steven Kelly and Alex Loh and Gabri{\"e}l Konat and Pedro J. Molina and Martin Palatnik and Risto Pohjonen and Eugen Schindler and Klemens Schindler and Riccardo Solmi and Vlad Vergu and Eelco Visser and Kevin {van der Vlist} and Guido Wachsmuth and Jimi {van der Woning}},
+}
+
+@article{erhard06,
+  author     = {Rahm, Erhard and Bernstein, Philip A.},
+  title      = {An online bibliography on schema evolution},
+  year       = {2006},
+  issue_date = {December 2006},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {35},
+  number     = {4},
+  issn       = {0163-5808},
+  url        = {https://doi.org/10.1145/1228268.1228273},
+  doi        = {10.1145/1228268.1228273},
+  abstract   = {We briefly motivate and present a new online bibliography on schema evolution, an area which has recently gained much interest in both research and practice.},
+  journal    = {SIGMOD Rec.},
+  month      = dec,
+  pages      = {30--31},
+  numpages   = {2}
+}
+
+
+@inproceedings{evolvedb,
+  author    = {Eckwert, Torben and Guckert, Michael and Taentzer, Gabriele},
+  title     = {EvolveDB: a tool for model driven schema evolution},
+  year      = {2022},
+  isbn      = {9781450394673},
+  publisher = {Association for Computing Machinery},
+  url       = {https://doi.org/10.1145/3550356.3559095},
+  doi       = {10.1145/3550356.3559095},
+  abstract  = {Requirements for software applications change almost continuously in all phases of the product life cycle, which leads to a constant adaption of software systems. These changes affect the domain model of the application and usually lead to necessary changes of the underlying database. As a result, the data stored in this database must also be adapted accordingly. This well-known problem is called schema evolution. Manual schema evolution with low-level SQL scripts contains both time-consuming and error-prone routine tasks and complicated operations that require expert knowledge. Automation promises significant leverage for cost savings and quality improvements. To date, the most advanced solutions for this problem have focused on operator-based approaches. However, these approaches do not allow free editing of the database schema, but require the database administrator to know in advance the exact sequence of all required operations. In this paper, we present EvolveDB, an approach to model-driven schema evolution in relational databases, where the user specifies the evolution steps by freely editing a database model extracted by reverse engineering. EvolveDB analyzes the differences between the status quo and the evolved model structures and generates a data migration script. An initial evaluation with experts shows promising results. A screencast of the demo is available at https://youtu.be/ieXmrDd2nw4.},
+  booktitle = {Proceedings of the 25th International Conference on Model Driven Engineering Languages and Systems: Companion Proceedings},
+  pages     = {61--65},
+  numpages  = {5},
+  keywords  = {model matching, model-driven reengeneering, relational databases, schema evolution},
+  location  = {Montreal, Quebec, Canada},
+  series    = {MODELS '22}
 }
 
 @techreport{FirstClassCopyPaste,
@@ -381,6 +651,16 @@ publisher = {Addison-Wesley Longman Publishing Co., Inc.},
 address = {USA}
 }
 
+@inproceedings{goldman2011real,
+  title={Real-time collaborative coding in a web IDE},
+  author={Goldman, Max and Little, Greg and Miller, Robert C},
+  booktitle={Proceedings of the 24th annual ACM symposium on User interface software and technology},
+  pages={155--164},
+  year={2011}
+}
+
+
+
 @book{Goodman87,
   title={The Complete HyperCard Handbook},
   author={Goodman, D. and Atkinson, W.},
@@ -391,6 +671,7 @@ address = {USA}
   publisher={Bantam Books},
   address={USA}
 }
+
 
 @online{Hammant17,
 title={Smalltalk Envy},
@@ -407,6 +688,27 @@ urldate={2024-05-01}
   school  = {Massachusetts Institute of Technology},
   url = {https://dspace.mit.edu/handle/1721.1/61549}
 }
+
+@inbook{Hartung2011,
+  author    = {Hartung, Michael
+               and Terwilliger, James
+               and Rahm, Erhard},
+  editor    = {Bellahsene, Zohra
+               and Bonifati, Angela
+               and Rahm, Erhard},
+  title     = {Recent Advances in Schema and Ontology Evolution},
+  booktitle = {Schema Matching and Mapping},
+  year      = {2011},
+  publisher = {Springer Berlin Heidelberg},
+  address   = {Berlin, Heidelberg},
+  pages     = {149--190},
+  abstract  = {Schema evolution is the increasingly important ability to adapt deployed schemas to changing requirements. Effective support for schema evolution is challenging since schema changes may have to be propagated, correctly and efficiently, to instance data and dependent schemas, mappings, or applications. We introduce the major requirements for effective schema and ontology evolution, including support for a rich set of change operations, simplicity of change specification, evolution transparency (e.g., by providing and maintaining views or schema versions), automated generation of evolution mappings, and predictable instance migration that minimizes data loss and manual intervention. We then give an overview about the current state of the art and recent research results for the evolution of relational schemas, XML schemas, and ontologies. For numerous approaches, we outline how and to what degree they meet the introduced requirements.},
+  isbn      = {978-3-642-16518-4},
+  doi       = {10.1007/978-3-642-16518-4_6},
+  url       = {https://doi.org/10.1007/978-3-642-16518-4_6}
+}
+
+
 
 @inproceedings{Hazelnut17,
   author    = {Cyrus Omar and Ian Voysey and Michael Hilton and Jonathan Aldrich and Matthew A. Hammer},
@@ -427,13 +729,14 @@ urldate={2024-05-01}
   doi       = {10.1145/3290327},
 }
 
-@inproceedings{Heer2023,
+ @inproceedings{Heer2023,
   title={Living Papers: A Language Toolkit for Augmented Scholarly Communication},
   author={Heer, Jeffrey and Conlen, Matthew and Devireddy, Vishal and Nguyen, Tu and Horowitz, Joshua},
   booktitle={Proceedings of the 36th Annual ACM Symposium on User Interface Software and Technology},
   pages={1--13},
   year={2023}
 }
+
 
 @inproceedings{Hempel18,
 author = {Hempel, Brian and Lubin, Justin and Lu, Grace and Chugh, Ravi},
@@ -451,6 +754,64 @@ location = {Gothenburg, Sweden},
 series = {ICSE '18}
 }
 
+@inproceedings{herrmann15,
+  author    = {Herrmann, Kai
+               and Voigt, Hannes
+               and Behrend, Andreas
+               and Lehner, Wolfgang},
+  editor    = {Tadeusz, Morzy
+               and Valduriez, Patrick
+               and Bellatreche, Ladjel},
+  title     = {CoDEL -- A Relationally Complete Language for Database Evolution},
+  booktitle = {Advances in Databases and Information Systems},
+  year      = {2015},
+  publisher = {Springer International Publishing},
+  address   = {Cham},
+  pages     = {63--76},
+  abstract  = {Software developers adapt to the fast-moving nature of software systems with agile development techniques. However, database developers lack the tools and concepts to keep pace. Data, already existing in a running product, needs to be evolved accordingly, usually by manually written SQL scripts. A promising approach in database research is to use a declarative database evolution language, which couples both schema and data evolution into intuitive operations. Existing database evolution languages focus on usability but did not aim for completeness. However, this is an inevitable prerequisite for reasonable database evolution to avoid complex and error-prone workarounds. We argue that relational completeness is the feasible expressiveness for a database evolution language. Building upon an existing language, we introduce CoDEL. We define its semantic using relational algebra, propose a syntax, and show its relational completeness.},
+  isbn      = {978-3-319-23135-8}
+}
+
+
+@inproceedings{herrmann17,
+  author    = {Kai Herrmann and Hannes Voigt and Jonas Rausch and Andreas Behrend and Wolfgang Lehner},
+  title     = {Living in Parallel Realities -- Co-Existing Schema Versions with a Bidirectional Database Evolution Language},
+  booktitle = {SIGMOD'17, Proceedings of the 2017 International Conference on Management of Data, Chicago, IL, USA, May 14-19, 2017},
+  year      = {2017},
+  month     = {5},
+  location  = {Chicago, IL, USA},
+  numpages  = {12},
+  publisher = {ACM}
+}
+
+@inproceedings{Herrmannsdoerfer11,
+  author    = {Herrmannsdoerfer, Markus
+               and Vermolen, Sander D.
+               and Wachsmuth, Guido},
+  editor    = {Malloy, Brian
+               and Staab, Steffen
+               and van den Brand, Mark},
+  title     = {An Extensive Catalog of Operators for the Coupled Evolution of Metamodels and Models},
+  booktitle = {Software Language Engineering},
+  year      = {2011},
+  publisher = {Springer Berlin Heidelberg},
+  address   = {Berlin, Heidelberg},
+  pages     = {163--182},
+  abstract  = {Modeling languages and thus their metamodels are subject to change. When a metamodel is evolved, existing models may no longer conform to it. Manual migration of these models in response to metamodel evolution is tedious and error-prone. To significantly automate model migration, operator-based approaches provide reusable coupled operators that encapsulate both metamodel evolution and model migration. The success of an operator-based approach highly depends on the library of reusable coupled operators it provides. In this paper, we thus present an extensive catalog of coupled operators that is based both on a literature survey as well as real-life case studies. The catalog is organized according to a number of criteria to ease assessing the impact on models as well as selecting the right operator for a metamodel change at hand.},
+  isbn      = {978-3-642-19440-5}
+}
+
+@article{hicks2005dynamic,
+  title={Dynamic software updating},
+  author={Hicks, Michael and Nettles, Scott},
+  journal={ACM Transactions on Programming Languages and Systems (TOPLAS)},
+  volume={27},
+  number={6},
+  pages={1049--1096},
+  year={2005},
+  publisher={ACM New York, NY, USA}
+}
+
 @inbook{intentional,
 author = {Czarnecki, Krzysztof and Eisenecker, Ulrich W.},
 title = {Generative Programming: Methods, Tools, and Applications},
@@ -459,6 +820,46 @@ year = {2000},
 isbn = {0201309777},
 publisher = {ACM Press/Addison-Wesley Publishing Co.},
 address = {USA}
+}
+
+@article{JVisser08,
+  author     = {Visser, Joost},
+  title      = {Coupled Transformation of Schemas, Documents, Queries, and Constraints},
+  year       = {2008},
+  issue_date = {May, 2008},
+  publisher  = {Elsevier Science Publishers B. V.},
+  address    = {NLD},
+  volume     = {200},
+  number     = {3},
+  issn       = {1571-0661},
+  url        = {https://doi.org/10.1016/j.entcs.2008.04.090},
+  doi        = {10.1016/j.entcs.2008.04.090},
+  abstract   = {Coupled transformation occurs when multiple software artifacts must be transformed in such a way that they remain consistent with each other. For instance, when a database schema is adapted in the context of system maintenance, the persistent data residing in the system's database needs to be migrated to conform to the adapted schema. Also, queries embedded in the application code and any declared referential constraints must be adapted to take the schema changes into account. As another example, in XML-to-relational data mapping, a hierarchical XML Schema is mapped to a relational SQL schema with appropriate referential constraints, and the XML documents and queries are converted into relational data and relational queries. The 2LT project is aimed at providing a formal basis for coupled transformation. This formal basis is found in data refinement theory, point-free program calculation, and strategic term rewriting. We formalize the coupled transformation of a data type by an algebra of information-preserving data refinement steps, each witnessed by appropriate data conversion functions. Refinement steps are modeled by so-called two-level rewrite rules on type expressions that synthesize conversion functions between redex and reduct while rewriting. Strategy combinators are used to composed two-level rewrite rules into complete rewrite systems. Point-free program calculation is applied to optimized synthesize conversion function, to migrate queries, and to normalize data type constraints. In this paper, we provide an overview of the challenges met by the 2LT project and we give a sketch of the solutions offered.},
+  journal    = {Electron. Notes Theor. Comput. Sci.},
+  month      = may,
+  pages      = {3–23},
+  numpages   = {21},
+  keywords   = {Coupled transformation, constraint propagation, data mappings, data refinement, format evolution, model transformation, point-free program transformation, query migration, strategic term rewriting, two-level transformation}
+}
+
+@inproceedings{kandel11,
+  title     = {Wrangler: Interactive Visual Specification of Data Transformation Scripts},
+  author    = {Sean Kandel AND Andreas Paepcke AND Joseph Hellerstein AND Jeffrey Heer},
+  booktitle = {ACM Human Factors in Computing Systems (CHI)},
+  year      = {2011},
+  url       = {http://vis.stanford.edu/papers/wrangler}
+}
+
+@inproceedings{kehrer12,
+  author    = {Kehrer, Timo and Kelter, Udo and Ohrndorf, Manuel and Sollbach, Tim},
+  booktitle = {2012 28th IEEE International Conference on Software Maintenance (ICSM)},
+  title     = {Understanding model evolution through semantically lifting model differences with SiLift},
+  year      = {2012},
+  volume    = {},
+  number    = {},
+  pages     = {638-641},
+  keywords  = {Unified modeling language;Adaptation models;Semantics;Engines;Conferences;Software;Software engineering;model comparison;model difference;semantic lifting;difference presentation},
+  doi       = {10.1109/ICSM.2012.6405342}
 }
 
 @inbook{Kery17,
@@ -487,6 +888,7 @@ usability study.},
   numpages  = {12}
 }
 
+
 @inproceedings{Khanna07,
   abstract  = {The diff3 algorithm is widely considered the gold standard for merging uncoordinated changes to list-structured data such as text files. Surprisingly, its fundamental properties have never been studied in depth.},
   address   = {Berlin, Heidelberg},
@@ -499,7 +901,6 @@ usability study.},
   title     = {A Formal Investigation of Diff3},
   year      = {2007}
 }
-
 @article{Kleppmann21,
   author  = {Kleppmann, Martin and Mulligan, Dominic P. and Gomes, Victor B. F. and Beresford, Alastair},
   journal = {IEEE Transactions on Parallel and Distributed Systems},
@@ -511,6 +912,15 @@ usability study.},
   doi     = {10.1109/TPDS.2021.3118603}
 }
 
+
+@article{klint2011easy,
+  title={EASY Meta-programming with Rascal},
+  author={Klint, Paul and Van Der Storm, Tijs and Vinju, Jurgen},
+  journal={Generative and Transformational Techniques in Software Engineering III: International Summer School, GTTSE 2009, Braga, Portugal, July 6-11, 2009. Revised Papers},
+  pages={222--289},
+  year={2011},
+  publisher={Springer}
+}
 
 @inproceedings{Klokmose17,
 author = {R\"{a}dle, Roman and Nouwens, Midas and Antonsen, Kristian and Eagan, James R. and Klokmose, Clemens N.},
@@ -537,6 +947,7 @@ keywords = {literate computing, interactive notebooks, real-time collaboration, 
 location = {Qu\'{e}bec City, QC, Canada},
 series = {UIST '17}
 }
+
 
 @article{Kluyver2016,
   title={Jupyter Notebooks-a publishing format for reproducible computational workflows.},
@@ -575,6 +986,35 @@ location = {London, United Kingdom},
 series = {WiPSCE '15}
 }
 
+@article{kurniawan2015coder,
+  title={Coder: Real-time code editor application for collaborative programming},
+  author={Kurniawan, Aditya and Soesanto, Christine and Wijaya, Joe Erik Carla},
+  journal={Procedia Computer Science},
+  volume={59},
+  pages={510--519},
+  year={2015},
+  publisher={Elsevier}
+}
+
+@inproceedings{lammel16,
+  author    = {L\"{a}mmel, Ralf},
+  title     = {Coupled software transformations revisited},
+  year      = {2016},
+  isbn      = {9781450344470},
+  publisher = {Association for Computing Machinery},
+  url       = {https://doi.org/10.1145/2997364.2997366},
+  doi       = {10.1145/2997364.2997366},
+  abstract  = {We revisit the notion of coupled software transformations (CX) which is concerned with keeping collections of software artifacts consistent in response to changes of individual artifacts. We model scenarios of CX while we abstract from technological spaces and application domains. Our objective is to mediate between universal consistency properties of CX and test-driven validation of concrete (illustrative) CX implementations. To this end, we leverage an emerging megamodeling language LAL which is based on many- and order-sorted predicate logic with support for reuse by inlining modulo substitution. We provide a simple translation semantics for LAL so that formulae can be rendered as test cases on appropriate interpretations of the megamodel elements. Our approach has been implemented and validated in logic programming; this includes the executable language definition of LAL and test-case execution on top of illustrative CX implementations.},
+  booktitle = {Proceedings of the 2016 ACM SIGPLAN International Conference on Software Language Engineering},
+  pages     = {239–252},
+  numpages  = {14},
+  keywords  = {BX, Bidirectional transformation, CX, Coupled software transformation, Linguistic architecture, Logic programming, Megamodeling, Predicate logic, Testing},
+  series    = {SLE 2016},
+  location  = {Amsterdam, Netherlands}
+}
+
+
+
 @book{lane1998categories,
   title={Categories for the Working Mathematician},
   author={Lane, S.M.},
@@ -584,6 +1024,19 @@ series = {WiPSCE '15}
   year={1998},
   publisher={Springer New York}
 }
+
+@inproceedings{li99,
+  author    = {Xue Li},
+  booktitle = {Proceedings Technology of Object-Oriented Languages and Systems (Cat. No.PR00393)},
+  title     = {A survey of schema evolution in object-oriented databases},
+  year      = {1999},
+  volume    = {},
+  number    = {},
+  pages     = {362-371},
+  doi       = {10.1109/TOOLS.1999.796507}
+}
+
+
 
 @online{liquibase,
 title = {Automate database change workflows with Liquibase},
@@ -601,25 +1054,6 @@ year = {2023}
   year={2023}
 }
 
-@inproceedings{barenz2020essence,
-  title={The essence of live coding: change the program, keep the state!},
-  author={B{\"a}renz, Manuel},
-  booktitle={Proceedings of the 7th ACM SIGPLAN International Workshop on Reactive and Event-Based Languages and Systems},
-  pages={2--14},
-  year={2020}
-}
-
-@inproceedings{beckmann2021shortening,
-  title={Shortening Feedback Loops in a Live Game Development Environment},
-  author={Beckmann, Tom and Krebs, Eva and Rein, Patrick and Ramson, Stefan and Hirschfeld, Robert},
-  booktitle={2021 IEEE Symposium on Visual Languages and Human-Centric Computing (VL/HCC)},
-  pages={1--5},
-  year={2021},
-  organization={IEEE}
-}
-
-
-
 @inproceedings{localfirst,
   title={Local-first software: you own your data, in spite of the cloud},
   author={Kleppmann, Martin and Wiggins, Adam and Van Hardenberg, Peter and McGranaghan, Mark},
@@ -628,7 +1062,6 @@ year = {2023}
   year={2019},
   url = {https://www.inkandswitch.com/local-first/}
 }
-
 
 @ARTICLE {Masinter81,
 author = {L. Masinter and W. Teitelman},
@@ -646,6 +1079,36 @@ address = {Los Alamitos, CA, USA},
 month = {apr}
 }
 
+@inproceedings{mcdirmid13,
+  author    = {McDirmid, Sean},
+  title     = {Usable live programming},
+  year      = {2013},
+  isbn      = {9781450324724},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/2509578.2509585},
+  doi       = {10.1145/2509578.2509585},
+  abstract  = {Programming today involves code editing mixed with bouts of debugging to get feedback on code execution. For programming to be more fluid, editing and debugging should occur concurrently as live programming. This paper describes how live execution feedback can be woven into the editor by making places in program execution, not just code, navigable so that evaluation results can be probed directly within the code editor. A pane aside the editor also traces execution with entries that are similarly navigable, enabling quick problem diagnosis. Both probes and traces are refreshed continuously during editing, and are easily configured based on debugging needs. We demonstrate the usefulness of this live programming experience with a prototype.},
+  booktitle = {Proceedings of the 2013 ACM International Symposium on New Ideas, New Paradigms, and Reflections on Programming \& Software},
+  pages     = {53--62},
+  numpages  = {10},
+  keywords  = {live programming, debugging},
+  location  = {Indianapolis, Indiana, USA},
+  series    = {Onward! 2013}
+}
+
+@inproceedings{meurice17,
+  author    = {Meurice, Loup and Cleve, Anthony},
+  booktitle = {2017 IEEE 24th International Conference on Software Analysis, Evolution and Reengineering (SANER)},
+  title     = {Supporting schema evolution in schema-less NoSQL data stores},
+  year      = {2017},
+  volume    = {},
+  number    = {},
+  pages     = {457-461},
+  keywords  = {Java;Data structures;Entropy;Data mining;Urban areas},
+  doi       = {10.1109/SANER.2017.7884653}
+}
+
 @book{Molina08,
   author    = {Garcia-Molina, Hector and Ullman, Jeffrey D. and Widom, Jennifer},
   title     = {Database Systems: The Complete Book},
@@ -657,17 +1120,23 @@ month = {apr}
   abstract  = {This introduction to database systems offers a comprehensive approach, focusing on database design, database use, and implementation of database applications and database management systems. KEY TOPICS: The first half of the book provides in-depth coverage of databases from the point of view of the database designer, user, and application programmer. It covers the latest database standards SQL:1999, SQL/PSM, SQL/CLI, JDBC, ODL, and XML, with broader coverage of SQL than most other texts. The second half of the book covers databases from the point of view of the DBMS implementor, focusing on storage structures, query processing, and transaction management. The book covers the main techniques in these areas with broader coverage of query optimization than most other texts, along with advanced topics including multidimensional and bitmap indexes, distributed transactions, and information integration techniques. Ideal for professionals and students interested in database systems. A basic understanding of algebraic expressions and laws, logic, basic data structure, OOP concepts, and programming environments is implied.}
 }
 
-@article{techdims,
-  title={Technical Dimensions of Programming Systems},
-  author={Jakubovic, Joel and Edwards, Jonathan and Petricek, Tomas},
-  journal={The Art, Science, and Engineering of Programming},
-  volume={7},
-  number={3},
-  year={2023},
-  publisher={Aspect-Oriented Software Association (AOSA)}
+
+@inproceedings{moller20,
+  author    = {M{\"o}ller, Mark Lukas
+               and Scherzinger, Stefanie
+               and Klettke, Meike
+               and St{\"o}rl, Uta},
+  editor    = {Herbaut, Nicolas
+               and La Rosa, Marcello},
+  title     = {Why It Is Time for Yet Another Schema Evolution Benchmark},
+  booktitle = {Advanced Information Systems Engineering},
+  year      = {2020},
+  publisher = {Springer International Publishing},
+  address   = {Cham},
+  pages     = {113--125},
+  abstract  = {Database schema evolution is one of the grand challenges in data management research and practice. In this paper, we survey available schema evolution benchmarks. We argue that existing benchmarks do not reflect the more recent demands on database applications, such as online data migration for high availability applications, agile release strategies, and schema changes that affect more than one data model. We conclude that a new generation of schema evolution benchmarks is called for, which reflect these new demands, especially in the context of schema evolution in NoSQL data stores.},
+  isbn      = {978-3-030-58135-0}
 }
-
-
 
 @online{MPS,
 title={MPS: The Domain-Specific Language Creator},
@@ -675,6 +1144,14 @@ author={JetBrains s.r.o.},
 url={https://www.jetbrains.com/mps/},
 year={2021},
 urldate={2021-07-01}
+}
+
+@online{mysqlAlterTable,
+title = {MYSql ALTER TABLE Statement},
+author = {Oracle Inc},
+url = {https://dev.mysql.com/doc/refman/8.0/en/alter-table.html},
+urldate = {2024-05-01},
+year = 2024
 }
 
 @online{Nextjournal21,
@@ -685,14 +1162,13 @@ urldate={2021-07-01}
   urldate={2024-04-29}
 }
 
- @online{noms,
+@online{noms,
 title={Noms},
 url={https://github.com/attic-labs/noms},
 author={Attic-Labs},
 year={2021},
 urldate={2021-05-01}
 }
-
 
 @online{notion,
   title = {Notion: Write, plan, organize, play},
@@ -713,7 +1189,6 @@ urldate={2021-05-01}
   doi       = {10.1109/COLCOM.2006.361867}
 }
 
-
 @article{PatchTheory,
 title={A Categorical Theory of Patches},
 volume={298},
@@ -728,11 +1203,45 @@ month={Nov},
 pages={283--307}
 }
 
+@article{petersohn20,
+  author     = {Petersohn, Devin and Macke, Stephen and Xin, Doris and Ma, William and Lee, Doris and Mo, Xiangxi and Gonzalez, Joseph E. and Hellerstein, Joseph M. and Joseph, Anthony D. and Parameswaran, Aditya},
+  title      = {Towards scalable dataframe systems},
+  year       = {2020},
+  issue_date = {August 2020},
+  publisher  = {VLDB Endowment},
+  volume     = {13},
+  number     = {12},
+  issn       = {2150-8097},
+  url        = {https://doi.org/10.14778/3407790.3407807},
+  doi        = {10.14778/3407790.3407807},
+  abstract   = {Dataframes are a popular abstraction to represent, prepare, and analyze data. Despite the remarkable success of dataframe libraries in R and Python, dataframes face performance issues even on moderately large datasets. Moreover, there is significant ambiguity regarding dataframe semantics. In this paper we lay out a vision and roadmap for scalable dataframe systems. To demonstrate the potential in this area, we report on our experience building Modin, a scaled-up implementation of the most widely-used and complex dataframe API today, Python's pandas. With pandas as a reference, we propose a simple data model and algebra for dataframes to ground discussion in the field. Given this foundation, we lay out an agenda of open research opportunities where the distinct features of dataframes will require extending the state of the art in many dimensions of data management. We discuss the implications of signature dataframe features including flexible schemas, ordering, row/column equivalence, and data/metadata fluidity, as well as the piecemeal, trial-and-error-based approach to interacting with dataframes.},
+  journal    = {Proc. VLDB Endow.},
+  month      = jul,
+  pages      = {2033--2046},
+  numpages   = {14}
+}
+
 @online{Pijul,
   title     = {Pijul, a sound and fast distributed version control system based on a mathematical theory of asynchronous work},
   url       = {https://pijul.org/},
   year      = {2021},
   urldate     = {2021-10-01}
+}
+
+@online{planetscale,
+title = {Database branching: three-way merge for schema changes},
+author = {PlanetScale Inc},
+url = {https://planetscale.com/blog/database-branching-three-way-merge-schema-changes},
+urldate = {2024-05-01},
+year = 2024
+}
+
+@online{planetscalerails,
+  title   = {Zero downtime Rails migrations with the PlanetScale Rails gem},
+  author  = {Countermarsh, Mike},
+  url     = {https://planetscale.com/blog/zero-downtime-rails-migrations-planetscale-rails-gem},
+  urldate = {2024-05-29},
+  year    = {2023}
 }
 
 @book{ProGit,
@@ -762,13 +1271,44 @@ bound to encounter Git somewhere in the course of your working life. Proprietary
 developers will appreciate Gits enormous scalability, since it is used for the Linux
 project, which comprises thousands of developers and testers.}
 }
-
 @online{RailsMigrations,
 author={Rails},
 title={Ruby on Rails Guides: Migrations},
 url={https://guides.rubyonrails.org/v3.2/migrations.html},
 year={2021},
 urldate={2021-07-01}
+}
+
+@article{Rauch_2019,
+  title     = {Babylonian-style Programming: Design and Implementation of an Integration of Live Examples into General-purpose Source Code},
+  volume    = {3},
+  issn      = {2473-7321},
+  url       = {http://dx.doi.org/10.22152/programming-journal.org/2019/3/9},
+  doi       = {10.22152/programming-journal.org/2019/3/9},
+  number    = {3},
+  journal   = {The Art, Science, and Engineering of Programming},
+  publisher = {Aspect-Oriented Software Association (AOSA)},
+  author    = {Rauch, David and Rein, Patrick and Ramson, Stefan and Lincke, Jens and Hirschfeld, Robert},
+  year      = {2019},
+  month     = feb
+}
+
+@article{rein2018exploratory,
+  title={Exploratory and Live, Programming and Coding},
+  author={Rein, Patrick and Ramson, Stefan and Lincke, Jens and Hirschfeld, Robert and Pape, Tobias},
+  journal={The Art, Science, and Engineering of Programming},
+  volume={3},
+  number={1},
+  pages={1--1},
+  year={2018}
+}
+
+@misc{replit,
+  author = {Replit},
+  title = {Replit: Build software faster},
+  year = {2024},
+  howpublished = {\url{https://replit.com/}},
+  note = {Accessed: 2024-05-23}
 }
 
 @article{Resnick09,
@@ -807,15 +1347,31 @@ numpages = {8}
   series    = {CSCW '96}
 }
 
-@article{hicks2005dynamic,
-  title={Dynamic software updating},
-  author={Hicks, Michael and Nettles, Scott},
-  journal={ACM Transactions on Programming Languages and Systems (TOPLAS)},
-  volume={27},
-  number={6},
-  pages={1049--1096},
-  year={2005},
-  publisher={ACM New York, NY, USA}
+@inproceedings{RuntimeConstraint,
+  author    = {Tikhonova, Ulyana and Stoel, Jouke and van der Storm, Tijs and Degueule, Thomas},
+  title     = {Constraint-Based Run-Time State Migration for Live Modeling},
+  year      = {2018},
+  isbn      = {9781450360296},
+  publisher = {Association for Computing Machinery},
+  url       = {https://doi.org/10.1145/3276604.3276611},
+  doi       = {10.1145/3276604.3276611},
+  abstract  = {Live modeling enables modelers to incrementally update models as they are running and get immediate feedback about the impact of their changes. Changes introduced in a model may trigger inconsistencies between the model and its run-time state (e.g., deleting the current state in a statemachine); effectively requiring to migrate the run-time state to comply with the updated model. In this paper, we introduce an approach that enables to automatically migrate such run-time state based on declarative constraints defined by the language designer. We illustrate the approach using Nextep, a meta-modeling language for defining invariants and migration constraints on run-time state models. When a model changes, Nextep employs model finding techniques, backed by a solver, to automatically infer a new run-time model that satisfies the declared constraints. We apply Nextep to define migration strategies for two DSLs, and report on its expressiveness and performance.},
+  booktitle = {Proceedings of the 11th ACM SIGPLAN International Conference on Software Language Engineering},
+  pages     = {108--120},
+  numpages  = {13},
+  keywords  = {relational model finding, DSL, live modeling, run-time state migration},
+  location  = {Boston, MA, USA},
+  series    = {SLE 2018}
+}
+
+@book{sadalage12,
+  title     = {{NoSQL} distilled},
+  author    = {Sadalage, Pramodkumar J and Fowler, Martin},
+  publisher = {Addison-Wesley Educational},
+  month     = aug,
+  year      = 2012,
+  address   = {Boston, MA},
+  language  = {en}
 }
 
 @article{Sandewall78,
@@ -837,6 +1393,34 @@ numpages = {37}
 }
 
 
+@misc{scherzinger13,
+  title         = {Managing Schema Evolution in NoSQL Data Stores},
+  author        = {Stefanie Scherzinger and Meike Klettke and Uta St{\"o}rl},
+  year          = {2013},
+  eprint        = {1308.0514},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.DB}
+}
+
+
+@inproceedings{SemanticDeltas,
+  author    = {Tijs van der Storm},
+  editor    = {Brian Burg and
+               Adrian Kuhn and
+               Chris Parnin},
+  title     = {Semantic deltas for live {DSL} environments},
+  booktitle = {Proceedings of the 1st International Workshop on Live Programming,
+               {LIVE} 2013, San Francisco, California, USA, May 19, 2013},
+  pages     = {35--38},
+  publisher = {{IEEE} Computer Society},
+  year      = {2013},
+  url       = {https://doi.org/10.1109/LIVE.2013.6617347},
+  doi       = {10.1109/LIVE.2013.6617347},
+  timestamp = {Thu, 23 Mar 2023 23:58:12 +0100},
+  biburl    = {https://dblp.org/rec/conf/icse/Storm13.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
 @techreport{Shapiro11,
   TITLE = {{A comprehensive study of Convergent and Commutative Replicated Data Types}},
   AUTHOR = {Shapiro, Marc and Pregui{\c c}a, Nuno and Baquero, Carlos and Zawirski, Marek},
@@ -852,6 +1436,37 @@ numpages = {37}
   HAL_ID = {inria-00555588},
   HAL_VERSION = {v1},
 }
+
+
+@online{sqliteDatatypes,
+title = {Datatypes In SQLite},
+author = {sqlite.org},
+url = {https://www.sqlite.org/datatype3.html},
+urldate = {2024-05-01},
+year = 2024
+}
+
+
+
+@inproceedings{storl20,
+  author = {St{\"o}rl, Uta and Klettke, Meike and Scherzinger, Stefanie},
+  year   = {2020},
+  month  = {04},
+  pages  = {},
+  title  = {NoSQL Schema Evolution and Data Migration: State-of-the-Art and Opportunities (Tutorial)},
+  doi    = {10.5441/002/edbt.2020.87}
+}
+
+
+@inproceedings{storl22,
+  author = {St{\"o}rl, Uta and Klettke, Meike},
+  year   = {2022},
+  month  = {03},
+  pages  = {},
+  title  = {Darwin: A Data Platform for NoSQL Schema Evolution Management and Data Migration}
+}
+
+
 @inproceedings{Subtext05,
   author    = {Edwards, Jonathan},
   title     = {Subtext: Uncovering the Simplicity of Programming},
@@ -882,7 +1497,6 @@ suggests that we can make programming radically easier, if we are willing to be 
   location  = {San Diego, CA, USA},
   series    = {OOPSLA '05}
 }
-
 
 @inproceedings{Sun98CSCW,
 author = {Sun, Chengzheng and Ellis, Clarence},
@@ -933,6 +1547,23 @@ of the proposed schemes and algorithms },
   keywords   = {convergence, computer-supported cooperative work, intention preservation, consistency maintenance, operational transformation, cooperative editing, causality preservation, REDUCE, groupware systems}
 }
 
+@inproceedings{sutton18,
+  author    = {Sutton, Charles and Hobson, Timothy and Geddes, James and Caruana, Rich},
+  title     = {Data Diff: Interpretable, Executable Summaries of Changes in Distributions for Data Wrangling},
+  year      = {2018},
+  isbn      = {9781450355520},
+  publisher = {Association for Computing Machinery},
+  url       = {https://doi.org/10.1145/3219819.3220057},
+  doi       = {10.1145/3219819.3220057},
+  abstract  = {Many analyses in data science are not one-off projects, but are repeated over multiple data samples, such as once per month, once per quarter, and so on. For example, if a data scientist performs an analysis in 2017 that saves a significant amount of money, then she will likely to be asked to perform the same analysis on data from 2018. But more data analyses means more effort spent in data wrangling. We introduce the data diff problem, which attempts to turn this problem into an opportunity. Comparing the repeated data samples against each other, inconsistencies may be indicative of underlying issues in data quality. By analogy to text textttdiff, the data diff problem is to find a "patch", that is, transformation in a specified domain-specific language, that transforms the data samples so that they are identically distributed. We present a prototype tool for data diff that formalizes the problem as a bipartite matching problem, calibrating its parameters using a bootstrap procedure. The tool is evaluated quantitatively and through a case study on an open government data set.},
+  booktitle = {Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining},
+  pages     = {2279--2288},
+  numpages  = {10},
+  keywords  = {automl, data mining, data wrangling, sequential analysis},
+  location  = {London, United Kingdom},
+  series    = {KDD '18}
+}
+
 
 @inproceedings{Swierstra14,
   author    = {Swierstra, Wouter and L\"{o}h, Andres},
@@ -973,25 +1604,16 @@ may reason formally about the broader software development process.},
   numpages   = {13}
 }
 
-@misc{replit,
-  author = {Replit},
-  title = {Replit: Build software faster},
-  year = {2024},
-  howpublished = {\url{https://replit.com/}},
-  note = {Accessed: 2024-05-23}
-}
 
-@article{rein2018exploratory,
-  title={Exploratory and Live, Programming and Coding},
-  author={Rein, Patrick and Ramson, Stefan and Lincke, Jens and Hirschfeld, Robert and Pape, Tobias},
+@article{techdims,
+  title={Technical Dimensions of Programming Systems},
+  author={Jakubovic, Joel and Edwards, Jonathan and Petricek, Tomas},
   journal={The Art, Science, and Engineering of Programming},
-  volume={3},
-  number={1},
-  pages={1--1},
-  year={2018}
+  volume={7},
+  number={3},
+  year={2023},
+  publisher={Aspect-Oriented Software Association (AOSA)}
 }
-
-
 
 @article{Teitelbaum81,
 author = {Teitelbaum, Tim and Reps, Thomas},
@@ -1038,8 +1660,6 @@ numpages = {13},
 keywords = {Distributed objects, components, Application-aware adaptation, containers, Componentware}
 }
 
-
-
 @article{Trenouth91,
   author   = {Trenouth, J.},
   title    = {{A Survey of Exploratory Software Development}},
@@ -1054,491 +1674,6 @@ keywords = {Distributed objects, components, Application-aware adaptation, conta
   doi      = {10.1093/comjnl/34.2.153},
   url      = {https://doi.org/10.1093/comjnl/34.2.153},
   eprint   = {https://academic.oup.com/comjnl/article-pdf/34/2/153/1400604/340153.pdf}
-}
-
-@online{planetscalerails,
-  title   = {Zero downtime Rails migrations with the PlanetScale Rails gem},
-  author  = {Countermarsh, Mike},
-  url     = {https://planetscale.com/blog/zero-downtime-rails-migrations-planetscale-rails-gem},
-  urldate = {2024-05-29},
-  year    = {2023}
-}
-
-@online{planetscale,
-title = {Database branching: three-way merge for schema changes},
-author = {PlanetScale Inc},
-url = {https://planetscale.com/blog/database-branching-three-way-merge-schema-changes},
-urldate = {2024-05-01},
-year = 2024
-}
-
-@online{edgedb,
-title = {Schema migrations},
-author = {EdgeDB Inc},
-url = {https://docs.edgedb.com/guides/migrations},
-urldate = {2024-05-01},
-year = 2024
-}
-
-@online{sqliteDatatypes,
-title = {Datatypes In SQLite},
-author = {sqlite.org},
-url = {https://www.sqlite.org/datatype3.html},
-urldate = {2024-05-01},
-year = 2024
-}
-
-@online{mysqlAlterTable,
-title = {MYSql ALTER TABLE Statement},
-author = {Oracle Inc},
-url = {https://dev.mysql.com/doc/refman/8.0/en/alter-table.html},
-urldate = {2024-05-01},
-year = 2024
-}
-
-@inproceedings{bernstein07,
-  author    = {Bernstein, Philip A. and Melnik, Sergey},
-  title     = {Model management 2.0: manipulating richer mappings},
-  year      = {2007},
-  isbn      = {9781595936868},
-  publisher = {Association for Computing Machinery},
-  url       = {https://doi.org/10.1145/1247480.1247482},
-  doi       = {10.1145/1247480.1247482},
-  abstract  = {Model management is a generic approach to solving problems of data programmability where precisely engineered mappings are required. Applications include data warehousing, e-commerce, object-to-relational wrappers, enterprise information integration, database portals, and report generators. The goal is to develop a model management engine that can support tools for all of these applications. The engine supports operations to match schemas, compose mappings, diff schemas, merge schemas, translate schemas into different data models, and generate data transformations from mappings.Much has been learned about model management since it was proposed seven years ago. This leads us to a revised vision that differs from the original in two main respects: the operations must handle more expressive mappings, and the runtime that executes mappings should be added as an important model management component. We review what has been learned from recent experience, explain the revised model management vision based on that experience, and identify the research problems that the revised vision opens up.},
-  booktitle = {Proceedings of the 2007 ACM SIGMOD International Conference on Management of Data},
-  pages     = {1--12},
-  numpages  = {12},
-  keywords  = {schema matching, schema mapping, schema evolution, model management, engineered mapping, data translation, data integration, data exchange},
-  location  = {Beijing, China},
-  series    = {SIGMOD '07}
-}
-
-
-@inproceedings{moller20,
-  author    = {M{\"o}ller, Mark Lukas
-               and Scherzinger, Stefanie
-               and Klettke, Meike
-               and St{\"o}rl, Uta},
-  editor    = {Herbaut, Nicolas
-               and La Rosa, Marcello},
-  title     = {Why It Is Time for Yet Another Schema Evolution Benchmark},
-  booktitle = {Advanced Information Systems Engineering},
-  year      = {2020},
-  publisher = {Springer International Publishing},
-  address   = {Cham},
-  pages     = {113--125},
-  abstract  = {Database schema evolution is one of the grand challenges in data management research and practice. In this paper, we survey available schema evolution benchmarks. We argue that existing benchmarks do not reflect the more recent demands on database applications, such as online data migration for high availability applications, agile release strategies, and schema changes that affect more than one data model. We conclude that a new generation of schema evolution benchmarks is called for, which reflect these new demands, especially in the context of schema evolution in NoSQL data stores.},
-  isbn      = {978-3-030-58135-0}
-}
-
-@article{curino08,
-  author     = {Curino, Carlo A. and Moon, Hyun J. and Zaniolo, Carlo},
-  title      = {Graceful database schema evolution: the PRISM workbench},
-  year       = {2008},
-  issue_date = {August 2008},
-  publisher  = {VLDB Endowment},
-  volume     = {1},
-  number     = {1},
-  issn       = {2150-8097},
-  url        = {https://doi.org/10.14778/1453856.1453939},
-  doi        = {10.14778/1453856.1453939},
-  abstract   = {Supporting graceful schema evolution represents an unsolved problem for traditional information systems that is further exacerbated in web information systems, such as Wikipedia and public scientific databases: in these projects based on multiparty cooperation the frequency of database schema changes has increased while tolerance for downtimes has nearly disappeared. As of today, schema evolution remains an error-prone and time-consuming undertaking, because the DB Administrator (DBA) lacks the methods and tools needed to manage and automate this endeavor by (i) predicting and evaluating the effects of the proposed schema changes, (ii) rewriting queries and applications to operate on the new schema, and (iii) migrating the database.Our PRISM system takes a big first step toward addressing this pressing need by providing: (i) a language of Schema Modification Operators to express concisely complex schema changes, (ii) tools that allow the DBA to evaluate the effects of such changes, (iii) optimized translation of old queries to work on the new schema version, (iv) automatic data migration, and (v) full documentation of intervened changes as needed to support data provenance, database flash back, and historical queries. PRISM solves these problems by integrating recent theoretical advances on mapping composition and invertibility, into a design that also achieves usability and scalability. Wikipedia and its 170+ schema versions provided an invaluable testbed for validating PRISM tools and their ability to support legacy queries.},
-  journal    = {Proc. VLDB Endow.},
-  month      = aug,
-  pages      = {761--772},
-  numpages   = {12}
-}
-
-@inproceedings{herrmann15,
-  author    = {Herrmann, Kai
-               and Voigt, Hannes
-               and Behrend, Andreas
-               and Lehner, Wolfgang},
-  editor    = {Tadeusz, Morzy
-               and Valduriez, Patrick
-               and Bellatreche, Ladjel},
-  title     = {CoDEL -- A Relationally Complete Language for Database Evolution},
-  booktitle = {Advances in Databases and Information Systems},
-  year      = {2015},
-  publisher = {Springer International Publishing},
-  address   = {Cham},
-  pages     = {63--76},
-  abstract  = {Software developers adapt to the fast-moving nature of software systems with agile development techniques. However, database developers lack the tools and concepts to keep pace. Data, already existing in a running product, needs to be evolved accordingly, usually by manually written SQL scripts. A promising approach in database research is to use a declarative database evolution language, which couples both schema and data evolution into intuitive operations. Existing database evolution languages focus on usability but did not aim for completeness. However, this is an inevitable prerequisite for reasonable database evolution to avoid complex and error-prone workarounds. We argue that relational completeness is the feasible expressiveness for a database evolution language. Building upon an existing language, we introduce CoDEL. We define its semantic using relational algebra, propose a syntax, and show its relational completeness.},
-  isbn      = {978-3-319-23135-8}
-}
-
-@inproceedings{herrmann17,
-  author    = {Kai Herrmann and Hannes Voigt and Jonas Rausch and Andreas Behrend and Wolfgang Lehner},
-  title     = {Living in Parallel Realities -- Co-Existing Schema Versions with a Bidirectional Database Evolution Language},
-  booktitle = {SIGMOD'17, Proceedings of the 2017 International Conference on Management of Data, Chicago, IL, USA, May 14-19, 2017},
-  year      = {2017},
-  month     = {5},
-  location  = {Chicago, IL, USA},
-  numpages  = {12},
-  publisher = {ACM}
-}
-
-@article{erhard06,
-  author     = {Rahm, Erhard and Bernstein, Philip A.},
-  title      = {An online bibliography on schema evolution},
-  year       = {2006},
-  issue_date = {December 2006},
-  publisher  = {Association for Computing Machinery},
-  address    = {New York, NY, USA},
-  volume     = {35},
-  number     = {4},
-  issn       = {0163-5808},
-  url        = {https://doi.org/10.1145/1228268.1228273},
-  doi        = {10.1145/1228268.1228273},
-  abstract   = {We briefly motivate and present a new online bibliography on schema evolution, an area which has recently gained much interest in both research and practice.},
-  journal    = {SIGMOD Rec.},
-  month      = dec,
-  pages      = {30--31},
-  numpages   = {2}
-}
-
-@inproceedings{evolvedb,
-  author    = {Eckwert, Torben and Guckert, Michael and Taentzer, Gabriele},
-  title     = {EvolveDB: a tool for model driven schema evolution},
-  year      = {2022},
-  isbn      = {9781450394673},
-  publisher = {Association for Computing Machinery},
-  url       = {https://doi.org/10.1145/3550356.3559095},
-  doi       = {10.1145/3550356.3559095},
-  abstract  = {Requirements for software applications change almost continuously in all phases of the product life cycle, which leads to a constant adaption of software systems. These changes affect the domain model of the application and usually lead to necessary changes of the underlying database. As a result, the data stored in this database must also be adapted accordingly. This well-known problem is called schema evolution. Manual schema evolution with low-level SQL scripts contains both time-consuming and error-prone routine tasks and complicated operations that require expert knowledge. Automation promises significant leverage for cost savings and quality improvements. To date, the most advanced solutions for this problem have focused on operator-based approaches. However, these approaches do not allow free editing of the database schema, but require the database administrator to know in advance the exact sequence of all required operations. In this paper, we present EvolveDB, an approach to model-driven schema evolution in relational databases, where the user specifies the evolution steps by freely editing a database model extracted by reverse engineering. EvolveDB analyzes the differences between the status quo and the evolved model structures and generates a data migration script. An initial evaluation with experts shows promising results. A screencast of the demo is available at https://youtu.be/ieXmrDd2nw4.},
-  booktitle = {Proceedings of the 25th International Conference on Model Driven Engineering Languages and Systems: Companion Proceedings},
-  pages     = {61--65},
-  numpages  = {5},
-  keywords  = {model matching, model-driven reengeneering, relational databases, schema evolution},
-  location  = {Montreal, Quebec, Canada},
-  series    = {MODELS '22}
-}
-
-@inbook{Hartung2011,
-  author    = {Hartung, Michael
-               and Terwilliger, James
-               and Rahm, Erhard},
-  editor    = {Bellahsene, Zohra
-               and Bonifati, Angela
-               and Rahm, Erhard},
-  title     = {Recent Advances in Schema and Ontology Evolution},
-  booktitle = {Schema Matching and Mapping},
-  year      = {2011},
-  publisher = {Springer Berlin Heidelberg},
-  address   = {Berlin, Heidelberg},
-  pages     = {149--190},
-  abstract  = {Schema evolution is the increasingly important ability to adapt deployed schemas to changing requirements. Effective support for schema evolution is challenging since schema changes may have to be propagated, correctly and efficiently, to instance data and dependent schemas, mappings, or applications. We introduce the major requirements for effective schema and ontology evolution, including support for a rich set of change operations, simplicity of change specification, evolution transparency (e.g., by providing and maintaining views or schema versions), automated generation of evolution mappings, and predictable instance migration that minimizes data loss and manual intervention. We then give an overview about the current state of the art and recent research results for the evolution of relational schemas, XML schemas, and ontologies. For numerous approaches, we outline how and to what degree they meet the introduced requirements.},
-  isbn      = {978-3-642-16518-4},
-  doi       = {10.1007/978-3-642-16518-4_6},
-  url       = {https://doi.org/10.1007/978-3-642-16518-4_6}
-}
-
-@inproceedings{kehrer12,
-  author    = {Kehrer, Timo and Kelter, Udo and Ohrndorf, Manuel and Sollbach, Tim},
-  booktitle = {2012 28th IEEE International Conference on Software Maintenance (ICSM)},
-  title     = {Understanding model evolution through semantically lifting model differences with SiLift},
-  year      = {2012},
-  volume    = {},
-  number    = {},
-  pages     = {638-641},
-  keywords  = {Unified modeling language;Adaptation models;Semantics;Engines;Conferences;Software;Software engineering;model comparison;model difference;semantic lifting;difference presentation},
-  doi       = {10.1109/ICSM.2012.6405342}
-}
-
-@inproceedings{storl22,
-  author = {St{\"o}rl, Uta and Klettke, Meike},
-  year   = {2022},
-  month  = {03},
-  pages  = {},
-  title  = {Darwin: A Data Platform for NoSQL Schema Evolution Management and Data Migration}
-}
-
-@inproceedings{storl20,
-  author = {St{\"o}rl, Uta and Klettke, Meike and Scherzinger, Stefanie},
-  year   = {2020},
-  month  = {04},
-  pages  = {},
-  title  = {NoSQL Schema Evolution and Data Migration: State-of-the-Art and Opportunities (Tutorial)},
-  doi    = {10.5441/002/edbt.2020.87}
-}
-
-@misc{scherzinger13,
-  title         = {Managing Schema Evolution in NoSQL Data Stores},
-  author        = {Stefanie Scherzinger and Meike Klettke and Uta St{\"o}rl},
-  year          = {2013},
-  eprint        = {1308.0514},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.DB}
-}
-
-@inproceedings{chillon21,
-  author    = {Chill\'{o}n, Alberto Hern\'{a}ndez and Ruiz, Diego Sevilla and Molina, Jes\'{u}s Garc\'{\i}a},
-  title     = {Towards a Taxonomy of Schema Changes for NoSQL Databases: The Orion Language},
-  year      = {2021},
-  isbn      = {978-3-030-89021-6},
-  publisher = {Springer-Verlag},
-  address   = {Berlin, Heidelberg},
-  url       = {https://doi.org/10.1007/978-3-030-89022-3_15},
-  doi       = {10.1007/978-3-030-89022-3_15},
-  booktitle = {Conceptual Modeling: 40th International Conference, ER 2021, Virtual Event, October 18-21, 2021, Proceedings},
-  pages     = {176--185},
-  numpages  = {10},
-  keywords  = {Domain specific language, Schema change operations, Taxonomy of changes, Schema evolution, NoSQL databases}
-}
-
-@misc{chillon22,
-  title         = {A Taxonomy of Schema Changes for NoSQL Databases},
-  author        = {Alberto Hern{\'a}ndez Chill{\'o}n and Meike Klettke and Diego Sevilla Ruiz and Jes{\'u}s Garc{\'i}a Molina},
-  year          = {2022},
-  eprint        = {2205.11660},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.DB}
-}
-@inproceedings{meurice17,
-  author    = {Meurice, Loup and Cleve, Anthony},
-  booktitle = {2017 IEEE 24th International Conference on Software Analysis, Evolution and Reengineering (SANER)},
-  title     = {Supporting schema evolution in schema-less NoSQL data stores},
-  year      = {2017},
-  volume    = {},
-  number    = {},
-  pages     = {457-461},
-  keywords  = {Java;Data structures;Entropy;Data mining;Urban areas},
-  doi       = {10.1109/SANER.2017.7884653}
-}
-
-@book{sadalage12,
-  title     = {{NoSQL} distilled},
-  author    = {Sadalage, Pramodkumar J and Fowler, Martin},
-  publisher = {Addison-Wesley Educational},
-  month     = aug,
-  year      = 2012,
-  address   = {Boston, MA},
-  language  = {en}
-}
-
-@inproceedings{banerjee87,
-  author    = {Banerjee, Jay and Kim, Won and Kim, Hyoung-Joo and Korth, Henry F.},
-  title     = {Semantics and implementation of schema evolution in object-oriented databases},
-  year      = {1987},
-  isbn      = {0897912365},
-  publisher = {Association for Computing Machinery},
-  url       = {https://doi.org/10.1145/38713.38748},
-  doi       = {10.1145/38713.38748},
-  booktitle = {Proceedings of the 1987 ACM SIGMOD International Conference on Management of Data},
-  pages     = {311--322},
-  numpages  = {12},
-  location  = {San Francisco, California, USA},
-  series    = {SIGMOD '87}
-}
-
-@inproceedings{li99,
-  author    = {Xue Li},
-  booktitle = {Proceedings Technology of Object-Oriented Languages and Systems (Cat. No.PR00393)},
-  title     = {A survey of schema evolution in object-oriented databases},
-  year      = {1999},
-  volume    = {},
-  number    = {},
-  pages     = {362-371},
-  doi       = {10.1109/TOOLS.1999.796507}
-}
-
-@inproceedings{Berdaguer07,
-  author    = {Berdaguer, Pablo and Cunha, Alcino and Pacheco, Hugo and Visser, Joost},
-  title     = {Coupled schema transformation and data conversion for XML and SQL},
-  year      = {2007},
-  isbn      = {3540696083},
-  publisher = {Springer-Verlag},
-  url       = {https://doi.org/10.1007/978-3-540-69611-7_19},
-  doi       = {10.1007/978-3-540-69611-7_19},
-  abstract  = {A two-level data transformation consists of a type-level transformation of a data format coupled with value-level transformations of data instances corresponding to that format. We have implemented a system for performing two-level transformations on XML schemas and their corresponding documents, and on SQL schemas and the databases that they describe. The core of the system consists of a combinator library for composing type-changing rewrite rules that preserve structural information and referential constraints. We discuss the implementation of the system's core library, and of its SQL and XML front-ends in the functional language Haskell. We show how the system can be used to tackle various two-level transformation scenarios, such as XML schema evolution coupled with document migration, and hierarchical-relational data mappings that convert between XML documents and SQL databases.},
-  booktitle = {Proceedings of the 9th International Conference on Practical Aspects of Declarative Languages},
-  pages     = {290–304},
-  numpages  = {15},
-  keywords  = {Haskell, SQL, XML, transformation},
-  location  = {Nice, France},
-  series    = {PADL'07}
-}
-
-@inproceedings{alcino06,
-  author    = {Cunha, Alcino
-               and Oliveira, Jos{\'e} Nuno
-               and Visser, Joost},
-  editor    = {Misra, Jayadev
-               and Nipkow, Tobias
-               and Sekerinski, Emil},
-  title     = {Type-Safe Two-Level Data Transformation},
-  booktitle = {FM 2006: Formal Methods},
-  year      = {2006},
-  publisher = {Springer Berlin Heidelberg},
-  address   = {Berlin, Heidelberg},
-  pages     = {284--299},
-  abstract  = {A two-level data transformation consists of a type-level transformation of a data format coupled with value-level transformations of data instances corresponding to that format. Examples of two-level data transformations include XML schema evolution coupled with document migration, and data mappings used for interoperability and persistence.},
-  isbn      = {978-3-540-37216-5}
-}
-
-@inproceedings{lammel16,
-  author    = {L\"{a}mmel, Ralf},
-  title     = {Coupled software transformations revisited},
-  year      = {2016},
-  isbn      = {9781450344470},
-  publisher = {Association for Computing Machinery},
-  url       = {https://doi.org/10.1145/2997364.2997366},
-  doi       = {10.1145/2997364.2997366},
-  abstract  = {We revisit the notion of coupled software transformations (CX) which is concerned with keeping collections of software artifacts consistent in response to changes of individual artifacts. We model scenarios of CX while we abstract from technological spaces and application domains. Our objective is to mediate between universal consistency properties of CX and test-driven validation of concrete (illustrative) CX implementations. To this end, we leverage an emerging megamodeling language LAL which is based on many- and order-sorted predicate logic with support for reuse by inlining modulo substitution. We provide a simple translation semantics for LAL so that formulae can be rendered as test cases on appropriate interpretations of the megamodel elements. Our approach has been implemented and validated in logic programming; this includes the executable language definition of LAL and test-case execution on top of illustrative CX implementations.},
-  booktitle = {Proceedings of the 2016 ACM SIGPLAN International Conference on Software Language Engineering},
-  pages     = {239–252},
-  numpages  = {14},
-  keywords  = {BX, Bidirectional transformation, CX, Coupled software transformation, Linguistic architecture, Logic programming, Megamodeling, Predicate logic, Testing},
-  series    = {SLE 2016},
-  location  = {Amsterdam, Netherlands}
-}
-
-@article{JVisser08,
-  author     = {Visser, Joost},
-  title      = {Coupled Transformation of Schemas, Documents, Queries, and Constraints},
-  year       = {2008},
-  issue_date = {May, 2008},
-  publisher  = {Elsevier Science Publishers B. V.},
-  address    = {NLD},
-  volume     = {200},
-  number     = {3},
-  issn       = {1571-0661},
-  url        = {https://doi.org/10.1016/j.entcs.2008.04.090},
-  doi        = {10.1016/j.entcs.2008.04.090},
-  abstract   = {Coupled transformation occurs when multiple software artifacts must be transformed in such a way that they remain consistent with each other. For instance, when a database schema is adapted in the context of system maintenance, the persistent data residing in the system's database needs to be migrated to conform to the adapted schema. Also, queries embedded in the application code and any declared referential constraints must be adapted to take the schema changes into account. As another example, in XML-to-relational data mapping, a hierarchical XML Schema is mapped to a relational SQL schema with appropriate referential constraints, and the XML documents and queries are converted into relational data and relational queries. The 2LT project is aimed at providing a formal basis for coupled transformation. This formal basis is found in data refinement theory, point-free program calculation, and strategic term rewriting. We formalize the coupled transformation of a data type by an algebra of information-preserving data refinement steps, each witnessed by appropriate data conversion functions. Refinement steps are modeled by so-called two-level rewrite rules on type expressions that synthesize conversion functions between redex and reduct while rewriting. Strategy combinators are used to composed two-level rewrite rules into complete rewrite systems. Point-free program calculation is applied to optimized synthesize conversion function, to migrate queries, and to normalize data type constraints. In this paper, we provide an overview of the challenges met by the 2LT project and we give a sketch of the solutions offered.},
-  journal    = {Electron. Notes Theor. Comput. Sci.},
-  month      = may,
-  pages      = {3–23},
-  numpages   = {21},
-  keywords   = {Coupled transformation, constraint propagation, data mappings, data refinement, format evolution, model transformation, point-free program transformation, query migration, strategic term rewriting, two-level transformation}
-}
-
-@inproceedings{vermolen11,
-  author    = {Vermolen, Sander Dani\"{e}l and Wachsmuth, Guido and Visser, Eelco},
-  title     = {Generating database migrations for evolving web applications},
-  year      = {2011},
-  isbn      = {9781450306898},
-  publisher = {Association for Computing Machinery},
-  url       = {https://doi.org/10.1145/2047862.2047876},
-  doi       = {10.1145/2047862.2047876},
-  abstract  = {WebDSL is a domain-specific language for the implementation of dynamic web applications with a rich data model. It provides developers with object-oriented data modeling concepts but abstracts over implementation details for persisting application data in relational databases. When the underlying data model of an application evolves, persisted application data has to be migrated. While implementing migration at the database level breaks the abstractions provided by WebDSL, an implementation at the data model level requires to intermingle migration with application code. In this paper, we present a domain-specific language for the coupled evolution of data models and application data. It allows to specify data model evolution as a separate concern at the data model level and can be compiled to migration code at the database level. Its linguistic integration with WebDSL enables static checks for evolution validity and correctness.},
-  booktitle = {Proceedings of the 10th ACM International Conference on Generative Programming and Component Engineering},
-  pages     = {83–92},
-  numpages  = {10},
-  keywords  = {data migration, domain specific language, evolution, web application},
-  location  = {Portland, Oregon, USA},
-  series    = {GPCE '11}
-}
-
-
-@inproceedings{Herrmannsdoerfer11,
-  author    = {Herrmannsdoerfer, Markus
-               and Vermolen, Sander D.
-               and Wachsmuth, Guido},
-  editor    = {Malloy, Brian
-               and Staab, Steffen
-               and van den Brand, Mark},
-  title     = {An Extensive Catalog of Operators for the Coupled Evolution of Metamodels and Models},
-  booktitle = {Software Language Engineering},
-  year      = {2011},
-  publisher = {Springer Berlin Heidelberg},
-  address   = {Berlin, Heidelberg},
-  pages     = {163--182},
-  abstract  = {Modeling languages and thus their metamodels are subject to change. When a metamodel is evolved, existing models may no longer conform to it. Manual migration of these models in response to metamodel evolution is tedious and error-prone. To significantly automate model migration, operator-based approaches provide reusable coupled operators that encapsulate both metamodel evolution and model migration. The success of an operator-based approach highly depends on the library of reusable coupled operators it provides. In this paper, we thus present an extensive catalog of coupled operators that is based both on a literature survey as well as real-life case studies. The catalog is organized according to a number of criteria to ease assessing the impact on models as well as selecting the right operator for a metamodel change at hand.},
-  isbn      = {978-3-642-19440-5}
-}
-
-
-@article{wang20,
-  author     = {Wang, Yuepeng and Shah, Rushi and Criswell, Abby and Pan, Rong and Dillig, Isil},
-  title      = {Data migration using datalog program synthesis},
-  year       = {2020},
-  issue_date = {March 2020},
-  publisher  = {VLDB Endowment},
-  volume     = {13},
-  number     = {7},
-  issn       = {2150-8097},
-  url        = {https://doi.org/10.14778/3384345.3384350},
-  doi        = {10.14778/3384345.3384350},
-  abstract   = {This paper presents a new technique for migrating data between different schemas. Our method expresses the schema mapping as a Datalog program and automatically synthesizes a Datalog program from simple input-output examples to perform data migration. This approach can transform data between different types of schemas (e.g., relational-tograph, document-to-relational) and performs synthesis efficiently by leveraging the semantics of Datalog. We implement the proposed technique as a tool called Dynamite and show its effectiveness by evaluating Dynamite on 28 realistic data migration scenarios.},
-  journal    = {Proc. VLDB Endow.},
-  month      = mar,
-  pages      = {1006–1019},
-  numpages   = {14}
-}
-
-@inproceedings{alanen2003,
-  title        = {Difference and union of models},
-  author       = {Alanen, Marcus and Porres, Ivan},
-  booktitle    = {{\guillemotleft}UML{\guillemotright} 2003-The Unified Modeling Language. Modeling Languages and Applications: 6th International Conference, San Francisco, CA, USA, October 20-24, 2003. Proceedings 6},
-  pages        = {2--17},
-  year         = {2003},
-  organization = {Springer}
-}
-
-
-@inproceedings{Cicchetti11,
-  author    = {Cicchetti, Antonio and Ciccozzi, Federico and Leveque, Thomas and Pierantonio, Alfonso},
-  title     = {On the concurrent versioning of metamodels and models: challenges and possible solutions},
-  year      = {2011},
-  isbn      = {9781450306683},
-  publisher = {Association for Computing Machinery},
-  url       = {https://doi.org/10.1145/2000410.2000414},
-  doi       = {10.1145/2000410.2000414},
-  abstract  = {Model-Driven Engineering aims at shifting the focus of software development from coding to modelling in order to reduce the complexity of realizing nowadays applications. In this respect, models are expected to evolve due to refinements, improvements, bug fixes, and so forth. Because of the same reasons, also modelling languages (i.e. metamodels) are expected to be changed, even though at a different speed if compared to models. The relevant corpus of research grown up in the latest years and dealing with both these problems considers them as separate events; however, in normal practice not all the models are migrated instantaneously due to a metamodel adaptation, rather the co-adaptation is required when commits are attempted from a local workspace to the model repository, which can demand for different management policies.This paper illustrates the challenges arising in coping with concurrent metamodel and model versioning. In particular, it details a set of desired behaviours among which the user would usually select the appropriate management for the scenario into consideration together with entailed problems. Moreover, the work proposes corresponding solutions and discusses open issues.},
-  booktitle = {Proceedings of the 2nd International Workshop on Model Comparison in Practice},
-  pages     = {16–25},
-  numpages  = {10},
-  location  = {Zurich, Switzerland},
-  series    = {IWMCP '11}
-}
-
-
-
-@inbook{Cleve2006,
-  author    = {Cleve, Anthony
-               and Hainaut, Jean-Luc},
-  editor    = {L{\"a}mmel, Ralf
-               and Saraiva, Jo{\~a}o
-               and Visser, Joost},
-  title     = {Co-transformations in Database Applications Evolution},
-  booktitle = {Generative and Transformational Techniques in Software Engineering: International Summer School, GTTSE 2005, Braga, Portugal, July 4-8, 2005. Revised Papers},
-  year      = {2006},
-  publisher = {Springer Berlin Heidelberg},
-  address   = {Berlin, Heidelberg},
-  pages     = {409--421},
-  abstract  = {The paper adresses the problem of consistency preservation in data intensive applications evolution. When the database structure evolves, the application programs must be changed to interface with the new schema. The latter modification can prove very complex, error prone and time consuming. We describe a comprehensive transformation/generative approach according to which automated program transformation can be derived from schema transformation. The proposal is illustrated in the particular context of database reengineering, for which a specific methodology and a prototype tool are presented. Some results of two case studies are described.},
-  isbn      = {978-3-540-46235-4},
-  doi       = {10.1007/11877028_17},
-  url       = {https://doi.org/10.1007/11877028_17}
-}
-
-
-@inproceedings{czarnecki2009bidirectional,
-  title        = {Bidirectional Transformations: A Cross-Discipline Perspective: GRACE Meeting Notes, State of the Art, and Outlook},
-  author       = {Czarnecki, Krzysztof and Foster, J Nathan and Hu, Zhenjiang and L{\"a}mmel, Ralf and Sch{\"u}rr, Andy and Terwilliger, James F},
-  booktitle    = {Theory and Practice of Model Transformations: Second International Conference, ICMT 2009, Zurich, Switzerland, June 29-30, 2009. Proceedings 2},
-  pages        = {260--283},
-  year         = {2009},
-  organization = {Springer}
-}
-
-
-@inproceedings{wang19,
-  author    = {Wang, Yuepeng and Dong, James and Shah, Rushi and Dillig, Isil},
-  title     = {Synthesizing database programs for schema refactoring},
-  year      = {2019},
-  isbn      = {9781450367127},
-  publisher = {Association for Computing Machinery},
-  url       = {https://doi.org/10.1145/3314221.3314588},
-  doi       = {10.1145/3314221.3314588},
-  abstract  = {Many programs that interact with a database need to undergo schema refactoring several times during their life cycle. Since this process typically requires making significant changes to the program's implementation, schema refactoring is often non-trivial and error-prone. Motivated by this problem, we propose a new technique for automatically synthesizing a new version of a database program given its original version and the source and target schemas. Our method does not require manual user guidance and ensures that the synthesized program is equivalent to the original one. Furthermore, our method is quite efficient and can synthesize new versions of database programs (containing up to 263 functions) that are extracted from real-world web applications with an average synthesis time of 69.4 seconds.},
-  booktitle = {Proceedings of the 40th ACM SIGPLAN Conference on Programming Language Design and Implementation},
-  pages     = {286–300},
-  numpages  = {15},
-  keywords  = {Relational Databases, Program Synthesis, Program Sketching},
-  location  = {Phoenix, AZ, USA},
-  series    = {PLDI 2019}
 }
 
 @inproceedings{vanRozen15,
@@ -1576,16 +1711,6 @@ year = 2024
   keywords   = {Text differencing, Models at run time, Model patching, Live programming, Domain-specific languages, Adapting models}
 }
 
-@article{klint2011easy,
-  title={EASY Meta-programming with Rascal},
-  author={Klint, Paul and Van Der Storm, Tijs and Vinju, Jurgen},
-  journal={Generative and Transformational Techniques in Software Engineering III: International Summer School, GTTSE 2009, Braga, Portugal, July 6-11, 2009. Revised Papers},
-  pages={222--289},
-  year={2011},
-  publisher={Springer}
-}
-
-
 @inproceedings{vanRozen23,
   author    = {van Rozen, Riemer},
   title     = {Cascade: A Meta-language for Change, Cause and Effect},
@@ -1604,181 +1729,55 @@ year = 2024
   series    = {SLE 2023}
 }
 
-@inproceedings{RuntimeConstraint,
-  author    = {Tikhonova, Ulyana and Stoel, Jouke and van der Storm, Tijs and Degueule, Thomas},
-  title     = {Constraint-Based Run-Time State Migration for Live Modeling},
-  year      = {2018},
-  isbn      = {9781450360296},
-  publisher = {Association for Computing Machinery},
-  url       = {https://doi.org/10.1145/3276604.3276611},
-  doi       = {10.1145/3276604.3276611},
-  abstract  = {Live modeling enables modelers to incrementally update models as they are running and get immediate feedback about the impact of their changes. Changes introduced in a model may trigger inconsistencies between the model and its run-time state (e.g., deleting the current state in a statemachine); effectively requiring to migrate the run-time state to comply with the updated model. In this paper, we introduce an approach that enables to automatically migrate such run-time state based on declarative constraints defined by the language designer. We illustrate the approach using Nextep, a meta-modeling language for defining invariants and migration constraints on run-time state models. When a model changes, Nextep employs model finding techniques, backed by a solver, to automatically infer a new run-time model that satisfies the declared constraints. We apply Nextep to define migration strategies for two DSLs, and report on its expressiveness and performance.},
-  booktitle = {Proceedings of the 11th ACM SIGPLAN International Conference on Software Language Engineering},
-  pages     = {108--120},
-  numpages  = {13},
-  keywords  = {relational model finding, DSL, live modeling, run-time state migration},
-  location  = {Boston, MA, USA},
-  series    = {SLE 2018}
-}
-
-
-@inproceedings{SemanticDeltas,
-  author    = {Tijs van der Storm},
-  editor    = {Brian Burg and
-               Adrian Kuhn and
-               Chris Parnin},
-  title     = {Semantic deltas for live {DSL} environments},
-  booktitle = {Proceedings of the 1st International Workshop on Live Programming,
-               {LIVE} 2013, San Francisco, California, USA, May 19, 2013},
-  pages     = {35--38},
-  publisher = {{IEEE} Computer Society},
-  year      = {2013},
-  url       = {https://doi.org/10.1109/LIVE.2013.6617347},
-  doi       = {10.1109/LIVE.2013.6617347},
-  timestamp = {Thu, 23 Mar 2023 23:58:12 +0100},
-  biburl    = {https://dblp.org/rec/conf/icse/Storm13.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
-}
-
-@inproceedings{Alexe11,
-  author    = {Alexe, Bogdan and ten Cate, Balder and Kolaitis, Phokion G. and Tan, Wang-Chiew},
-  title     = {Designing and refining schema mappings via data examples},
+@inproceedings{vermolen11,
+  author    = {Vermolen, Sander Dani\"{e}l and Wachsmuth, Guido and Visser, Eelco},
+  title     = {Generating database migrations for evolving web applications},
   year      = {2011},
-  isbn      = {9781450306614},
+  isbn      = {9781450306898},
   publisher = {Association for Computing Machinery},
-  url       = {https://doi.org/10.1145/1989323.1989338},
-  doi       = {10.1145/1989323.1989338},
-  abstract  = {A schema mapping is a specification of the relationship between a source schema and a target schema. Schema mappings are fundamental building blocks in data integration and data exchange and, as such, obtaining the right schema mapping constitutes a major step towards the integration or exchange of data. Up to now, schema mappings have typically been specified manually or have been derived using mapping-design systems that automatically generate a schema mapping from a visual specification of the relationship between two schemas. We present a novel paradigm and develop a system for the interactive design of schema mappings via data examples. Each data example represents a partial specification of the semantics of the desired schema mapping. At the core of our system lies a sound and complete algorithm that, given a finite set of data examples, decides whether or not there exists a GLAV schema mapping (i.e., a schema mapping specified by Global-and-Local-As-View constraints) that "fits" these data examples. If such a fitting GLAV schema mapping exists, then our system constructs the "most general" one. We give a rigorous computational complexity analysis of the underlying decision problem concerning the existence of a fitting GLAV schema mapping, given a set of data examples. Specifically, we prove that this problem is complete for the second level of the polynomial hierarchy, hence, in a precise sense, harder than NP-complete. This worst-case complexity analysis notwithstanding, we conduct an experimental evaluation of our prototype implementation that demonstrates the feasibility of interactively designing schema mappings using data examples. In particular, our experiments show that our system achieves very good performance in real-life scenarios.},
-  booktitle = {Proceedings of the 2011 ACM SIGMOD International Conference on Management of Data},
-  pages     = {133--144},
-  numpages  = {12},
-  keywords  = {data examples, data exchange, data integration, schema mappings},
-  location  = {Athens, Greece},
-  series    = {SIGMOD '11}
-}
-
-@inproceedings{10.1145/543613.543644,
-  author    = {Lenzerini, Maurizio},
-  title     = {Data integration: a theoretical perspective},
-  year      = {2002},
-  isbn      = {1581135076},
-  publisher = {Association for Computing Machinery},
-  address   = {New York, NY, USA},
-  url       = {https://doi.org/10.1145/543613.543644},
-  doi       = {10.1145/543613.543644},
-  abstract  = {Data integration is the problem of combining data residing at different sources, and providing the user with a unified view of these data. The problem of designing data integration systems is important in current real world applications, and is characterized by a number of issues that are interesting from a theoretical point of view. This document presents on overview of the material to be presented in a tutorial on data integration. The tutorial is focused on some of the theoretical issues that are relevant for data integration. Special attention will be devoted to the following aspects: modeling a data integration application, processing queries in data integration, dealing with inconsistent data sources, and reasoning on queries.},
-  booktitle = {Proceedings of the Twenty-First ACM SIGMOD-SIGACT-SIGART Symposium on Principles of Database Systems},
-  pages     = {233--246},
-  numpages  = {14},
-  location  = {<conf-loc>, <city>Madison</city>, <state>Wisconsin</state>, </conf-loc>},
-  series    = {PODS '02}
-}
-
-@article{Rauch_2019,
-  title     = {Babylonian-style Programming: Design and Implementation of an Integration of Live Examples into General-purpose Source Code},
-  volume    = {3},
-  issn      = {2473-7321},
-  url       = {http://dx.doi.org/10.22152/programming-journal.org/2019/3/9},
-  doi       = {10.22152/programming-journal.org/2019/3/9},
-  number    = {3},
-  journal   = {The Art, Science, and Engineering of Programming},
-  publisher = {Aspect-Oriented Software Association (AOSA)},
-  author    = {Rauch, David and Rein, Patrick and Ramson, Stefan and Lincke, Jens and Hirschfeld, Robert},
-  year      = {2019},
-  month     = feb
-}
-
-@inproceedings{mcdirmid13,
-  author    = {McDirmid, Sean},
-  title     = {Usable live programming},
-  year      = {2013},
-  isbn      = {9781450324724},
-  publisher = {Association for Computing Machinery},
-  address   = {New York, NY, USA},
-  url       = {https://doi.org/10.1145/2509578.2509585},
-  doi       = {10.1145/2509578.2509585},
-  abstract  = {Programming today involves code editing mixed with bouts of debugging to get feedback on code execution. For programming to be more fluid, editing and debugging should occur concurrently as live programming. This paper describes how live execution feedback can be woven into the editor by making places in program execution, not just code, navigable so that evaluation results can be probed directly within the code editor. A pane aside the editor also traces execution with entries that are similarly navigable, enabling quick problem diagnosis. Both probes and traces are refreshed continuously during editing, and are easily configured based on debugging needs. We demonstrate the usefulness of this live programming experience with a prototype.},
-  booktitle = {Proceedings of the 2013 ACM International Symposium on New Ideas, New Paradigms, and Reflections on Programming \& Software},
-  pages     = {53--62},
+  url       = {https://doi.org/10.1145/2047862.2047876},
+  doi       = {10.1145/2047862.2047876},
+  abstract  = {WebDSL is a domain-specific language for the implementation of dynamic web applications with a rich data model. It provides developers with object-oriented data modeling concepts but abstracts over implementation details for persisting application data in relational databases. When the underlying data model of an application evolves, persisted application data has to be migrated. While implementing migration at the database level breaks the abstractions provided by WebDSL, an implementation at the data model level requires to intermingle migration with application code. In this paper, we present a domain-specific language for the coupled evolution of data models and application data. It allows to specify data model evolution as a separate concern at the data model level and can be compiled to migration code at the database level. Its linguistic integration with WebDSL enables static checks for evolution validity and correctness.},
+  booktitle = {Proceedings of the 10th ACM International Conference on Generative Programming and Component Engineering},
+  pages     = {83–92},
   numpages  = {10},
-  keywords  = {live programming, debugging},
-  location  = {Indianapolis, Indiana, USA},
-  series    = {Onward! 2013}
+  keywords  = {data migration, domain specific language, evolution, web application},
+  location  = {Portland, Oregon, USA},
+  series    = {GPCE '11}
 }
 
-@inproceedings{kandel11,
-  title     = {Wrangler: Interactive Visual Specification of Data Transformation Scripts},
-  author    = {Sean Kandel AND Andreas Paepcke AND Joseph Hellerstein AND Jeffrey Heer},
-  booktitle = {ACM Human Factors in Computing Systems (CHI)},
-  year      = {2011},
-  url       = {http://vis.stanford.edu/papers/wrangler}
+@inproceedings{wang19,
+  author    = {Wang, Yuepeng and Dong, James and Shah, Rushi and Dillig, Isil},
+  title     = {Synthesizing database programs for schema refactoring},
+  year      = {2019},
+  isbn      = {9781450367127},
+  publisher = {Association for Computing Machinery},
+  url       = {https://doi.org/10.1145/3314221.3314588},
+  doi       = {10.1145/3314221.3314588},
+  abstract  = {Many programs that interact with a database need to undergo schema refactoring several times during their life cycle. Since this process typically requires making significant changes to the program's implementation, schema refactoring is often non-trivial and error-prone. Motivated by this problem, we propose a new technique for automatically synthesizing a new version of a database program given its original version and the source and target schemas. Our method does not require manual user guidance and ensures that the synthesized program is equivalent to the original one. Furthermore, our method is quite efficient and can synthesize new versions of database programs (containing up to 263 functions) that are extracted from real-world web applications with an average synthesis time of 69.4 seconds.},
+  booktitle = {Proceedings of the 40th ACM SIGPLAN Conference on Programming Language Design and Implementation},
+  pages     = {286–300},
+  numpages  = {15},
+  keywords  = {Relational Databases, Program Synthesis, Program Sketching},
+  location  = {Phoenix, AZ, USA},
+  series    = {PLDI 2019}
 }
 
-@article{petersohn20,
-  author     = {Petersohn, Devin and Macke, Stephen and Xin, Doris and Ma, William and Lee, Doris and Mo, Xiangxi and Gonzalez, Joseph E. and Hellerstein, Joseph M. and Joseph, Anthony D. and Parameswaran, Aditya},
-  title      = {Towards scalable dataframe systems},
+@article{wang20,
+  author     = {Wang, Yuepeng and Shah, Rushi and Criswell, Abby and Pan, Rong and Dillig, Isil},
+  title      = {Data migration using datalog program synthesis},
   year       = {2020},
-  issue_date = {August 2020},
+  issue_date = {March 2020},
   publisher  = {VLDB Endowment},
   volume     = {13},
-  number     = {12},
+  number     = {7},
   issn       = {2150-8097},
-  url        = {https://doi.org/10.14778/3407790.3407807},
-  doi        = {10.14778/3407790.3407807},
-  abstract   = {Dataframes are a popular abstraction to represent, prepare, and analyze data. Despite the remarkable success of dataframe libraries in R and Python, dataframes face performance issues even on moderately large datasets. Moreover, there is significant ambiguity regarding dataframe semantics. In this paper we lay out a vision and roadmap for scalable dataframe systems. To demonstrate the potential in this area, we report on our experience building Modin, a scaled-up implementation of the most widely-used and complex dataframe API today, Python's pandas. With pandas as a reference, we propose a simple data model and algebra for dataframes to ground discussion in the field. Given this foundation, we lay out an agenda of open research opportunities where the distinct features of dataframes will require extending the state of the art in many dimensions of data management. We discuss the implications of signature dataframe features including flexible schemas, ordering, row/column equivalence, and data/metadata fluidity, as well as the piecemeal, trial-and-error-based approach to interacting with dataframes.},
+  url        = {https://doi.org/10.14778/3384345.3384350},
+  doi        = {10.14778/3384345.3384350},
+  abstract   = {This paper presents a new technique for migrating data between different schemas. Our method expresses the schema mapping as a Datalog program and automatically synthesizes a Datalog program from simple input-output examples to perform data migration. This approach can transform data between different types of schemas (e.g., relational-tograph, document-to-relational) and performs synthesis efficiently by leveraging the semantics of Datalog. We implement the proposed technique as a tool called Dynamite and show its effectiveness by evaluating Dynamite on 28 realistic data migration scenarios.},
   journal    = {Proc. VLDB Endow.},
-  month      = jul,
-  pages      = {2033--2046},
+  month      = mar,
+  pages      = {1006–1019},
   numpages   = {14}
-}
-
-@inproceedings{sutton18,
-  author    = {Sutton, Charles and Hobson, Timothy and Geddes, James and Caruana, Rich},
-  title     = {Data Diff: Interpretable, Executable Summaries of Changes in Distributions for Data Wrangling},
-  year      = {2018},
-  isbn      = {9781450355520},
-  publisher = {Association for Computing Machinery},
-  url       = {https://doi.org/10.1145/3219819.3220057},
-  doi       = {10.1145/3219819.3220057},
-  abstract  = {Many analyses in data science are not one-off projects, but are repeated over multiple data samples, such as once per month, once per quarter, and so on. For example, if a data scientist performs an analysis in 2017 that saves a significant amount of money, then she will likely to be asked to perform the same analysis on data from 2018. But more data analyses means more effort spent in data wrangling. We introduce the data diff problem, which attempts to turn this problem into an opportunity. Comparing the repeated data samples against each other, inconsistencies may be indicative of underlying issues in data quality. By analogy to text textttdiff, the data diff problem is to find a "patch", that is, transformation in a specified domain-specific language, that transforms the data samples so that they are identically distributed. We present a prototype tool for data diff that formalizes the problem as a bipartite matching problem, calibrating its parameters using a bootstrap procedure. The tool is evaluated quantitatively and through a case study on an open government data set.},
-  booktitle = {Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining},
-  pages     = {2279--2288},
-  numpages  = {10},
-  keywords  = {automl, data mining, data wrangling, sequential analysis},
-  location  = {London, United Kingdom},
-  series    = {KDD '18}
-}
-
-@inproceedings{carvalho21,
-  author    = {Carvalho, Lu\'{\i}s and Seco, Jo\~{a}o Costa},
-  title     = {Deep Semantic Versioning for Evolution and Variability},
-  year      = {2021},
-  isbn      = {9781450386890},
-  publisher = {Association for Computing Machinery},
-  address   = {New York, NY, USA},
-  url       = {https://doi.org/10.1145/3479394.3479416},
-  doi       = {10.1145/3479394.3479416},
-  booktitle = {Proceedings of the 23rd International Symposium on Principles and Practice of Declarative Programming},
-  articleno = {21},
-  numpages  = {13},
-  keywords  = {Program evolution, Program versioning, Type system},
-  location  = {Tallinn, Estonia},
-  series    = {PPDP '21}
-}
-
-@article{Bancilhon81,
-  author    = {Fran{\c{c}}ois Bancilhon and
-               Nicolas Spyratos},
-  title     = {Update Semantics of Relational Views},
-  journal   = {{ACM} Trans. Database Syst.},
-  volume    = {6},
-  number    = {4},
-  pages     = {557--575},
-  year      = {1981},
-  url       = {https://doi.org/10.1145/319628.319634},
-  doi       = {10.1145/319628.319634},
-  timestamp = {Tue, 06 Nov 2018 12:51:47 +0100},
-  biburl    = {https://dblp.org/rec/journals/tods/BancilhonS81.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 a service of  Schloss Dagstuhl - Leibniz Center for Informatics	homebrowsesearchaboutnfdi
