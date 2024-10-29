@@ -19,3 +19,4 @@ paper.pdf
 revisions.pdf
 sources/
 *.tex.bak
+.DS_Store
